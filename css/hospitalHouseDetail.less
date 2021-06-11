@@ -1,0 +1,106 @@
+.contentBody{
+    margin: 6rem auto 10rem;
+    width: 114rem;
+    display: flex;
+    justify-content: space-between;
+    .contentLeft{
+        width: 82rem;
+        flex-shrink: 0;
+    }
+    .contentRight{
+        width: 28rem;
+        flex-shrink: 0;
+    }
+}
+.pageBreadcrumbBox{
+    margin: 6rem auto 0;
+    width: 114rem;
+    .breadcrumbBody{
+        margin: 0;
+    }
+}
+.hospitalInfoBox{
+    .hospitalMsgBox{
+        display: flex;
+        justify-content: space-between;
+        .hospitalImg{
+            width: 10rem;
+            height: 8rem;
+            border-radius: 1rem;
+            overflow: hidden;
+            img{
+                width: 100%;
+                max-height: 100%;
+            }
+        }
+        .hospitalMsg{
+            width: calc(100% - 8rem - 3rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            .hospitalName{
+                color: #198CFF;
+                font-size: 2.4rem;
+                line-height: 3.3rem;
+            }
+            .hospitalDept{
+                display: flex;
+                font-size: 1.3rem;
+                line-height: 1.8rem;
+                margin-top: 1rem;
+                .hospitalDeptLabel{
+                    color: #333333;
+                }
+                .hospitalDeptItem{
+                    color: #198CFF;
+                }
+            }
+        }
+    }
+    .hospitalIntroBox{
+        margin-top: 6rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        .hospitalIntroLabel{
+            width: 100%;
+            font-weight: bold;
+            font-size: 1.6rem;
+            color: #000000;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #D3D3D4;
+        }
+        .hospitalIntroCont{
+            margin-top: 2rem;
+            line-height: 3rem;
+            font-size: 1.4rem;
+            color: #333333;
+            &.wleft{
+                width: calc(100% - 13rem - 3rem);
+            }
+        }
+        .hospitalIntroImg{
+            width: 13rem;
+            height: 13rem;
+            flex-shrink: 0;
+            margin-left: 3rem;
+            margin-top: 2rem;
+            img{
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}
+.contactinfoBar{
+    background-color: #198CFF;
+    width: 21rem;
+    height: 5rem;
+    line-height: 5rem;
+    text-align: center;
+    color: #fff;
+    font-size: 1.6rem;
+    border-radius: 2.7rem;
+    margin-top: 2.5rem;
+    cursor: pointer;
+}

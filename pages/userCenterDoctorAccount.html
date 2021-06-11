@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>企业维护中心-企业信息</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBody">
+            <div class="centerInfoBodyL">
+                <sidenav :menulist="menulist" :activeindex="activeindex"></sidenav>
+            </div>
+            <div class="centerInfoBodyR">
+                <div class="contentBody">
+                    <div class="centerInfoBox">
+                        <div class="centerInfoTitle">
+                            <div class="centerInfoTitleText">{{title}}</div>
+                        </div>
+                        <div class="formItem">
+                            <div class="formLabel">真实姓名（不可修改）</div>
+                            <div class="formValue">
+                                <el-input disabled v-model="ruleForm.doctorName"></el-input>
+                            </div>
+                        </div>
+                        <div class="formItem">
+                            <div class="formLabel">图片</div>
+                            <div class="formValue">
+                                <el-upload
+                                    class="avatar-uploader"
+                                    action="http://115.159.53.197:8080/api/upload"
+                                    :show-file-list="false"
+                                    :on-success="handleAvatarSuccess"
+                                    :before-upload="beforeAvatarUpload">
+                                    <img v-if="ruleForm.pictureStr" :src="'http://115.159.53.197:8080' + ruleForm.pictureStr" class="avatar">
+                                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                                </el-upload>
+                            </div>
+                        </div>
+                        <div class="formItem">
+                            <div class="formLabel">医院</div>
+                            <div class="formValue">
+                                <el-select
+                                    style="width: 100%;"
+                                    v-model="ruleForm.hospitalId"
+                                    filterable
+                                    remote
+                                    reserve-keyword
+                                    placeholder="请输入关键词"
+                                    :remote-method="remoteMethod"
+                                    :loading="hospital_loading">
+                                    <el-option
+                                        v-for="item in hospitalOption"
+                                        :key="item.hospitalId"
+                                        :label="item.hospitalName"
+                                        :value="item.hospitalId">
+                                    </el-option>
+                                </el-select>
+                            </div>
+                        </div>
+                        <div class="formItem">
+                            <div class="formLabel">科室</div>
+                            <div class="formValue">
+                                <el-select v-model="ruleForm.doctorPcatalogId" style="width: 100%;">
+                                    <el-option v-for="item in pcatalogOption" :key="item.doctorPcatalogId" :label="item.catalogName" :value="item.doctorPcatalogId"></el-option>
+                                </el-select>
+                            </div>
+                        </div>
+                        <div class="formItem">
+                            <div class="formLabel">擅长</div>
+                            <div class="formValue">
+                                <el-input v-model="ruleForm.goodStr"></el-input>
+                            </div>
+                        </div>
+                        <div class="formItem">
+                            <div class="formLabel">职位</div>
+                            <div class="formValue">
+                                <el-input v-model="ruleForm.positionStr"></el-input>
+                            </div>
+                        </div>
+                        <div class="formItem">
+                            <div class="formLabel">所在地区</div>
+                            <div class="formValue">
+                                <selectaddress v-model="addressObj" :option="{level:3}"></selectaddress>
+                            </div>
+                        </div>
+                        <div class="formItem">
+                            <div class="formLabel">简介</div>
+                            <div class="formValue">
+                                <div id="Edit"></div>
+                                <!-- <el-input
+                                    type="textarea"
+                                    :rows="10"
+                                    placeholder="请输入简介"
+                                    v-model="ruleForm.infosStr">
+                                </el-input> -->
+                            </div>
+                        </div>
+                        <div class="centerInfoHandleBox">
+                            <div class="centerInfoHandleItem centerBar2" @click="submit">完成</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../js/wangEditor.min.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>r/sidenav.js"></script>
+<script src="../components/selectaddress.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                userInfo: UserInfo,
+                userDetailInfo: UserDetailInfo,
+                menulist:DoctorMenu,
+                activeindex: 0,
+                title: '个人资料',
+                imageUrl: '',
+                hospital_loading: '',
+                hospitalOption: [],
+                pcatalogOption: [],
+                ruleForm: {
+                    addressStr: '',
+                    areaStr: '',
+                    cityStr: '',
+                    doctorPcatalogId: '',
+                    hospitalName: '',
+                    hrefStr: '',
+                    introductionStr: '',
+                    managementStyle: '',
+                    overviewStr: '',
+                    pictureStr: '',
+                    provinceStr: '',
+                    telStr: '',
+                    userId: '',
+                },
+                addressObj:{
+                    levelId1: "",
+                    levelStr1: "",
+                    levelId2: "",
+                    levelStr2: "",
+                    levelId3: "",
+                    levelStr3: ""
+                },
+                EditObj:null
+            }
+        },
+        watch:{
+            addressObj(val){
+                this.ruleForm.provinceStr = val.levelStr1
+                this.ruleForm.cityStr = val.levelStr2
+                this.ruleForm.areaStr = val.levelStr3
+            }
+        },
+        mounted() {
+            this.getKeshi()
+            if(UserInfo.userId && UserDetailInfo.userId){
+                this.ruleForm.userId = UserDetailInfo.userId
+                this.ruleForm = UserDetailInfo
+                if(UserDetailInfo.hospitalId && UserDetailInfo.hospitalName){
+                    this.hospitalOption = [{
+                        hospitalId: UserDetailInfo.hospitalId,
+                        hospitalName: UserDetailInfo.hospitalName
+                    }]
+                }
+                this.addressObj.levelStr1 = UserDetailInfo.provinceStr
+                this.addressObj.levelStr2 = UserDetailInfo.cityStr
+                this.addressObj.levelStr3 = UserDetailInfo.areaStr
+                // this.addressObj.levelId1 = '120000'
+                // this.addressObj.levelId2 = '120100'
+
+            }else{
+                this.$message.error('未获取的用户信息')
+            }
+            this.$nextTick(() => {
+                this.EditObj = initWangEdit('Edit')
+                this.EditObj.txt.html(this.ruleForm.infosStr)
+            })
+        },
+        methods: {
+            remoteMethod(query) {
+                if (query !== '') {
+                    this.hospital_loading = true;
+                    postSearchHospital({hospitalName:query}).then(res => {
+                        this.hospital_loading = false
+                        if(res.data.code === 0){
+                            this.hospitalOption = res.data.data.success
+                        }else{
+                            this.hospitalOption = [];
+                        }
+                    })
+                } else {
+                    this.hospitalOption = [];
+                }
+            },
+            // 获取科室列表
+            getKeshi(){
+                postDoctorPcatalog('科室').then(res => {
+                    if(res.data.code === 0){
+                        this.pcatalogOption = res.data.data
+                    }
+                })
+            },
+            handleAvatarSuccess(res, file) {
+                this.ruleForm.pictureStr = res.data
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
+            submit(){
+                this.ruleForm.infosStr = this.EditObj.txt.html()
+                postEditDoctor(this.ruleForm).then(res => {
+                    if(res.data.code === 0){
+                        this.$message.success('提交成功')
+                        postSearchDoctorInfo(UserDetailInfo.userId).then(resDetail => {
+                            if(resDetail.data.code === 0){
+                                ls_set('userDetailInfo',resDetail.data.data)
+                            }
+                        })
+                    }else{
+                        this.$message.error(res.data.msg)
+                    }
+                })
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.contentBody{
+    margin: 0 auto 0;
+    width: 86.5rem;
+    min-height: 50rem;
+    display: flex;
+    justify-content: space-between;
+}
+.centerInfoBox{
+    width: 100%;
+}
+.formLabel{
+    width: 14rem!important;
+}
+.centerBar2{
+    width: 15.2rem;
+    text-align: center;
+    margin: 5rem auto;
+}
+</style>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/assessDoctorDetail.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft doctorInfoBox">
+                <div class="doctorMsgBox">
+                    <div class="doctorImg">
+                        <img :src="doctorMsg.pictureStr|httpStr" alt="">
+                    </div>
+                    <div class="doctorMsg">
+                        <div class="doctorName">
+                            <div class="doctorNameText">{{doctorMsg.doctorName}}</div>
+                            <div class="doctorLevel">{{doctorMsg.positionStr}}</div>
+                        </div>
+                        <div class="doctorHospital">
+                            <div class="doctorHospitalName">{{doctorMsg.hospitalName}}</div>
+                            <div class="doctorDept">{{doctorMsg.officeStr}}</div>
+                        </div>
+                        <div class="doctorInfo">擅长：{{doctorMsg.goodStr}}</div>
+                        <div class="doctorBar" @click="showAsk">咨询</div>
+                    </div>
+                </div>
+                <div class="doctorIntroBox">
+                    <div class="doctorIntroLabel">简介</div>
+                    <div class="doctorIntroCont" v-html="doctorMsg.infosStr"></div>
+                </div>
+                <div class="doctorEssayBox">
+                    <div class="doctorEssayLabel">{{doctorMsg.doctorName}}的科普文章</div>
+                    <div class="doctorEssayList">
+                        <div class="doctorEssayItem" @click="toDoctorEssayDetail(item)" v-for="(item,index) in doctorEssayList" :key="index">
+                            <div class="doctorEssayName">{{item.name}}</div>
+                            <div class="doctorEssayTime">{{item.time}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contentRight">
+                <recomdoctor ></recomdoctor>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+        <doctorask ref="doctorask"></doctorask>
+        <doctormark ref="doctormark"></doctormark>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/index/recomdoctor.js"></script>
+<script src="../components/doctorask.js"></script>
+<script src="../components/doctormark.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                userInfo: UserInfo,
+                userDetailInfo: UserDetailInfo,
+                score: 4.6,
+                colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
+                breadcrumblist:[
+                    {name:'医院',link:'./doctorHouse.html'},
+                    {name:'医生库',link:'./doctorHouse.html'},
+                    {name:'医生详情页'},
+                ],
+                doctorMsg: {},
+                doctorEssayList: [
+                    {name:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-09-12'},
+                    {name:'Cell Death Dis：高表达水平DHODH介导β-catenin的稳定促进食管鳞状细胞癌的发生发展',time:'2020-09-12'},
+                    {name:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-09-12'},
+                    {name:'Cell Death Dis：高表达水平DHODH介导β-catenin的稳定促进食管鳞状细胞癌的发生发展',time:'2020-09-12'},
+                    {name:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-09-12'},
+                    {name:'Cell Death Dis：高表达水平DHODH介导β-catenin的稳定促进食管鳞状细胞癌的发生发展',time:'2020-09-12'},
+                    {name:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-09-12'},
+                    {name:'Cell Death Dis：高表达水平DHODH介导β-catenin的稳定促进食管鳞状细胞癌的发生发展catenin的稳定促进食管鳞状细胞癌的发生发展',time:'2020-09-12'},
+                ]
+            }
+        },
+        filters: {
+            httpStr(link) {
+                return baseUrl + link;
+            }
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            },
+            showAsk(){
+                this.$refs.doctorask.show = true
+                // postAddConsult
+            },
+            showMark(){
+                this.$refs.doctormark.show = true
+            },
+            toDoctorEssayDetail(data){
+                location.href = './doctorEssayDetail.html'
+            },
+            getDoctorDetail(){
+                postSearchDoctorById(getUrlParam('id')).then(res => {
+                    this.doctorMsg = res.data.data
+                })
+            }
+        },
+        mounted(){
+            if(getUrlParam('enter') === 'index'){
+                this.breadcrumblist = [
+                    {name:'首页',link:'./index.html'},
+                    {name:decodeURI(getUrlParam('name'))},
+                ]
+            }
+            this.getDoctorDetail()
+        }
+    })
+</script>
+<style>
+    .doctorMsg{
+        width: calc(100% - 20rem)!important;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between!important;
+    }
+    .doctorBar{
+        height: 3.2rem;
+        color: #fff;
+        background-color: #198CFF;
+        border-radius: 1.6rem;
+        width: 6.4rem;
+        text-align: center;
+        line-height: 3.2rem;
+        font-size: 1.4rem;
+        cursor: pointer;
+    }
+</style>
+</html>

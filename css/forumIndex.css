@@ -1,0 +1,105 @@
+.contentBody {
+  margin: 6rem auto 10rem;
+  width: 114rem;
+}
+.pageBreadcrumbBox {
+  margin: 6rem auto 0;
+  width: 114rem;
+}
+.pageBreadcrumbBox .breadcrumbBody {
+  margin: 0;
+}
+.main {
+  background-color: #F9F9FA;
+}
+.forumTypeBody {
+  width: 100%;
+  background-color: #FFFFFF;
+}
+.forumTypeBody .forumTypeLevel1 {
+  display: flex;
+}
+.forumTypeBody .forumTypeLevel1 .forumTypeLevel1Item {
+  flex: 1;
+  text-align: center;
+  line-height: 8.8rem;
+  height: 8.8rem;
+  font-size: 2.2rem;
+  color: #616367;
+  background-color: #F3F3F3;
+  cursor: pointer;
+}
+.forumTypeBody .forumTypeLevel1 .forumTypeLevel1Item.active {
+  background-color: #fff;
+  color: #198CFF;
+}
+.forumTypeBody .forumTypeLevel2 {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 3rem 3rem 1rem;
+}
+.forumTypeBody .forumTypeLevel2 .forumTypeLevel2Item {
+  border-radius: 0.4rem;
+  padding: 1.4rem 3rem;
+  margin-bottom: 2rem;
+  margin-right: 2rem;
+  line-height: 2.2rem;
+  font-size: 1.6rem;
+  color: #212429;
+  background-color: #F6F6F7;
+  cursor: pointer;
+}
+.forumTypeBody .forumTypeLevel2 .forumTypeLevel2Item.active {
+  background-color: #eee;
+  color: #198CFF;
+}
+.forumListBody {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 4rem;
+}
+.forumListBody .noData {
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  font-size: 1.4rem;
+  color: #999;
+}
+.forumListBody .forumItemBox {
+  cursor: pointer;
+  width: calc((100% - 9rem) / 4);
+  padding: 2.5rem;
+  box-sizing: border-box;
+  margin-right: 3rem;
+  margin-bottom: 3rem;
+  background-color: #fff;
+}
+.forumListBody .forumItemBox:nth-of-type(4n) {
+  margin-right: 0;
+}
+.forumListBody .forumItemBox .forumImg {
+  width: 21rem;
+  height: 12rem;
+  margin: 0 auto;
+}
+.forumListBody .forumItemBox .forumImg img {
+  width: 100%;
+  height: 100%;
+}
+.forumListBody .forumItemBox .forumTitle {
+  font-size: 1.5rem;
+  line-height: 2.4rem;
+  color: #212429;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.forumListBody .forumItemBox .forumInfo {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: #8C8E90;
+}
+.forumListBody .forumItemBox .forumInfo span {
+  margin-right: 2rem;
+}

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>企业维护中心-发布文章</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/jquery-ui-1.11.0.css">
+    <link rel="stylesheet" href="../tagsinputRevisited/jquery.tagsinput-revisited.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBody">
+            <div class="centerInfoBodyR">
+                <div class="contentBody">
+                    <div class="centerInfoBox">
+                        <div class="centerInfoTitle">
+                            <div class="centerInfoTitleText">{{title}}</div>
+                        </div>
+                        <div class="formItem">
+                            <div class="formLabel">标题</div>
+                            <div class="formValue">
+                                <el-input v-model="ruleForm.titileStr"></el-input>
+                            </div>
+                        </div>
+                        <div class="formItem">
+                            <div class="formLabel">价格</div>
+                            <div class="formValue">
+                                <el-input v-model="ruleForm.priceNum"></el-input>
+                            </div>
+                        </div>
+                        <div class="formItem">
+                            <div class="formLabel">标签</div>
+                            <div class="formValue">
+                                <input id="form-tags-4" name="tags-4" type="text" v-model="ruleForm.yiliaoLables">
+                            </div>
+                        </div>
+                        <div class="formItem">
+                            <div class="formLabel">内容</div>
+                            <div class="formValue">
+                                <div id="Edit"></div>
+                                <!-- <el-input
+                                    type="textarea"
+                                    :rows="10"
+                                    placeholder="请输入简介"
+                                    v-model="ruleForm.contextStr">
+                                </el-input> -->
+                            </div>
+                        </div>
+                        <div class="centerInfoHandleBox">
+                            <div class="centerInfoHandleItem centerBar2" @click="submit">完成</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../js/wangEditor.min.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>r/sidenav.js"></script>
+<script src="../components/selectaddress.js"></script>
+<script src="../js/jquery-1.10.2.js"></script>
+<script src="../js/jquery-ui-1.11.0.js"></script>
+<script src="../tagsinputRevisited/jquery.tagsinput-revisited.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                userInfo: UserInfo,
+                userDetailInfo: UserDetailInfo,
+                menulist:DoctorMenu,
+                activeindex: 0,
+                title: '发布文章',
+                imageUrl: '',
+                labelOptions: [],
+                ruleForm: {
+                    titileStr: '',
+                    priceNum: '',
+                    yiliaoLables: [],
+                    contextStr: '',
+                    doctorArticleId: ''
+                },
+                EditObj:null
+            }
+        },
+        watch:{
+            
+        },
+        mounted() {
+            this.getEssayDetail()
+        },
+        methods: {
+            getEssayDetail(){
+                postSearchDoctorArticleDetail(getUrlParam('doctorArticleId')).then(res => {
+                    res.data.data.yiliaoLables = res.data.data.yiliaoLableList.map(item => item.lableStr)
+                    this.ruleForm = {
+                        titileStr: res.data.data.titileStr,
+                        priceNum: res.data.data.priceNum,
+                        yiliaoLables: res.data.data.yiliaoLables,
+                        contextStr: res.data.data.contextStr,
+                        doctorArticleId: res.data.data.doctorArticleId
+                    }
+                    this.$nextTick(() => {
+                        this.EditObj = initWangEdit('Edit')
+                        this.EditObj.txt.html(this.ruleForm.contextStr)
+                        $('#form-tags-4').tagsInput({
+                            // 'autocomplete': {
+                            //     source: this.ruleForm.yiliaoLables
+                            // },
+                            'onAddTag': (input, value) => {
+                                this.ruleForm.yiliaoLables.push(value)
+                            },
+                            'onRemoveTag': (input, value) => {
+                                let index = this.ruleForm.yiliaoLables.indexOf(value)
+                                this.ruleForm.yiliaoLables.splice(index,1)
+                            }
+                        });
+                    })
+                })
+            },
+            submit(){
+                let ruleForm = JSON.parse(JSON.stringify(this.ruleForm))
+                ruleForm.contextStr = this.EditObj.txt.html()
+                if(!ruleForm.titileStr){
+                    this.$message.error('请填写标题')
+                    return
+                }else if(!ruleForm.priceNum){
+                    this.$message.error('请填写价格')
+                    return
+                }else if(!ruleForm.yiliaoLables){
+                    this.$message.error('请填写标签')
+                    return
+                }else if(!ruleForm.contextStr){
+                    this.$message.error('请填写内容')
+                    return
+                }
+                ruleForm.yiliaoLables = ruleForm.yiliaoLables.join(',')
+                postEditDoctorArticle(ruleForm).then(res => {
+                    if(res.data.code === 0){
+                        // this.$message.success('提交成功')
+                        location.href = './userCenterDoctor.html'
+                    }else{
+                        this.$message.error(res.data.msg)
+                    }
+                })
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.contentBody{
+    margin: 0 auto 0;
+    width: 86.5rem;
+    min-height: 50rem;
+    display: flex;
+    justify-content: space-between;
+}
+.centerInfoBox{
+    width: 100%;
+}
+.formLabel{
+    width: 14rem!important;
+}
+.centerBar2{
+    width: 15.2rem;
+    text-align: center;
+    margin: 5rem auto;
+}
+</style>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/assessDoctorIndex.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="pageTabsBody">
+            <div class="pageTabsBox">
+                <div
+                    class="pageTabsItem"
+                    :class="{'active':activeIndex === index}"
+                    v-for="(item,index) in hospitalTypes"
+                    :key="index"
+                    @click="checkType(index)">
+                    {{item.name}}
+                </div>
+            </div>
+        </div>
+        <div class="contentBody">
+            <doctorinterviewnewsList></doctorinterviewnewsList>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/doctorinterviewnewsList.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'医院',link:'./doctorHouse.html'},
+                    {name:'人物访谈'},
+                ],
+                hospitalTypes: [
+                    {name:'人物访谈',id:'1'},
+                ],
+                activeIndex: 0,
+                assesshospitalList:[
+                    {level:'三甲医院',name:'八一儿童医院八一儿童医院八一儿童医院八一儿童医院',address:'北京市东城区朝内北小街2号',remark:'北京协和医院是集医疗、教学、科研于一体的大型三级甲等综合医院，是北京协和医学院的临床学院、中国医学科学院的临床医学研究所，是卫生部指定的全国疑难重症诊治指导中心之一，也是最早承担干部保健和外宾医疗的医院之一。',img:'../img/index/hh1.png'},
+                    {level:'三甲医院',name:'八一儿童医院',address:'北京市东城区朝内北小街2号北京市东城区朝内北小街2号',remark:'北京协和医院是集医疗、教学、科研于一体的大型三级甲等综合医院，是北京协和医学院的临床学院、中国医学科学院的临床医学研究所，是卫生部指定的全国疑难重症诊治指导中心之一，也是最早承担干部保健和外宾医疗的医院之一。',img:'../img/index/hh2.png'},
+                    {level:'三甲医院',name:'八一儿童医院',address:'北京市东城区朝内北小街2号北京市东城区朝内北小街2号北京市东城区朝内北小街2号',remark:'北京协和医院是集医疗、教学、科研于一体的大型三级甲等综合医院教学、科研于一体的大型三级甲等综合医院，是北京协和医学院的临床学院、中国医学科学院的临床医学研究所，是卫生部指定的全国疑难重症诊治指导中心之一，也是最早承担干部保健和外宾医疗的医院之一。',img:'../img/index/hh3.png'},
+                    {level:'三甲医院',name:'八一儿童医院',address:'北京市东城区朝内北小街2号',remark:'北京协和医院是集医疗、教学、科研于一体的大型三级甲等综合医院，是北京协和医学院的临床学院、是北京协和医学院的临床学院、中国医学科学院的临床医学研究所，是卫生部指定的全国疑难重症诊治指导中心之一，也是最早承担干部保健和外宾医疗的医院之一。',img:'../img/index/hh1.png'},
+                    {level:'三甲医院',name:'八一儿童医院',address:'北京市东城区朝内北小街2号',remark:'北京协和医院是集医疗、教学、科研于一体的大型三级甲等综合医院，是北京协和医学院的临床学院、中国医学科学院的临床医学研究所，是卫生部指定的全国疑难重症诊治指导中心之一，也是最早承担干部保健和外宾医疗的医院之一。',img:'../img/index/hh2.png'},
+                    {level:'三甲医院',name:'八一儿童医院',address:'北京市东城区朝内北小街2号',remark:'北京协和医院是集医疗、教学、科研于一体的大型三级甲等综合医院，是北京协和医学院的临床学院、中国医学科学院的临床医学研究所，是卫生部指定的全国疑难重症诊治指导中心之一，也是最早承担干部保健和外宾医疗的医院之一。',img:'../img/index/hh3.png'},
+                ]
+            }
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            }
+        }
+    })
+</script>
+</html>

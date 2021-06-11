@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="pageTabsBody">
+            <div class="pageTabsBox">
+                <div
+                    class="pageTabsItem"
+                    :class="{'active':activeIndex === index}"
+                    v-for="(item,index) in drugTypes"
+                    :key="index"
+                    @click="checkType(index)">
+                    {{item.name}}
+                </div>
+            </div>
+        </div>
+        <div class="contentBody">
+            <div class="contentTop">
+                <div class="boxLeft">
+                    <messagelist v-for="(item,index) in messageList" :key="index" :messagedata="item"></messagelist>
+                </div>
+                <div class="boxRight">
+                    <hothospital></hothospital>
+                    <recomdoctor></recomdoctor>
+                    <newdrugside></newdrugside>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/messagelist.js"></script>
+<script src="../components/index/hothospital.js"></script>
+<script src="../components/index/recomdoctor.js"></script>
+<script src="../components/index/newdrugside.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'资讯',link:'./messageIndex.html'},
+                    {name:'新闻中心'},
+                ],
+                drugTypes: [
+                    {name:'新闻中心',id:'1'},
+                ],
+                activeIndex: 0,
+                messageList: [
+                    // {
+                    //     label:'国内聚焦',
+                    //     link: './messageNewsType.html',
+                    //     message:[
+                    //         {title:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-12-04'},
+                    //         {title:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-12-04'}
+                    //     ]
+                    // },
+                    // {
+                    //     label:'环球风云',
+                    //     link: './messageNewsType.html',
+                    //     message:[
+                    //         {title:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-12-04'},
+                    //         {title:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-12-04'}
+                    //     ]
+                    // },
+                    // {
+                    //     label:'技术前沿',
+                    //     link: './messageNewsType.html',
+                    //     message:[
+                    //         {title:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-12-04'},
+                    //         {title:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-12-04'}
+                    //     ]
+                    // },
+                    // {
+                    //     label:'环球风云',
+                    //     link: './messageNewsType.html',
+                    //     message:[
+                    //         {title:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-12-04'},
+                    //         {title:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-12-04'}
+                    //     ]
+                    // }
+                ]
+            }
+        },
+        mounted(){
+            this.getNewsList()
+        },
+        methods:{
+            getNewsList(){
+                postModelListByName('新闻').then(res => {
+                    if(res.data && res.data.msg === "success"){
+                        const catalogArr = []
+                        res.data.data.map(item => {
+                            catalogArr.push(item.catalogName)
+                            this.messageList.push({
+                                label:item.catalogName,
+                                id: item.catalogId,
+                                link: './messageNewsType.html',
+                                message:[]
+                            })
+                        })
+                        postTitleListByCatalogId().then(res => {
+                            if(res.data && res.data.msg === "success"){
+                                res.data.data.map(item => {
+                                    if(item.yiliaoModel === '新闻'){
+                                        let index = catalogArr.indexOf(item.catalogName)
+                                        if(index>-1){
+                                            this.messageList[index].message.push(item)
+                                        }
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.contentBody{
+    margin: 6rem auto 0;
+    width: 114rem;
+}
+.contentTop{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.boxLeft{
+    width: 82rem;
+}
+.boxRight{
+    width: 26rem;
+}
+.contentRight{
+    width: 28rem;
+    flex-shrink: 0;
+}
+</style>

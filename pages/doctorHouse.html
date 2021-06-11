@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/assessDrugIndex.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="pageTabsBody">
+            <div class="pageTabsBox">
+                <div
+                    class="pageTabsItem"
+                    :class="{'active':activeIndex === index}"
+                    v-for="(item,index) in drugTypes"
+                    :key="index"
+                    @click="checkType(index)">
+                    {{item.name}}
+                </div>
+            </div>
+        </div>
+        <div class="pageTypeGroupBody">
+            <div class="pageTypeBox">
+                <div class="pageTypeLabel">{{typeGroup[0].label}}：</div>
+                <div class="pageTypeItemBox">
+                    <div
+                        :class="{'active':paramArr[0]===item}"
+                        class="pageTypeItem"
+                        @click="activeParam(item)"
+                        v-for="(item,index) in typeGroup[0].types"
+                        :key="index"
+                    >{{item}}</div>
+                </div>
+            </div>
+            <!-- <div class="pageTypeBox">
+                <div class="pageTypeLabel">{{typeGroup[1].label}}：</div>
+                <div class="pageTypeItemBox">
+                    <div class="pageTypeItem" v-for="(item,index) in typeGroup[1].types" :key="index">{{item}}</div>
+                </div>
+            </div>
+            <div class="pageTypeBox">
+                <div class="pageTypeLabel">{{typeGroup[2].label}}：</div>
+                <div class="pageTypeItemBox">
+                    <div class="pageTypeItem" v-for="(item,index) in typeGroup[2].types" :key="index">{{item}}</div>
+                </div>
+            </div> -->
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft">
+                <doctorlist :list="doctorlist"></doctorlist>
+            </div>
+            <div class="contentRight">
+                <recomdoctor></recomdoctor>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/doctorlist.js"></script>
+<script src="../components/index/recomdoctor.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'医院',link:'./doctorHouse.html'},
+                    {name:'医生库'},
+                ],
+                drugTypes: [
+                    {name:'医生库',id:'1'},
+                ],
+                typeGroup: [
+                    {label:'按科室分类',types:['妇产科','妇产科','妇产科','妇产科','妇产科']},
+                    {label:'医生职称',types:['妇产科','妇产科','妇产科','妇产科','妇产科']},
+                    {label:'开通服务',types:['妇产科','妇产科','妇产科','妇产科','妇产科']},
+                ],
+                paramArr: ['','',''],
+                activeIndex: 0,
+                doctorlist: []
+            }
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            },
+            activeParam(item){
+                if(this.paramArr[0] === item){
+                    this.$set(this.paramArr,0,'')
+                }else{
+                    this.$set(this.paramArr,0,item)
+                }
+                this.getDoctorList()
+            },
+            getDoctorPcatalog(){
+                postDoctorPcatalog('科室').then(res => {
+                    this.$set(this.typeGroup,0,{
+                        label: '按科室分类',
+                        types: res.data.data.map(item=>item.catalogName)
+                    })
+                })
+            },
+            getDoctorList(){
+                Loading(this)
+                const param = {
+                    officeStr: this.paramArr[0],
+                    beginNo:1,
+                    endNo:20,
+                    isRecommend: 0
+                }
+                postSearchDoctor(param).then(res => {
+                    this.doctorlist = res.data.data || {
+                        count: 0,
+                        success: []
+                    }
+                    LoadingClose()
+                }).catch(() => {
+                    LoadingClose()
+                })
+            }
+        },
+        mounted(){
+            this.getDoctorPcatalog()
+            this.getDoctorList()
+        }
+    })
+</script>
+<style>
+    .pageTypeGroupBody{
+        width: 114rem;
+    }
+    .contentBody{
+        margin: 5rem auto ;
+        width: 114rem;
+        min-height: 50rem;
+        display: flex;
+        justify-content: space-between;
+    }
+    .contentLeft{
+        width: 82rem;
+        flex-shrink: 0;
+    }
+    .contentRight{
+        width: 28rem;
+        flex-shrink: 0;
+    }
+</style>
+</html>

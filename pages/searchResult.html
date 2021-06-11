@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>搜索</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="searchPageBody">
+            <div class="searchInputBox">
+                <el-input
+                    class="searchInput"
+                    placeholder="请输入内容"
+                    prefix-icon="el-icon-search"
+                    v-model="keyword">
+                </el-input>
+                <div class="searchBar">搜索</div>
+            </div>
+            <div class="searchResultBox">
+                <div class="searchResultTop">
+                    <div class="searchResultLabel">搜索结果：</div>
+                    <div class="searchResultNumBox">为了搜到<span class="searchResultNum">2923</span> 条结果</div>
+                </div>
+                <div class="searchResultCont">
+                    <div class="searchResultItem" v-for="(item,index) in resultList" :key="index">
+                        <div class="sriImg" v-if="item.img"><img src="../img/zhuanli.png" alt=""></div>
+                        <div class="sriCont">
+                            <div class="sricTitle">{{item.title}}</div>
+                            <div class="sricRemark">{{item.remark}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="paginationBox">
+                    <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="pageNum"
+                        :page-sizes="[10, 20, 30, 50]"
+                        :page-size="pageSize"
+                        layout="total, sizes, prev, pager, next"
+                        :total="total">
+                    </el-pagination>
+                </div>
+            </div>
+            <div class="searchHotWordBox">
+                <div class="searchHotWordTop">
+                    <div class="searchHotWordLabel">热门关键词</div>
+                </div>
+                <div class="hotwordBox">
+                    <div class="hotwordItem" v-for="(item,index) in hotword" :key="index">{{item}}</div>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../js/wangEditor.min.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>r/sidenav.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                keyword:'',
+                resultList: [
+                    {img:'、、、',title:'Cell Metabolism：线粒体中AKG可逆转衰',remark:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。'},
+                    {img:'',title:'Cell Metabolism：线粒体中AKG可逆转衰',remark:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。'},
+                    {img:'、、、',title:'Cell Metabolism：线粒体中AKG可逆转衰',remark:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。'},
+                    {img:'',title:'Cell Metabolism：线粒体中AKG可逆转衰',remark:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。'},
+                    {img:'',title:'Cell Metabolism：线粒体中AKG可逆转衰',remark:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。'},
+                    {img:'',title:'Cell Metabolism：线粒体中AKG可逆转衰',remark:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。'},
+                ],
+                hotword: ['心血管','心血管','心血管','心血管','心血管','心血管','心血管','心血管','心血管'],
+                pageNum: 1,
+                pageSize: 1,
+                total: 0
+            }
+        },
+        mounted() {
+            
+        },
+        methods: {
+            handleSizeChange(val){
+                this.pageSize = val;
+            },
+            handleCurrentChange(val){
+                this.pageNum = val;
+            },
+        }
+    })
+</script>
+</html>
+<style>
+
+</style>

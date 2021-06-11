@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>企业维护中心</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBody">
+            <div class="centerPersonHeader">
+                <div class="centerPersonHeaderBack"></div>
+                <div class="centerPersonHeaderImg">
+                    <img v-if="userDetailInfo.pictureStr" :src="'http://115.159.53.197:8080' + userDetailInfo.pictureStr" alt="">
+                </div>
+                <div class="centerPersonHeaderName">{{userDetailInfo.doctorName}}</div>
+                <div class="centerPersonHeaderBar" @click="toEdit('account')">资料设置</div>
+            </div>
+            <div class="centerBodyL">
+                <div class="centerItemContent">
+                    <div class="centerItemContHeader">
+                        <div class="centerItemTitle">文章</div>
+                    </div>
+                    <div class="dynamicListBody">
+                        <template v-if="dynamicList.length>0">
+                            <div class="dynamicItem" v-for="(item,index) in dynamicList" :key="index">
+                                <div class="dynamicImg" v-if="item.img">
+                                    <img :src="item.img" alt="">
+                                </div>
+                                <div class="dynamicInfo" @click="toDetail(item)">
+                                    <div class="dynamicTitle">{{item.titileStr}}</div>
+                                    <div class="dynamicContent">{{item.createTime}}</div>
+                                </div>
+                                <div class="dynamicEdit" @click="toDetailEdit(item)">修改</div>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="noData">暂无数据</div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <div class="centerBodyR">
+                <mywallet></mywallet>
+                <div class="publishBar" @click="toPublishArticle">发布文章</div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                userInfo: UserInfo,
+                userDetailInfo: UserDetailInfo,
+                dynamicList: [
+                    // {title:'Cell Metabolism：线粒体中AKG可逆转衰',img:'../img/index/hh1.png',content:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。'},
+                    // {title:'Cell Metabolism：线粒体中AKG可逆转衰',img:'../img/index/hh1.png',content:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。'},
+                    // {title:'Cell Metabolism：线粒体中AKG可逆转衰',img:'',content:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。'},
+                    // {title:'Cell Metabolism：线粒体中AKG可逆转衰',img:'../img/index/hh1.png',content:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。'},
+                    // {title:'Cell Metabolism：线粒体中AKG可逆转衰',img:'../img/index/hh1.png',content:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。'},
+                ]
+            }
+        },
+        mounted(){
+            this.getDynamic()
+        },
+        methods: {
+            toDetailEdit(data){
+                location.href = `./articleDetailEdit.html?doctorArticleId=${data.doctorArticleId}`
+            },
+            toDetail(data){
+                location.href = `./articleDetail.html?doctorArticleId=${data.doctorArticleId}`
+            },
+            getDynamic(){
+                const param = {
+                    doctorId: this.userDetailInfo.doctorId
+                }
+                postDoctorArticleByDoctorId(param).then(res => {
+                    if(res.data.code === 0){
+                        this.dynamicList = res.data.data
+                    }else{
+                        this.dynamicList = [];
+                    }
+                })
+            },
+            toMyFocus(){
+                location.href = './myFocus.html'
+            },
+            toEdit(){
+                location.href = './userCenterDoctorAccount.html'
+            },
+            toPublishArticle(){
+                location.href = './articlePublish.html'
+            }
+        }
+    })
+</script>
+</html>
+<style>
+    .centerPersonHeader{
+        height: 25rem!important;
+    }
+    .publishBar{
+        width: 26rem;
+        height: 5rem;
+        line-height: 5rem;
+        text-align: center;
+        background-color: #198CFF;
+        color: #fff;
+        font-size: 1.6rem;
+        cursor: pointer;
+        border-radius: 2.5rem;
+        margin-top: 8rem;
+    }
+</style>

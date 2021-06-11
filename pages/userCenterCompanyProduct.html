@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>企业维护中心-产品库</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBody">
+            <div class="centerInfoBodyL">
+                <sidenav :menulist="menulist" :activeindex="activeindex"></sidenav>
+            </div>
+            <div class="centerInfoBodyR">
+                <div class="centerInfoBox">
+                    <div class="centerInfoTitle">
+                        <div class="centerInfoTitleText">{{title}}</div>
+                        <div class="centerInfoHandleBox">
+                            <div class="centerInfoHandleItem centerBar2"  @click="toEditProduct({})">添加产品</div>
+                        </div>
+                    </div>
+                    <div class="centerContProduct">
+                        <div class="centerContProductItem" v-for="(item,index) in productList" :key="index">
+                            <div class="ccpiImg">
+                                <img :src="item.img" alt="">
+                            </div>
+                            <div class="ccpiInfo">
+                                <div class="ccpiiName">
+                                    {{item.name}}
+                                    <div class="ccpiiHandleBox">
+                                        <div class="ccpiiHandleBoxItem" @click="toEditProduct(item)">操作</div>
+                                    </div>
+                                </div>
+                                <div class="ccpiiMsg">
+                                    <div class="ccpiimItem">批准文号：{{item.docNo}}</div>
+                                    <div class="ccpiimItem">主要规格：{{item.type}}</div>
+                                </div>
+                                <div class="ccpiLabels">
+                                    <div class="ccpiLabelName">产品相关：</div>
+                                    <div class="ccpiLabelItem" v-for="(labelItem,labelIndex) in item.labels" :key="labelIndex">{{labelItem}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="paginationBox">
+                            <el-pagination
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="pageNum"
+                                :page-sizes="[10, 20, 30, 50]"
+                                :page-size="pageSize"
+                                layout="total, sizes, prev, pager, next"
+                                :total="total">
+                            </el-pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>r/sidenav.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                menulist:CompanyMenu,
+                activeindex: 1,
+                title: '产品库',
+                productList: [
+                    {id:'1',name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:['招商区域：全国']},
+                    {id:'2',name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:['招商区域：全国','招商区域：全国']},
+                    {id:'3',name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:[]},
+                    {id:'4',name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:[]},
+                    {id:'5',name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:[]},
+                ],
+                pageNum: 1,
+                pageSize: 1,
+                total: 0
+            }
+        },
+        mounted() {
+            
+        },
+        methods: {
+            submit(){
+                this.$message.success('提交成功')
+            },
+            handleSizeChange(val){
+                this.pageSize = val;
+            },
+            handleCurrentChange(val){
+                this.pageNum = val;
+            },
+            toEditProduct(data){
+                if(data.id){
+                    location.href = `./userCenterCompanyProductEdit.html?id=${data.id}`
+                }else{
+                    location.href = `./userCenterCompanyProductEdit.html`
+                }
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.contentBody{
+    margin: 6rem auto 0;
+    width: 114rem;
+    min-height: 50rem;
+    display: flex;
+    justify-content: space-between;
+}
+.contentLeft{
+    width: 82rem;
+    flex-shrink: 0;
+}
+.contentRight{
+    width: 28rem;
+    flex-shrink: 0;
+}
+</style>

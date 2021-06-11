@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>论坛话题</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="topicHeader">
+            <div class="topicImg">
+                <img src="../img/index/h1.png" alt="">
+            </div>
+            <div class="topicInfo">
+                <div class="topicTitle">医院故事</div>
+                <div class="topicRemark">这里是简介这里是简介这里是简介这里是简介这里是简介这里是简介这里是简介这里是简介</div>
+                <div class="topicContNum">1556 内容</div>
+            </div>
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft">
+                <div class="topicListBody">
+                    <topicitem v-for="(item,index) in topicList" :key="index" :topicdata="item"></topicitem>
+                </div>
+                <reply></reply>
+            </div>
+            <div class="contentRight">
+                <interested></interested>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/drugintroduce.js"></script>
+<script src="../components/interested.js"></script>
+<script src="../components/topicitem.js"></script>
+<script src="../components/reply.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'论坛中心',link: './forumIndex.html'},
+                    {name:'论坛话题'},
+                ],
+                newsData: {
+                    title: '12批不合格药品被查（名单）',
+                    time: '46分钟前',
+                    author: '药品管理局',
+                    content: '<p>医药网9月30日讯　9月27日，湖北省药监局发布了2020年第三期药品质量公告，12批次药品被查不合格。可以发现，此次不合格药品全部为中药饮片，不合格项目主要集中在【性状】【检查】（总灰分），值得注意的的是黄芩片被查存在二氧化硫残留量不合格。根据公告，对上述不符合标准规定的药品和相关单位，各市（州）市场监督管理局及省局各分局应依据《中华人民共和国药品管理法》的规定予以查处，处理结果和相关情况及时报告省局。对经核实为非标示生产企业生产或无明确购进渠道的药品，应追根溯源，彻查问题药品来源；涉嫌犯罪的，及时移送公安机关追究刑事责任。</p>',
+                    label: ['Pembrolizumab','静脉血栓栓塞']
+                },
+                topicList:[
+                    {
+                        username:'差不多厉害',
+                        time:'3小时前',
+                        userImg:'../img/index/h1.png',
+                        title:'Cell Metabolism：线粒体中AKG可逆转衰',
+                        content:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。',
+                        star:203,
+                        reply:23,
+                        img:['../img/index/h1.png','../img/index/h1.png']
+                    },
+                    {
+                        username:'差不多厉害',
+                        time:'3小时前',
+                        userImg:'../img/index/h1.png',
+                        title:'Cell Metabolism：线粒体中AKG可逆转衰',
+                        content:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。',
+                        star:23,
+                        reply:23,
+                        img:['../img/index/h1.png']
+                    }
+                ]
+            }
+        },
+        methods:{
+            
+        }
+    })
+</script>
+<style>
+    .contentBody{
+        margin: 11rem auto 0;
+        width: 114rem;
+        min-height: 50rem;
+        display: flex;
+        justify-content: space-between;
+    }
+    .contentLeft{
+        width: 82rem;
+        flex-shrink: 0;
+    }
+    .contentRight{
+        width: 28rem;
+        flex-shrink: 0;
+    }
+</style>
+</html>

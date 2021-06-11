@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/assessHospitalIndex.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="pageTabsBody">
+            <div class="pageTabsBox">
+                <div
+                    class="pageTabsItem"
+                    :class="{'active':activeIndex === index}"
+                    v-for="(item,index) in hospitalTypes"
+                    :key="index"
+                    @click="checkType(index)">
+                    {{item.name}}
+                </div>
+            </div>
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft">
+                <div class="assesshospitalBox">
+                    <div class="assesshospitalItem" v-for="(item,index) in assesshospitalList" :key="index" @click="toHospitalDetail(item)">
+                        <div class="assesshospitalImg"><img :src="item.pictureStr | httpStr" /></div>
+                        <div class="assesshospitalInfo">
+                            <div class="assesshospitalName" :title="item.hospitalName">
+                                <div class="assesshospitalNameText" :title="item.hospitalName">{{item.hospitalName}}</div>
+                                <div class="assesshospitalLevel" :title="item.gradeStr">{{item.gradeStr}}</div>
+                                <div class="assesshospitalScore" :title="item.gradeStr">推荐分：{{item.gradeNumber}}</div>
+                            </div>
+                            <div class="assesshospitalContact" v-html="item.telStr"></div>
+                            <div class="assesshospitalAddress" :title="item.addressStr">地址：{{item.addressStr}}</div>
+                        </div>
+                    </div>
+                    <div class="readMore" @click="readMore" v-show="ifMore">查看更多</div>
+                    <div v-show="assesshospitalList.length === 0" class="noData">暂无数据</div>
+                </div>
+                <!-- <hospitalranking></hospitalranking> -->
+            </div>
+            <div class="contentRight">
+                <hothospital></hothospital>
+                <recomdoctor></recomdoctor>
+                <newdrugside></newdrugside>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/index/hothospital.js"></script>
+<script src="../components/index/recomdoctor.js"></script>
+<script src="../components/index/newdrugside.js"></script>
+<script src="../components/hospitalranking.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'测评',link:'./assessIndex.html'},
+                    {name:'推荐的医院'},
+                ],
+                hospitalTypes: [
+                    {name:'三级甲等',id:'1'},
+                    {name:'二级甲等',id:'2'},
+                    {name:'一级甲等',id:'3'},
+                    {name:'社区卫生服务中心',id:'4'},
+                ],
+                activeIndex: 0,
+                pageIndex: 1,
+                pageSize: 20,
+                assesshospitalList:[],
+                ifMore: false
+            }
+        },
+        filters: {
+            httpStr(link) {
+                return baseUrl + link;
+            }
+        },
+        methods:{
+            readMore(){
+                this.pageIndex = this.pageIndex + 1
+                this.getHospitalList()
+            },
+            checkType(index){
+                this.activeIndex = index
+                this.pageIndex = 1
+                this.getHospitalList()
+            },
+            async getHospitalType(){
+                const res = await postDictByType('yiliao_grade')
+                this.hospitalTypes = res.data.data.map(item => {
+                    return {
+                        name: item.dictLabel,
+                        id: item.dictValue
+                    }
+                })
+            },
+            getHospitalList(){
+                const param = {
+                    beginNo:(this.pageIndex - 1) * this.pageSize + 1,
+                    endNo:this.pageSize,
+                    gradeStr:this.hospitalTypes[this.activeIndex].name,
+                    isRecommend: 0
+                }
+                postSearchHospital(param).then(res => {
+                    if(res.data.data){
+                        if(res.data.data.success && res.data.data.success.length > 0){
+                            this.ifMore = true
+                            if(this.pageIndex === 1){
+                                this.assesshospitalList = res.data.data.success
+                            }else{
+                                this.assesshospitalList = this.assesshospitalList.concat(res.data.data.success)
+                            }
+                        }else{
+                            this.ifMore = false
+                        }
+                    }else{
+                        if(this.pageIndex === 1){
+                            this.assesshospitalList = []
+                        }
+                        this.ifMore = false
+                    }
+                })
+            },
+            toHospitalDetail(data){
+                location.href = `./hospitalHouseDetail.html?hospitalId=${data.hospitalId}`
+            }
+        },
+        async mounted(){
+		    await this.getHospitalType()
+            this.getHospitalList()
+        }
+    })
+</script>
+<style>
+    .contentBody{
+        margin-top: 5rem;
+    }
+</style>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/assessDrugIndex.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft">
+                <div class="contentLabel">{{breadcrumblist[2].name}}</div>
+                <newslist :list="newsList"></newslist>
+            </div>
+            <div class="contentRight">
+                <hothospital></hothospital>
+                <recomdoctor></recomdoctor>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/index/newslist.js"></script>
+<script src="../components/index/hothospital.js"></script>
+<script src="../components/index/recomdoctor.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'资讯',link:'./messageIndex.html'},
+                    {name:'新闻中心',link:'./messageNews.html'},
+                    {name:''},
+                ],
+                newsList:[]
+            }
+        },
+        mounted(){
+            if(getUrlParam('label') && getUrlParam('id')){
+                this.breadcrumblist[2].name = decodeURI(getUrlParam('label'))
+                this.getNewsList()
+            }
+        },
+        methods:{
+            getNewsList(index){
+                const param = {
+                    catalogId: getUrlParam('id'),
+                    catalogName: decodeURI(getUrlParam('label'))
+                }
+                postTitleListByCatalogId(param).then(res => {
+                    if(res.data && res.data.msg === "success"){
+                        this.newsList = res.data.data
+                    }
+                })
+            }
+        }
+    })
+</script>
+</html>
+<style>
+    .contentBody{
+        margin: 6rem auto 0;
+        width: 114rem;
+        min-height: 50rem;
+        display: flex;
+        justify-content: space-between;
+    }
+    .contentLeft{
+        width: 82rem;
+        flex-shrink: 0;
+    }
+    .contentRight{
+        width: 28rem;
+        flex-shrink: 0;
+    }
+    .contentLabel{
+        font-size: 1.8rem;
+        line-height: 2.5rem;
+        padding-bottom: 1.4rem;
+        color: #000000;
+        border-bottom: 1px solid #D3D3D4;
+        margin-bottom: 5rem;
+    }
+</style>

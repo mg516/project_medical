@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/assessDrugIndex.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="pageTabsBody">
+            <div class="pageTabsBox">
+                <div
+                    class="pageTabsItem"
+                    :class="{'active':activeIndex === index}"
+                    v-for="(item,index) in drugTypes"
+                    :key="index"
+                    @click="checkType(index)">
+                    {{item.name}}
+                </div>
+            </div>
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft">
+                <div class="drugBody">
+                    <div class="drugItem" v-for="(item,index) in assesscompanyList" :key="index">
+                        <companytroduce :drugdata="item"></companytroduce>
+                    </div>
+                </div>
+            </div>
+            <div class="contentRight">
+                <recomhothospital></recomhothospital>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/companytroduce.js"></script>
+<script src="../components/recomhothospital.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'医药',link:'./companyHouse.html'},
+                    {name:'企业库'},
+                ],
+                drugTypes: [
+                    {name:'企业库',id:'1'},
+                ],
+                activeIndex: 0,
+                assesscompanyList:[
+                    {
+                        name: '化学药品',
+                        label: ['神经和肌肉、骨骼系统药','维生素、矿物质与氨基酸','有关激素类药'],
+                        addressList: ['广东','江苏','河北','吉林','河南','山东','四川','安徽','北京','浙江','上海','陕西','黑龙江'],
+                        companyList: [
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                        ]
+                    },
+                    {
+                        name: '化学药品',
+                        label: ['神经和肌肉、骨骼系统药','维生素、矿物质与氨基酸','消化系统药','循环系统药','有关激素类药'],
+                        addressList: ['广东','江苏','河北','吉林','河南','山东','四川','安徽','北京','浙江','上海','陕西','黑龙江'],
+                        companyList: [
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                            {name:'湖南麓山天然植物制药有限公司',content: '牡蛎碳酸钙颗粒'},
+                        ]
+                    }
+                ]
+            }
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            },
+            // 获取产品大类
+            getProductPcatalog(){
+                const param = {
+                    catalogName:'产品库'
+                }
+                postProductPcatalog(param).then(res => {
+                    this.assesscompanyList = res.data.data.map(item => {
+                        return {
+                            name: item.catalogName
+                        }
+                    })
+                    this.assesscompanyList.map((item,index) => {
+                        this.getProductPcatalog2(item.name,index)
+                        this.getProvinceList()
+                    })
+                })
+            },
+            // 获取产品二级类型
+            getProductPcatalog2(name,index){
+                const param = {
+                    catalogName:name,
+                    beginNo:1,
+                    endNo: 5
+                }
+                postProductPcatalog(param).then(res => {
+                    this.$set(this.assesscompanyList[index],'label',res.data.data.map(item => item.catalogName).slice(0,4))
+                    this.getShowProductList(index)
+                })
+            },
+            // 获取推荐产品列表
+            getShowProductList(index){
+                const param = {
+                    // isRecommend: '1',
+                    provinceName: this.assesscompanyList[index].activeProvince || '',
+                    catalogName: this.assesscompanyList[index].activeCatalog || this.assesscompanyList[index].name,
+                    beginNo:1,
+                    endNo: 5
+                }
+                postEnterprisePcatalog(param).then(res => {
+                    this.$set(this.assesscompanyList[index],'companyList',res.data.data.success)
+                })
+            },
+            getProvinceList(){
+                postProvinceList().then(res => {
+                    this.assesscompanyList.map(item => {
+                        item.addressList = res.data.data.map(item => item.provinceName).slice(0,15)
+                    })
+                })
+            }
+        },
+        mounted(){
+            this.getProductPcatalog()
+        }
+    })
+</script>
+</html>
+<style>
+    .contentBody{
+        margin: 6rem auto 0;
+        width: 114rem;
+        min-height: 50rem;
+        display: flex;
+        justify-content: space-between;
+    }
+    .contentLeft{
+        width: 82rem;
+        flex-shrink: 0;
+    }
+    .contentRight{
+        width: 28rem;
+        flex-shrink: 0;
+    }
+</style>

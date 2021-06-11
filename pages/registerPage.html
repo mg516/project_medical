@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>用户注册</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <div class="registerBody">
+            <div class="registerHeader">
+                <div class="loginNavLogo" @click="toLogin">logo</div>
+                <div class="toLogin" @click="toLogin">返回登录</div>
+            </div>
+            <div class="registerBox">
+                <el-form label-position="left" label-width="12rem" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                    <div class="groupTitle">创建账户</div>
+                    <el-form-item label="会员登录名" prop="username">
+                        <el-input v-model="ruleForm.username"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" prop="password">
+                        <el-input type='password' v-model="ruleForm.password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="再次输入密码" prop="checkPass">
+                        <el-input type='password' v-model="ruleForm.checkPass"></el-input>
+                    </el-form-item>
+                    <el-form-item label="手机" prop="mobile">
+                        <el-input v-model="ruleForm.mobile"></el-input>
+                    </el-form-item>
+                    <el-form-item label="账号类型">
+                        <el-select v-model="ruleForm.userType">
+                            <el-option v-for="(item,index) in userTypeArr" :key="index" :label="item" :value="item"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <!-- <el-form-item label="电话" prop="tel">
+                        <el-input v-model="ruleForm.userEntity.tel"></el-input>
+                    </el-form-item>
+                    <el-form-item label="电子邮箱" prop="email">
+                        <el-input v-model="ruleForm.userEntity.email"></el-input>
+                    </el-form-item>
+                    <el-form-item label="详细地址" prop="address">
+                        <el-input v-model="ruleForm.userEntity.address"></el-input>
+                    </el-form-item> -->
+                    <el-form-item class="handleForm">
+                        <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../components/pagefooter.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            var validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.ruleForm.password) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            };
+            return {
+                userTypeArr: UserType,
+                districts:null,
+                districtLevel1: null,
+                districtLevelId1: '',
+                districtLevel2: null,
+                districtLevelId2: '',
+                districtLevel3: null,
+                districtLevelId3: '',
+                ruleForm: {
+                    userType: '',
+                    username: '',
+                    password: '',
+                    checkPass:'',
+                    mobile: '',
+                    userEntity: {
+                        email: '',
+                        tel: '',
+                        address: ''
+                    }
+                },
+                rules: {
+                    username: [
+                        { required: true, message: '请输入会员登录名', trigger: 'blur' },
+                        { min: 2, max: 8, message: '长度在 2 到 8 个字符', trigger: 'blur' }
+                    ],
+                    password: [
+                        { required: true, message: '请填写密码', trigger: 'blur' }
+                    ],
+                    checkPass: [
+                        {  required: true, validator: validatePass, trigger: 'blur' }
+                    ],
+                    mobile: [
+                        { required: true, message: '请填写手机', trigger: 'blur' }
+                    ]
+                }
+            }
+        },
+        mounted() {
+            this.ruleForm.userType = decodeURI(getUrlParam('userType'))
+            this.getDistricts()
+        },
+        methods: {
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        const param = {
+                            mobileStr: this.ruleForm.mobile,
+                            userName: this.ruleForm.username,
+                            userPassword: this.ruleForm.password,
+                            userType: this.ruleForm.userType
+                        }
+                        postAddUser(param).then(res => {
+                            if(res.data.code === 0){
+                                ls_remove('userInfo_level1')
+                                // 获取用户信息
+                                postUserInfoByMobile(param.mobileStr).then(res => {
+                                    if(res.data.code === 0){
+                                        ls_set('userInfo_level1',res.data.data)
+                                        if(param.userType === '用户'){
+                                            location.href = './registerUser.html'
+                                        }else if(param.userType === '医生'){
+                                            location.href = './registerDoctor.html'
+                                        }else if(param.userType === '企业'){
+                                            location.href = './registerCompany.html'
+                                        }else if(param.userType === '医院'){
+                                            location.href = './registerHospital.html'
+                                        }
+                                    }
+                                })
+                            }else if(res.data.msg === '新增用户失败，手机号码已存在'){
+                                this.$confirm('您已注册账号，是否前往二级注册?', '提示', {
+                                    confirmButtonText: '确定',
+                                    cancelButtonText: '取消',
+                                    type: 'warning'
+                                }).then(() => {
+                                    postUserInfoByMobile(param.mobileStr).then(res => {
+                                        if(res.data.code === 0){
+                                            ls_set('userInfo_level1',res.data.data)
+                                            if(param.userType === '用户'){
+                                                location.href = './registerUser.html'
+                                            }else if(param.userType === '医生'){
+                                                location.href = './registerDoctor.html'
+                                            }else if(param.userType === '企业'){
+                                                location.href = './registerCompany.html'
+                                            }else if(param.userType === '医院'){
+                                                location.href = './registerHospital.html'
+                                            }
+                                        }
+                                    })
+                                })
+                            }else{
+                                this.$message({
+                                    type: 'error',
+                                    message: res.data.msg
+                                })
+                            }
+                        }).catch(err => {
+                            
+                        })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+            toLogin() {
+                location.href = './login.html?roleKey=2'
+            },
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = URL.createObjectURL(file.raw);
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
+            getDistricts(){
+                getHttp('../json/districts.json').then(res => {
+                    this.districts = res.data
+                    const districtLevel1 = []
+                    for(let key in res.data['100000']){
+                        districtLevel1.push({
+                            value: key,
+                            label: res.data['100000'][key]
+                        })
+                    }
+                    this.districtLevel1 = districtLevel1
+                }).catch(err => {
+                    this.districts = {}
+                })
+            },
+            selectLevel1(val){
+                let districtLevel2 = []
+                for(let key in this.districts[val]){
+                    districtLevel2.push({
+                        value: key,
+                        label: this.districts[val][key]
+                    })
+                }
+                this.districtLevel2 = districtLevel2
+                this.districtLevel3 = null
+                this.districtLevelId2 = ''
+                this.districtLevelId3 = ''
+            },
+            selectLevel2(val){
+                let districtLevel3 = []
+                for(let key in this.districts[val]){
+                    districtLevel3.push({
+                        value: key,
+                        label: this.districts[val][key]
+                    })
+                }
+                this.districtLevel3 = districtLevel3
+                this.districtLevelId3 = ''
+            },
+        }
+    })
+</script>
+</html>
+<style>
+.main{
+    background-color: #F9F9FA;
+}
+</style>

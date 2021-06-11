@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/assessDoctorDetail.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft doctorInfoBox">
+                <div class="doctorMsgBox">
+                    <div class="doctorImg">
+                        <img :src="doctorData.pictureStr | httpStr" alt="">
+                    </div>
+                    <div class="doctorMsg">
+                        <div class="doctorName">
+                            <div class="doctorNameText">{{doctorData.doctorName}}</div>
+                            <div class="doctorLevel">{{doctorData.positionStr}}</div>
+                            <div class="handleBar" @click="showMark">评分</div>
+                        </div>
+                        <div class="doctorHospital">
+                            <div class="doctorHospitalName">{{doctorData.hospitalName}}</div>
+                            <div class="doctorDept">{{doctorData.officeStr}}</div>
+                        </div>
+                        <div class="doctorInfo" :title="doctorData.goodStr">擅长：{{doctorData.goodStr}}</div>
+                    </div>
+                    <div class="doctorMarked">
+                        <div class="score">{{doctorData.gradeNumber||0}} <span class="scoreLabel">分</span></div>
+                        <el-rate v-model="doctorData.gradeNumber" :colors="colors" disabled></el-rate>
+                        <div class="commentNum">863人点评</div>
+                        <div class="handleBar" @click="showAsk">提问</div>
+                    </div>
+                </div>
+                <div class="doctorIntroBox">
+                    <div class="doctorIntroLabel">简介</div>
+                    <div class="doctorIntroCont" v-html="doctorData.infosStr"></div>
+                </div>
+                <div class="doctorEssayBox">
+                    <div class="doctorEssayLabel">{{doctorData.doctorName}}的科普文章</div>
+                    <div class="doctorEssayList">
+                        <div class="doctorEssayItem" v-for="(item,index) in doctorEssayList" :key="index">
+                            <div class="doctorEssayName">{{item.name}}</div>
+                            <div class="doctorEssayTime">{{item.time}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contentRight">
+                <recomdoctor></recomdoctor>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+        <doctorask ref="doctorask"></doctorask>
+        <doctormark ref="doctormark"></doctormark>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/index/recomdoctor.js"></script>
+<script src="../components/doctorask.js"></script>
+<script src="../components/doctormark.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                score: 4.6,
+                colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
+                breadcrumblist:[
+                    {name:'测评',link:'./assessIndex.html'},
+                    {name:'好医生',link:'./assessDoctorIndex.html'},
+                    {name:'医生详情页'},
+                ],
+                doctorEssayList: [
+                    {name:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-09-12'},
+                    {name:'Cell Death Dis：高表达水平DHODH介导β-catenin的稳定促进食管鳞状细胞癌的发生发展',time:'2020-09-12'},
+                    {name:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-09-12'},
+                    {name:'Cell Death Dis：高表达水平DHODH介导β-catenin的稳定促进食管鳞状细胞癌的发生发展',time:'2020-09-12'},
+                    {name:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-09-12'},
+                    {name:'Cell Death Dis：高表达水平DHODH介导β-catenin的稳定促进食管鳞状细胞癌的发生发展',time:'2020-09-12'},
+                    {name:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',time:'2020-09-12'},
+                    {name:'Cell Death Dis：高表达水平DHODH介导β-catenin的稳定促进食管鳞状细胞癌的发生发展catenin的稳定促进食管鳞状细胞癌的发生发展',time:'2020-09-12'},
+                ],
+                doctorData: {}
+            }
+        },
+        filters: {
+            httpStr(link) {
+                return baseUrl + link;
+            }
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            },
+            showAsk(){
+                this.$refs.doctorask.show = true
+            },
+            showMark(){
+                this.$refs.doctormark.show = true
+            },
+            getDoctorDetail(){
+                postSearchDoctorById(getUrlParam('doctorId')).then(res => {
+                    this.doctorData = res.data.data
+                })
+            }
+        },
+        mounted(){
+            this.getDoctorDetail()
+        }
+    })
+</script>
+<style>
+    .handleBar{
+        padding: .4rem 2rem;
+        color: #fff;
+        background-color: #198CFF;
+        border-radius: 5rem;
+        margin-left: 1rem;
+        font-size: 1.2rem;
+        cursor: pointer;
+    }
+</style>
+</html>

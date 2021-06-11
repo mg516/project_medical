@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/medicineTypeDetail.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft">
+                <!-- <div class="medicineLabel">
+                    <div class="medicineLabelItem" v-for="(item,index) in medicineLabel" :key="index">{{item}}</div>
+                </div> -->
+                <div class="pageTypeGroupBody">
+                    <div class="pageTypeBox">
+                        <div class="pageTypeItemBox">
+                            <div class="pageTypeItem" :class="{'active':paramArr[0]===item}" v-for="(item,index) in medicineLabel" :key="index" @click="activeParam(item,1)">{{item}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="medicinelistBox">
+                    <companylist :list="companylist"></companylist>
+                </div>
+            </div>
+            <div class="contentRight">
+                <recomhothospital></recomhothospital>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/recomhothospital.js"></script>
+<script src="../components/companylist.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'医药',link:'./companyHouse.html'},
+                    {name:'企业库',link:'./companyHouse.html'},
+                    {name:'复方醋酸'},
+                ],
+                activeIndex: 0,
+                medicineLabel:['神经和肌肉、骨骼系统药','维生素、矿物质与氨基酸','神经和肌肉、骨骼系统药','维生素、矿物质与氨基酸','神经和肌肉、骨骼系统药','维生素、矿物质与氨基酸'],
+                paramArr: [''],
+                companylist: []
+            }
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            },
+            activeParam(item){
+                if(this.paramArr[0] === item){
+                    this.$set(this.paramArr,0,'')
+                    this.getCompanyList()
+                }else{
+                    this.$set(this.paramArr,0,item)
+                    this.getCompanyList(item)
+                }
+            },
+            // 获取产品二级类型
+            getProductPcatalog2(){
+                const param = {
+                    catalogName:decodeURI(getUrlParam('catalogName'))
+                }
+                postProductPcatalog(param).then(res => {
+                    this.medicineLabel = res.data.data.map(item => item.catalogName)
+                })
+            },
+            getCompanyList(typeName){
+                const param = {
+                    catalogName: typeName || decodeURI(getUrlParam('catalogName')), // this.paramArr[0],
+                    beginNo:1,
+                    endNo: 10
+                }
+                postEnterprisePcatalog(param).then(res => {
+                    this.companylist = res.data.data.success
+                })
+            }
+        },
+        mounted(){
+            this.breadcrumblist[2].name = decodeURI(getUrlParam('catalogName'))
+            this.getProductPcatalog2()
+            this.getCompanyList()
+        }
+    })
+</script>
+<style>
+.pageTypeGroupBody{
+    margin-top: 0;
+    background-color: #F9F9FA00;
+    padding: 0;
+}
+.pageTypeItem{
+    margin-left: 0!important;
+    margin-right: 2rem;
+    margin-bottom: 1.5rem;
+}
+</style>
+</html>

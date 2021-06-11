@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <div class="loginPageBody">
+            <div class="loginNavBody">
+                <div class="loginNavLogo" @click="toIndex"></div>
+                <div class="loginNavBox">
+                    <div
+                        class="loginNavItem"
+                        @click="toRegister(index)"
+                        v-for="(item,index) in loginNavList"
+                        :key="index"
+                    >{{item.name}}</div>
+                </div>
+            </div>
+            <div class="loginCont">
+                <div class="loginImg"></div>
+                <div class="loginForm">
+                    <div class="lfLabel">账号登录</div>
+                    <el-input placeholder="请输入手机号" v-model="form.mobile"></el-input>
+                    <div style="display: flex;height: 40px;margin-bottom: 40px;">
+                        <el-input placeholder="请输入验证码" v-model="form.code"></el-input>
+                        <el-button style="margin-left: 10px;" :disabled="secondNum>0" @click="getCode">{{secondNum>0?`${secondNum}后重试`:'获取验证码'}}</el-button>
+                    </div>
+                    <div class="loginBar" @click="loginFunc">登录</div>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../components/pagefooter.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                loginNavList: [
+                    {name:'用户注册',key:'user'},
+                    {name:'医生注册',key:'doctor'},
+                    {name:'企业注册',key:'company'},
+                    {name:'医院注册',key:'hospital'},
+                ],
+                form: {
+                    mobile: '',
+                    code: ''
+                },
+                mobileCode: '',
+                mobileCodeTime: '',
+                secondNum: 0
+            }
+        },
+        mounted(){
+            this.mobileCode = localStorage.getItem('mobileCode') || ''
+            this.mobileCodeTime = localStorage.getItem('mobileCodeTime') || ''
+            this.changeSecondNum()
+        },
+        methods: {
+            // 更新秒数
+            changeSecondNum(){
+                if(this.mobileCodeTime && +new Date() - this.mobileCodeTime < 60 * 1000){
+                    this.secondNum = parseInt(60 - (+new Date() - this.mobileCodeTime)/1000)
+                    if(this.secondNum>0){
+                        setTimeout(() => {
+                            this.changeSecondNum()
+                        },1000)
+                    }
+                }
+            },
+            // 获取验证码
+            getCode(){
+                if(this.form.mobile){
+                    postSendMs(this.form.mobile).then(res => {
+                        localStorage.setItem('mobileCode',res.data)
+                        localStorage.setItem('mobileCodeTime',+new Date())
+                        this.mobileCode = localStorage.getItem('mobileCode') || ''
+                        this.mobileCodeTime = localStorage.getItem('mobileCodeTime') || ''
+                        this.changeSecondNum()
+                    }).catch(() => {
+                        localStorage.setItem('mobileCode','')
+                    })
+                }else{
+                    this.$message({
+                        type: 'error',
+                        message: '请输入手机号'
+                    })
+                }
+            },
+            toIndex(){
+                location.href = './index.html'
+            },
+            toLogin() {
+                location.href = './login.html'
+            },
+            loginFunc(){
+                if(!this.form.mobile){
+                    this.$message({
+                        type: 'error',
+                        message: '请输入手机号'
+                    })
+                    return
+                }else if(!this.form.code){
+                    this.$message({
+                        type: 'error',
+                        message: '请输入验证码'
+                    })
+                    return
+                }else if(this.form.code !== this.mobileCode || this.secondNum === 0){
+                    this.$message({
+                        type: 'error',
+                        message: '验证码输入错误'
+                    })
+                    return
+                }
+                postUserLogin(this.form.mobile).then(async res => {
+                    if(res.data.code === 0){
+                        try {
+                            let resDetail = null
+                            if(res.data.data.userType === '用户'){
+                                resDetail = await postSearchUserInfo(res.data.data.userId)
+                            }else if(res.data.data.userType === '医院'){
+                                resDetail = await postSearchHospitalInfo(res.data.data.userId)
+                            }else if(res.data.data.userType === '医生'){
+                                resDetail = await postSearchDoctorInfo(res.data.data.userId)
+                            }else if(res.data.data.userType === '企业'){
+                                resDetail = await postSearchEnterpriseInfo(res.data.data.userId)
+                            }else{
+                                this.$message({
+                                    type: 'error',
+                                    message: '您还未注册用户，请先注册'
+                                })
+                                return
+                            }
+                            if(resDetail.data.code === 0){
+                                if(resDetail.data.data){
+                                    ls_set('userInfo',{
+                                        data: res.data.data,
+                                        time: +new Date()
+                                    })
+                                    ls_set('userDetailInfo',resDetail.data.data)
+                                    localStorage.removeItem('mobileCode')
+                                    localStorage.removeItem('mobileCodeTime')
+                                    this.toHome()
+                                }else{
+                                    this.$message({
+                                        type: 'error',
+                                        message: '您还未注册二级用户，请先注册'
+                                    })
+                                }
+                            }
+                        } catch (error) {
+                            
+                        }
+                    }else{
+                        this.$message({
+                            type: 'error',
+                            message: res.data.msg
+                        })
+                    }
+                })
+            },
+            toHome() {
+                location.href = './index.html'
+            },
+            toRegister(index) {
+                if(index === 0){
+                    location.href = './registerUser.html'
+                }else if(index === 1){
+                    location.href = './registerDoctor.html'
+                }else if(index === 2){
+                    location.href = './registerCompany.html'
+                }else if(index === 3){
+                    location.href = './registerHospital.html'
+                }
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.main{
+    background-color: #F9F9FA;
+}
+</style>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/assessDrugIndex.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft">
+                <div class="medicineCompanyBox">
+                    <div class="medicineCompanyItem" v-for="(item,index) in medicineList" :key="index">
+                        <medicinecompany :medicinedata="item"></medicinecompany>
+                    </div>
+                </div>
+            </div>
+            <div class="contentRight">
+                <recomhothospital></recomhothospital>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/recomhothospital.js"></script>
+<script src="../components/medicinecompany.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'医药',link:'./medicineHouse.html'},
+                    {name:'产品库',link:'./medicineHouse.html'},
+                    {name:'产品'},
+                ],
+                drugTypes: [
+                    {name:'产品库',id:'1'},
+                ],
+                activeIndex: 0,
+                medicineList: [
+                    {
+                        name: '复方醋酸地塞米',
+                        company: [
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                        ]
+                    },
+                    {
+                        name: '复方醋酸',
+                        company: [
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                            {img:'../img/index/hh1.png',name:'上海川至生物技术',tel:'0431-84600922'},
+                        ]
+                    },
+                ]
+            }
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            },
+            // 获取产品列表
+            getProduceList(){
+                const param = {
+                    catalogName: decodeURI(getUrlParam('drugTypeName')), // activeCatalog || ''
+                    beginNo:1,
+                    endNo: 10
+                }
+                postProductList(param).then(res => {
+                    if(res.data.data){
+                        res.data.data.success.map((item,index) => {
+                            this.$set(this.medicineList,index,{
+                                name: item.productName,
+                                company: []
+                            })
+                            this.getCompanyList(index)
+                        })
+                    }
+                })
+            },
+            // 获取推荐产品列表
+            getCompanyList(index){
+                const param = {
+                    productName: this.medicineList[index].name,
+                    // beginNo:1,
+                    // endNo: 10
+                }
+                postEnterpriseProductList(param).then(res => {
+                    if(res.data.data){
+                        this.$set(this.medicineList[index],'company',res.data.data.success)
+                    }
+                })
+            },
+        },
+        mounted(){
+            if(getUrlParam('drugName')){
+                this.medicineList = [{
+                    name: decodeURI(getUrlParam('drugName')),
+                    company: []
+                }]
+                this.getCompanyList(0)
+            }else{
+                this.getProduceList()
+            }
+        }
+    })
+</script>
+</html>
+<style>
+    .contentBody{
+        margin: 0 auto;
+        width: 114rem;
+        min-height: 50rem;
+        display: flex;
+        justify-content: space-between;
+    }
+    .contentLeft{
+        width: 82rem;
+        flex-shrink: 0;
+    }
+    .contentRight{
+        width: 28rem;
+        flex-shrink: 0;
+    }
+    .medicineCompanyBox{
+        margin-top: 4rem;
+    }
+    .medicineCompanyItem{
+        margin-bottom: 6rem;
+    }
+</style>

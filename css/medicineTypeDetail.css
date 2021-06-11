@@ -1,0 +1,34 @@
+.pageBreadcrumbBox {
+  margin: 6rem auto 0;
+  width: 114rem;
+}
+.pageBreadcrumbBox .breadcrumbBody {
+  margin: 0;
+}
+.contentBody {
+  margin: 4rem auto;
+  width: 114rem;
+  min-height: 50rem;
+  display: flex;
+  justify-content: space-between;
+}
+.contentBody .contentLeft {
+  width: 82rem;
+  flex-shrink: 0;
+}
+.contentBody .contentRight {
+  width: 28rem;
+  flex-shrink: 0;
+}
+.medicineLabel .medicineLabelItem {
+  display: inline-block;
+  color: #198CFF;
+  margin-right: 2rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  cursor: pointer;
+}
+.medicinelistBox {
+  margin-top: 6rem;
+}

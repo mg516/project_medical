@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/hospitalHouseDetail.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft hospitalInfoBox">
+                <div class="hospitalMsgBox">
+                    <div class="hospitalImg">
+                        <img :src="hospitalMsg.pictureStr|httpStr" alt="">
+                    </div>
+                    <div class="hospitalMsg">
+                        <div class="hospitalName">{{hospitalMsg.hospitalName}}</div>
+                        <!-- <div class="hospitalDept">
+                            <div class="hospitalDeptLabel">重点科室：</div>
+                            <div class="hospitalDeptItem">肿瘤妇科、腹部外科、肿瘤内科、头颈外科</div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="hospitalIntroBox">
+                    <div class="hospitalIntroLabel">医院概况</div>
+                    <div class="hospitalIntroCont" v-html="hospitalMsg.introductionStr"></div>
+                </div>
+                <div class="hospitalIntroBox">
+                    <div class="hospitalIntroLabel">简介</div>
+                    <div class="hospitalIntroCont wleft" v-html="hospitalMsg.overviewStr"></div>
+                    <!-- <div class="hospitalIntroImg"><img src="../img/index/h1.png" alt=""></div> -->
+                </div>
+                <!-- <div class="hospitalIntroBox">
+                    <div class="hospitalIntroLabel">学科设置</div>
+                    <div class="hospitalIntroCont">中国医学科学院肿瘤医院肿瘤研究所，始建于1958年，原名日坛医院，1963年增设肿瘤研究所，此后又相继建立了河南林州、江苏启东等肿瘤高发防治现场。1983年迁至北京市东南龙潭湖畔。正式更名为中国医学科学院肿瘤医院肿瘤研究所。院所是建国以来第一个肿瘤专科医院，是亚洲地区最大的肿瘤防治研究中心，也是国家药品监督管理局国家药品临床研究基地。院所集肿瘤医疗、科研、教学为一体，全方面进行肿瘤的预防、诊断及治疗的研究。1996年通过三级甲等医院评审。</div>
+                </div>
+                <div class="hospitalIntroBox">
+                    <div class="hospitalIntroLabel">其他</div>
+                    <div class="hospitalIntroCont">中国医学科学院肿瘤医院肿瘤研究所，始建于1958年，原名日坛医院，1963年增设肿瘤研究所，此后又相继建立了河南林州、江苏启东等肿瘤高发防治现场。1983年迁至北京市东南龙潭湖畔。正式更名为中国医学科学院肿瘤医院肿瘤研究所。院所是建国以来第一个肿瘤专科医院，是亚洲地区最大的肿瘤防治研究中心，也是国家药品监督管理局国家药品临床研究基地。院所集肿瘤医疗、科研、教学为一体，全方面进行肿瘤的预防、诊断及治疗的研究。1996年通过三级甲等医院评审。</div>
+                </div> -->
+            </div>
+            <div class="contentRight">
+                <contactinfo :data="hospitalMsg">
+                    <div class="contactinfoBar">咨询</div>
+                </contactinfo>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/contactinfo.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                score: 4.6,
+                colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
+                breadcrumblist:[
+                    {name:'医院',link:'./doctorHouse.html'},
+                    {name:'全国医院',link:'./hospitalHouse.html'},
+                    {name:'医院详情页'},
+                ],
+                hospitalMsg: {}
+            }
+        },
+        filters: {
+            httpStr(link) {
+                return baseUrl + link;
+            }
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            },
+            showAsk(){
+                this.$refs.doctorask.show = true
+            },
+            showMark(){
+                this.$refs.doctormark.show = true
+            },
+            getHospitalDetail(){
+                const param = {
+                    hospitalId: getUrlParam('hospitalId')
+                }
+                postSearchHospitalById(param).then(res => {
+                    this.hospitalMsg = res.data.data
+                })
+            }
+        },
+        mounted(){
+            if(getUrlParam('enter') === 'index'){
+                this.breadcrumblist = [
+                    {name:'首页',link:'./index.html'},
+                    {name:decodeURI(getUrlParam('name'))},
+                ]
+            }
+            this.getHospitalDetail()
+        }
+    })
+</script>
+<style>
+    .doctorMsg{
+        width: calc(100% - 20rem)!important;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between!important;
+    }
+    .doctorBar{
+        height: 3.2rem;
+        color: #fff;
+        background-color: #198CFF;
+        border-radius: 1.6rem;
+        width: 6.4rem;
+        text-align: center;
+        line-height: 3.2rem;
+        font-size: 1.4rem;
+        cursor: pointer;
+    }
+</style>
+</html>

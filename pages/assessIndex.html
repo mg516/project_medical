@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="contentBody">
+            <div class="contentTop">
+                <div class="boxLeft">
+                    <assesshospital></assesshospital>
+                </div>
+                <div class="boxRight">
+                    <hothospital></hothospital>
+                </div>
+            </div>
+            <div class="contentBottom">
+                <recommenddoctor></recommenddoctor>
+                <newsdrugwarn></newsdrugwarn>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>ommenddoctor.js"></script>
+<script src="../components/index/newsdrugwarn.js"></script>
+<script src="../components/index/assesshospital.js"></script>
+<script src="../components/index/hothospital.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                text: 'hello'
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.contentBody{
+    margin: 6rem auto 0;
+    width: 114rem;
+}
+.contentTop{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.boxLeft{
+    width: 82rem;
+}
+.boxRight{
+    width: 26rem;
+}
+.contentRight{
+    width: 28rem;
+    flex-shrink: 0;
+}
+</style>

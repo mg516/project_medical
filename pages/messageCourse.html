@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="pageTabsBody">
+            <div class="pageTabsBox">
+                <div
+                    class="pageTabsItem"
+                    :class="{'active':activeIndex === index}"
+                    v-for="(item,index) in drugTypes"
+                    :key="index"
+                    @click="checkType(index)">
+                    {{item.name}}
+                </div>
+            </div>
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft">
+                <div class="contentType">
+                    <div
+                        :class="{'active':index === activeTypeIndex}"
+                        class="contentTypeItem"
+                        v-for="(item,index) in type"
+                        @click="checkType2(index)"
+                    >{{item.name}}</div>
+                </div>
+                <courselist :list="courselist"></courselist>
+            </div>
+            <div class="contentRight">
+                <nearmeeting title="近期课程"></nearmeeting>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/meetingshowlist.js"></script>
+<script src="../components/nearmeeting.js"></script>
+<script src="../components/index/courselist.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'资讯',link:'./messageIndex.html'},
+                    {name:'课程'},
+                ],
+                drugTypes: [
+                    {name:'课程',id:'1'},
+                ],
+                activeIndex: 0,
+                type:[
+                    // {name:'临床实践',id:'1'},
+                    // {name:'科研学术',id:'2'}
+                ],
+                activeTypeIndex: 0,
+                courselist:[]
+            }
+        },
+        mounted(){
+            this.getCourseType()
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            },
+            checkType2(index){
+                this.activeTypeIndex = index
+                this.getCourseList()
+            },
+            getCourseType(){
+                postModelListByName('课程').then(res => {
+                    if(res.data && res.data.msg === "success"){
+                        res.data.data.map(item => {
+                            this.type.push({
+                                name:item.catalogName,
+                                id: item.catalogId
+                            })
+                        })
+                        this.getCourseList()
+                    }
+                })
+            },
+            getCourseList(){
+                const param = {
+                    catalogId: this.type[this.activeTypeIndex].id,
+                    catalogName: this.type[this.activeTypeIndex].name
+                }
+                this.courselist = []
+                postTitleListByCatalogId(param).then(res => {
+                    if(res.data && res.data.msg === "success"){
+                        this.courselist = res.data.data
+                    }
+                })
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.contentBody{
+    margin: 6rem auto 0;
+    width: 114rem;
+    min-height: 50rem;
+    display: flex;
+    justify-content: space-between;
+}
+.contentLeft{
+    width: 82rem;
+    flex-shrink: 0;
+}
+.contentRight{
+    width: 28rem;
+    flex-shrink: 0;
+}
+.contentType{
+    margin-bottom: 5rem;
+}
+</style>

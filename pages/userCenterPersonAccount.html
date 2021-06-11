@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>企业维护中心-产品库</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBody">
+            <div class="centerInfoBodyL">
+                <sidenav :menulist="menulist" :activeindex="activeindex"></sidenav>
+            </div>
+            <div class="centerInfoBodyR">
+                <div class="centerInfoBox">
+                    <div class="centerInfoTitle">
+                        <div class="centerInfoTitleText">{{title}}</div>
+                        <div class="centerInfoHandleBox">
+                            <div class="centerInfoHandleItem centerBar1" @click="submit">完成</div>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">头像</div>
+                        <div class="formValue">
+                            <el-upload
+                                class="avatar-uploader"
+                                action="http://115.159.53.197:8080/api/upload"
+                                :show-file-list="false"
+                                :on-success="handleAvatarSuccess"
+                                :before-upload="beforeAvatarUpload">
+                                <img v-if="form.pictureStr" :src="'http://115.159.53.197:8080' + form.pictureStr" class="avatar">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            </el-upload>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">昵称</div>
+                        <div class="formValue">
+                            <el-input v-model="form.nickStr"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">性别</div>
+                        <div class="formValue">
+                            <el-select v-model="form.sexStr">
+                                <el-option v-for="item in sexMenu" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">所在地区</div>
+                        <div class="formValue">
+                            <selectaddress v-model="addressObj" :option="{level:2}"></selectaddress>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">个性签名</div>
+                        <div class="formValue">
+                            <!-- <el-input v-model="form.signStr"></el-input> -->
+                            <div id="Edit"></div>
+                        </div>
+                    </div>
+                    <!-- <div class="formItem">
+                        <div class="formLabel">企业介绍</div>
+                        <div class="formValue">
+                            <el-input
+                                type="textarea"
+                                :rows="20"
+                                placeholder="请输入企业介绍"
+                                v-model="form.introduce">
+                            </el-input>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../js/wangEditor.min.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>r/sidenav.js"></script>
+<script src="../components/selectaddress.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                userInfo: UserInfo,
+                userDetailInfo: UserDetailInfo,
+                sexMenu: SexMenu,
+                menulist:PersonMenu,
+                activeindex: 0,
+                title: '账号信息',
+                imageUrl: '',
+                form:{
+                    cityStr: '',
+                    nickStr: '',
+                    pictureStr: '',
+                    provinceStr: '',
+                    sexStr: '',
+                    signStr: '',
+                    userId: ''
+                },
+                addressObj:{
+                    levelId1: "",
+                    levelStr1: "",
+                    levelId2: "",
+                    levelStr2: "",
+                    levelId3: "",
+                    levelStr3: ""
+                },
+                EditObj:null
+            }
+        },
+        watch:{
+            addressObj(val){
+                this.form.provinceStr = val.levelStr1
+                this.form.cityStr = val.levelStr2
+            }
+        },
+        mounted() {
+            if(UserInfo.userId && UserDetailInfo.userId){
+                this.form.userId = UserDetailInfo.userId
+                this.form = UserDetailInfo
+                this.addressObj.levelStr1 = UserDetailInfo.provinceStr
+                this.addressObj.levelStr2 = UserDetailInfo.cityStr
+
+            }else{
+                this.$message.error('未获取的用户信息')
+            }
+            this.$nextTick(() => {
+                this.EditObj = initWangEdit('Edit')
+                this.EditObj.txt.html(this.form.signStr)
+            })
+        },
+        methods: {
+            handleAvatarSuccess(res, file) {
+                this.form.pictureStr = res.data
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
+            submit(){
+                this.form.signStr = this.EditObj.txt.html()
+                postEditUserInfo(this.form).then(res => {
+                    if(res.data.code === 0){
+                        this.$message.success('提交成功')
+                        postSearchUserInfo(UserDetailInfo.userId).then(resDetail => {
+                            if(resDetail.data.code === 0){
+                                ls_set('userDetailInfo',resDetail.data.data)
+                            }
+                        })
+                    }else{
+                        this.$message.error(res.data.msg)
+                    }
+                })
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.pageBody{
+    flex-wrap: nowrap;
+}
+.contentBody{
+    margin: 6rem auto 0;
+    width: 114rem;
+    min-height: 50rem;
+    display: flex;
+    justify-content: space-between;
+}
+.contentLeft{
+    width: 82rem;
+    flex-shrink: 0;
+}
+.contentRight{
+    width: 28rem;
+    flex-shrink: 0;
+}
+</style>

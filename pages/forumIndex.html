@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/forumIndex.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="pageTabsBody">
+            <div class="pageTabsBox">
+                <div
+                    class="pageTabsItem"
+                    :class="{'active':activeIndex === index}"
+                    v-for="(item,index) in hospitalTypes"
+                    :key="index"
+                    @click="checkType(index)">
+                    {{item.name}}
+                </div>
+            </div>
+        </div>
+        <div class="contentBody">
+            <div class="forumTypeBody">
+                <div class="forumTypeLevel1">
+                    <div 
+                        class="forumTypeLevel1Item"
+                        :class="{'active':activeLevel1 === index}"
+                        v-for="(item,index) in forumTypeLevel1Option"
+                        :key="index"
+                        @click="checkLevel1(index)"
+                    >{{item.label}}</div>
+                </div>
+                <div class="forumTypeLevel2">
+                    <div 
+                        class="forumTypeLevel2Item"
+                        :class="{'active':activeLevel2 === index}"
+                        v-for="(item,index) in forumTypeLevel2Option"
+                        :key="index"
+                        @click="checkLevel2(index)"
+                    >{{item.catalogName}}</div>
+                </div>
+            </div>
+            <div class="forumListBody">
+                <template v-if="forumList.length>0">
+                    <div @click="toForumDetail(item)" class="forumItemBox" v-for="(item,index) in forumList" :key="index">
+                        <div class="forumImg">
+                            <img :src="item.pictureStr|httpStr" alt="">
+                        </div>
+                        <div class="forumTitle">{{item.catalogName}}</div>
+                        <div class="forumInfo">
+                            <span>{{item.read}}浏览</span>
+                            <span>{{item.comment}}回复</span>
+                        </div>
+                    </div>
+                </template>
+                <template v-else>
+                    <div class="noData">暂无数据</div>
+                </template>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'论坛中心'},
+                ],
+                hospitalTypes: [
+                    {name:'论坛',id:'1'},
+                ],
+                activeIndex: 0,
+                forumTypeLevel1Option:[
+                    {label:'医院和医生'},
+                    {label:'医术和医药'},
+                    {label:'患者和保健'}
+                ],
+                activeLevel1: 0,
+                forumTypeLevel2Option:[
+                    // {catalogName:'医院故事'},
+                    // {catalogName:'医院故事'},
+                    // {catalogName:'医院故事'},
+                    // {catalogName:'医院故事'}
+                ],
+                activeLevel2: 0,
+                forumList:[
+                    {img:'../img/index/h1.png',title:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',read:'23',comment:'5'},
+                    {img:'../img/index/h1.png',title:'Neurology：阿司匹林对卒中和小动脉瘤破裂患者的安全性分析',read:'23',comment:'5'}
+                ]
+            }
+        },
+        filters: {
+            httpStr(link) {
+                return baseUrl + link;
+            }
+        },
+        mounted(){
+            this.activeLevel1 = ls_get('forumIndex1') || 0
+            this.activeLevel2 = ls_get('forumIndex2') || 0
+            this.checkLevel1(this.activeLevel1,true)
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            },
+            checkLevel1(index,ifInit){
+                this.activeLevel1 = index
+                ls_set('forumIndex1',index)
+                postBBSByType(this.forumTypeLevel1Option[index].label).then(res => {
+                    if(res.data.code === 0){
+                        this.forumTypeLevel2Option = res.data.data
+                        if(ifInit) this.checkLevel2(this.activeLevel2)
+                        else this.checkLevel2(0)
+                    }
+                })
+            },
+            checkLevel2(index){
+                this.activeLevel2 = index
+                ls_set('forumIndex2',index)
+                postBBSByCatalogId(this.forumTypeLevel2Option[index].catalogId).then(res => {
+                    if(res.data.code === 0){
+                        this.forumList = res.data.data || []
+                    }
+                })
+            },
+            toForumDetail(data){
+                location.href = `./forumDetail.html?bbsId=${data.bbsId}`
+            },
+            toForumTopicDetail(data){
+                location.href = `./forumTopicDetail.html?bbsId=${data.bbsId}`
+            }
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统-资讯详情</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="contentBody">
+            <div class="contentLeft">
+                <!-- <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb> -->
+                <essaydetail :data="essayData"></essaydetail>
+                <reply></reply>
+            </div>
+            <!-- <div class="contentRight">
+                <essayrelated></essayrelated>
+            </div> -->
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>aydetail.js"></script>
+<script src="../components/reply.js"></script>
+<script src="../components/breadcrumb.js"></script>
+<script src="../components/index/essayrelated.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'学术',link:'./essayList.html'},
+                    {name:'文章'},
+                ],
+                essayData: {}
+            }
+        },
+        mounted(){
+            const catalogName = decodeURI(getUrlParam('catalogName') || '')
+            const catalogId = getUrlParam('catalogId')
+            const doctorArticleId = getUrlParam('doctorArticleId')
+            if(catalogName){
+                this.breadcrumblist[0].name = `学术-${catalogName}`
+                this.breadcrumblist[0].link = `./essayList.html?catalogId=${catalogId}&catalogName=${catalogName}`
+            }else{
+                this.breadcrumblist[0].link = './index.html'
+            }
+            this.getEssayDetail()
+        },
+        methods:{
+            getEssayDetail(){
+                postSearchDoctorArticleDetail(getUrlParam('doctorArticleId')).then(res => {
+                    this.essayData = res.data.data
+                })
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.contentBody{
+    margin: 0 auto;
+    width: 114rem;
+    min-height: 50rem;
+    display: flex;
+    justify-content: space-between;
+}
+.contentLeft{
+    width: 82rem;
+    flex-shrink: 0;
+}
+.contentRight{
+    width: 28rem;
+    flex-shrink: 0;
+    padding-top: 8rem;
+}
+</style>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>警示新闻</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft newsBox">
+                <div class="newsTitle">{{newsData.title}}</div>
+                <div class="newsInfo">
+                    <div class="newsTime">{{newsData.time}}</div>
+                    <div class="newsAuthor">{{newsData.author}}</div>
+                </div>
+                <div class="newsContent" v-html="newsData.content"></div>
+                <div class="newsLabel">
+                    <div class="newsLabelItem" v-for="(item,index) in newsData.label" :key="index">{{item}}</div>
+                </div>
+                <reply></reply>
+            </div>
+            <div class="contentRight">
+                <essayrelated></essayrelated>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/drugintroduce.js"></script>
+<script src="../components/index/essayrelated.js"></script>
+<script src="../components/reply.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'测评',link:'./assessIndex.html'},
+                    {name:'药品评测',link:'./assessDrugIndex.html'},
+                    {name:'警示新闻'},
+                ],
+                newsData: {
+                    title: '12批不合格药品被查（名单）',
+                    time: '46分钟前',
+                    author: '药品管理局',
+                    content: '<p>医药网9月30日讯　9月27日，湖北省药监局发布了2020年第三期药品质量公告，12批次药品被查不合格。可以发现，此次不合格药品全部为中药饮片，不合格项目主要集中在【性状】【检查】（总灰分），值得注意的的是黄芩片被查存在二氧化硫残留量不合格。根据公告，对上述不符合标准规定的药品和相关单位，各市（州）市场监督管理局及省局各分局应依据《中华人民共和国药品管理法》的规定予以查处，处理结果和相关情况及时报告省局。对经核实为非标示生产企业生产或无明确购进渠道的药品，应追根溯源，彻查问题药品来源；涉嫌犯罪的，及时移送公安机关追究刑事责任。</p>',
+                    label: ['Pembrolizumab','静脉血栓栓塞']
+                }
+            }
+        },
+        methods:{
+            getNewsDetail(){
+                if(getUrlParam('id')){
+                    postTitleById(getUrlParam('id')).then(res => {
+                        const data = res.data.data
+                        this.newsData = {
+                            title: data.titileStr,
+                            time: data.updateTime,
+                            author: '药品管理局',
+                            content: data.contextStr,
+                            label: data.yiliaoLableList.map(item => item.lableStr)
+                        }
+                    })
+                }
+            }
+        },
+        mounted(){
+            this.getNewsDetail()
+        }
+    })
+</script>
+<style>
+    .contentBody{
+        margin: 5rem auto 0;
+        width: 114rem;
+        min-height: 50rem;
+        display: flex;
+        justify-content: space-between;
+    }
+    .contentLeft{
+        width: 82rem;
+        flex-shrink: 0;
+    }
+    .contentRight{
+        width: 28rem;
+        flex-shrink: 0;
+        padding-top: 8rem;
+    }
+</style>
+</html>

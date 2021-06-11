@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/hospitalHouseDetail.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft hospitalInfoBox">
+                <doctorinterview :data="doctorMsg"></doctorinterview>
+                <reply></reply>
+            </div>
+            <div class="contentRight">
+                
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/doctorinterview.js"></script>
+<script src="../components/reply.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                score: 4.6,
+                colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
+                breadcrumblist:[
+                    {name:'医院',link:'./doctorHouse.html'},
+                    {name:'人物访谈',link:'./doctorInterview.html'},
+                    {name:'专家详情页'},
+                ],
+                doctorMsg:{}
+            }
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            },
+            showAsk(){
+                this.$refs.doctorask.show = true
+            },
+            showMark(){
+                this.$refs.doctormark.show = true
+            },
+            getDoctorDetail(){
+                postSearchDoctorById(getUrlParam('id')).then(res => {
+                    this.doctorMsg = res.data.data
+                })
+            }
+        },
+        mounted(){
+            this.getDoctorDetail()
+        }
+    })
+</script>
+<style>
+    .doctorMsg{
+        width: calc(100% - 20rem)!important;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between!important;
+    }
+    .doctorBar{
+        height: 3.2rem;
+        color: #fff;
+        background-color: #198CFF;
+        border-radius: 1.6rem;
+        width: 6.4rem;
+        text-align: center;
+        line-height: 3.2rem;
+        font-size: 1.4rem;
+        cursor: pointer;
+    }
+</style>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医院注册</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <div class="registerBody">
+            <div class="registerHeader">
+                <div class="loginNavLogo" @click="toLogin">logo</div>
+                <div class="toLogin" @click="toLogin">返回登录</div>
+            </div>
+            <div class="registerBox">
+                <el-form label-position="left" label-width="12rem" :model="ruleForm" :rules="rules" ref="form" label-width="100px" class="demo-ruleForm">
+                    <div class="groupTitle">创建医院账户</div>
+                    <el-form-item label="医院名称" prop="hospitalName">
+                        <el-input v-model="ruleForm.hospitalName"></el-input>
+                    </el-form-item>
+                    <el-form-item label="手机" prop="mobileStr">
+                        <el-input v-model="ruleForm.mobileStr"></el-input>
+                    </el-form-item>
+                    <el-form-item label="验证码">
+                        <div style="display: flex;height: 40px;margin-bottom: 40px;">
+                            <el-input placeholder="请输入验证码" v-model="ruleForm.code"></el-input>
+                            <el-button style="margin-left: 10px;" :disabled="secondNum>0" @click="getCode">{{secondNum>0?`${secondNum}后重试`:'获取验证码'}}</el-button>
+                        </div>
+                    </el-form-item>
+                    <div class="groupTitle">医院信息</div>
+                    <!-- <el-form-item label="重点科室">
+                        <el-input v-model="ruleForm.name"></el-input>
+                    </el-form-item> -->
+                    <el-form-item label="医院图片" prop="mobileStr">
+                        <el-upload
+                                class="avatar-uploader"
+                                action="http://115.159.53.197:8080/api/upload"
+                                :show-file-list="false"
+                                :on-success="handleAvatarSuccess"
+                                :before-upload="beforeAvatarUpload">
+                                <img v-if="ruleForm.pictureStr" :src="'http://115.159.53.197:8080' + ruleForm.pictureStr" class="avatar">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            </el-upload>
+                    </el-form-item>
+                    <el-form-item label="医院等级">
+                        <el-select v-model="ruleForm.gradeStr">
+                            <el-option v-for="item in levelOption" :key="item" :label="item" :value="item"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <!-- <el-form-item label="医院类型">
+                        <el-input v-model="ruleForm.name"></el-input>
+                    </el-form-item> -->
+                    <el-form-item label="经营方式">
+                        <el-select v-model="ruleForm.managementStyle">
+                            <el-option v-for="item in manageOption" :key="item" :label="item" :value="item"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="联系电话">
+                        <el-input v-model="ruleForm.telStr"></el-input>
+                    </el-form-item>
+                    <el-form-item label="所在地区">
+                        <selectaddress v-model="addressObj" :option="{level:3}"></selectaddress>
+                    </el-form-item>
+                    <el-form-item label="详细地址">
+                        <el-input v-model="ruleForm.addressStr"></el-input>
+                    </el-form-item>
+                    <el-form-item label="简介">
+                        <div id="Edit"></div>
+                        <!-- <el-input
+                            type="textarea"
+                            :rows="10"
+                            placeholder="请输入简介"
+                            v-model="ruleForm.introductionStr">
+                        </el-input> -->
+                    </el-form-item>
+                    <!-- <el-form-item label="邮政编码">
+                        <el-input v-model="ruleForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="电子邮箱">
+                        <el-input v-model="ruleForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="医院网址">
+                        <el-input v-model="ruleForm.name"></el-input>
+                    </el-form-item> -->
+                    <el-form-item>
+                        <el-button type="primary" @click="submit">注册</el-button>
+                      </el-form-item>
+                </el-form>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../js/wangEditor.min.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../components/pagefooter.js"></script>
+<script src="../components/selectaddress.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                levelOption:['一级','一级丙等','一级乙等','一级甲等','三级','三级丙等','三级甲等','二级','二级丙等','二级乙等','二级甲等','社区卫生服务中心'],
+                manageOption: ['综合医院','专科医院','中医医院','妇幼保健院、所','专科疾病防治院(所、中心)','特色医院','康复院','门诊部','中西医结合医院','民族医院','医学专科研究所','其他卫生事业机构','社区卫生服务中心'],
+                ruleForm: {
+                    addressStr: '',
+                    areaStr: '',
+                    cityStr: '',
+                    gradeStr: '',
+                    hospitalName: '',
+                    hrefStr: '',
+                    introductionStr: '',
+                    managementStyle: '',
+                    overviewStr: '',
+                    pictureStr: '',
+                    provinceStr: '',
+                    telStr: '',
+                    userId: '',
+                    code: ''
+                },
+                addressObj:{
+                    levelId1: "",
+                    levelStr1: "",
+                    levelId2: "",
+                    levelStr2: "",
+                    levelId3: "",
+                    levelStr3: ""
+                },
+                rules: {
+                    hospitalName: [
+                        { required: true, message: '请输入医院名称', trigger: 'blur' }
+                    ],
+                    mobileStr: [
+                        { required: true, message: '请输入手机号', trigger: 'blur' }
+                    ],
+                    region: [
+                        { required: true, message: '请选择活动区域', trigger: 'change' }
+                    ],
+                    type: [
+                        { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+                    ],
+                    resource: [
+                        { required: true, message: '请选择活动资源', trigger: 'change' }
+                    ],
+                    desc: [
+                        { required: true, message: '请填写活动形式', trigger: 'blur' }
+                    ]
+                },
+                EditObj:null,
+                mobileCode: '',
+                mobileCodeTime: '',
+                secondNum: 0
+            }
+        },
+        watch:{
+            addressObj(val){
+                this.ruleForm.provinceStr = val.levelStr1
+                this.ruleForm.cityStr = val.levelStr2
+                this.ruleForm.areaStr = val.levelStr3
+            }
+        },
+        mounted() {
+            this.$nextTick(() => {
+                this.EditObj = initWangEdit('Edit')
+            })
+            
+            this.mobileCode = localStorage.getItem('mobileCode') || ''
+            this.mobileCodeTime = localStorage.getItem('mobileCodeTime') || ''
+            this.changeSecondNum()
+        },
+        methods: {
+            // 更新秒数
+            changeSecondNum(){
+                if(this.mobileCodeTime && +new Date() - this.mobileCodeTime < 60 * 1000){
+                    this.secondNum = parseInt(60 - (+new Date() - this.mobileCodeTime)/1000)
+                    if(this.secondNum>0){
+                        setTimeout(() => {
+                            this.changeSecondNum()
+                        },1000)
+                    }
+                }
+            },
+            // 获取验证码
+            getCode(){
+                if(this.ruleForm.mobileStr){
+                    postSendMs(this.ruleForm.mobileStr).then(res => {
+                        localStorage.setItem('mobileCode',res.data)
+                        localStorage.setItem('mobileCodeTime',+new Date())
+                        this.mobileCode = localStorage.getItem('mobileCode') || ''
+                        this.mobileCodeTime = localStorage.getItem('mobileCodeTime') || ''
+                        this.changeSecondNum()
+                    }).catch(() => {
+                        localStorage.setItem('mobileCode','')
+                    })
+                }else{
+                    this.$message({
+                        type: 'error',
+                        message: '请输入手机号'
+                    })
+                }
+            },
+            handleAvatarSuccess(res, file) {
+                this.ruleForm.pictureStr = res.data
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
+            submit(){
+                this.ruleForm.introductionStr = this.EditObj.txt.html()
+                this.$refs['form'].validate((valid) => {
+                    if (valid) {
+                        postAddHospital(this.ruleForm).then(res => {
+                            if(res.data.code === 0){
+                                this.$message.success('提交成功')
+                                this.$notify({
+                                    title: '注册成功',
+                                    message: '3秒后自动跳转到登录页面'
+                                });
+                                setTimeout(() => {
+                                    location.href = './login.html'
+                                }, 3000);
+                            }else{
+                                this.$message.error(res.data.msg)
+                            }
+                        })
+                    }
+                })
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+            toLogin() {
+                location.href = './login.html?roleKey=2'
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.main{
+    background-color: #F9F9FA;
+}
+</style>

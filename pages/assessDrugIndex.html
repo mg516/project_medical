@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/assessDrugIndex.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="pageTabsBody">
+            <div class="pageTabsBox">
+                <div
+                    class="pageTabsItem"
+                    :class="{'active':activeIndex === index}"
+                    v-for="(item,index) in drugTypes"
+                    :key="index"
+                    @click="checkType(index)">
+                    {{item.name}}
+                </div>
+            </div>
+        </div>
+        <div class="contentBody">
+            <newsdrugwarn :list="ttpcList"></newsdrugwarn>
+            <div class="drugBody">
+                <div class="drugItem" v-for="(item,index) in assessdrugList" :key="index">
+                    <drugintroduce :drugdata="item"></drugintroduce>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/index/newsdrugwarn.js"></script>
+<script src="../components/drugintroduce.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'测评',link:'./assessIndex.html'},
+                    {name:'药品评测'},
+                ],
+                drugTypes: [
+                    {name:'药品评测',id:'1'},
+                ],
+                activeIndex: 0,
+                assessdrugList:[
+                    {
+                        name: '化学药品',
+                        label: ['神经和肌肉、骨骼系统药','维生素、矿物质与氨基酸','调节水、电解质及酸碱平衡药','消化系统药','循环系统药','有关激素类药'],
+                        hospital: {
+                            name:'浙江中诚医药有限公司',
+                            address: '杭州市拱墅区莫干山路841弄21-2号',
+                            remark: '0571-88966011 88966009',
+                            img: '../img/index/hh1.png',
+                            drugList: [
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                            ]
+                        },
+                        addressList: ['广东','江苏','河北','吉林','河南','山东','四川','安徽','北京','浙江','上海','陕西','黑龙江'],
+                        showDrug: [
+                            {name:'复方醋酸地塞米',img:'../img/index/y1.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y2.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y3.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y4.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y5.png'},
+                        ],
+                        drugList: [
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                        ]
+                    },
+                    {
+                        name: '化学药品',
+                        label: ['神经和肌肉、骨骼系统药','维生素、矿物质与氨基酸','调节水、电解质及酸碱平衡药','消化系统药','循环系统药','有关激素类药'],
+                        hospital: {
+                            name:'浙江中诚医药有限公司',
+                            address: '杭州市拱墅区莫干山路841弄21-2号',
+                            remark: '0571-88966011 88966009',
+                            img: '../img/index/hh1.png',
+                            drugList: [
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                            ]
+                        },
+                        addressList: ['广东','江苏','河北','吉林','河南','山东','四川','安徽','北京','浙江','上海','陕西','黑龙江'],
+                        showDrug: [
+                            {name:'复方醋酸地塞米',img:'../img/index/y1.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y2.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y3.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y4.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y5.png'},
+                        ],
+                        drugList: [
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                        ]
+                    }
+                ],
+                ttpcList: []
+            }
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            },
+            // 获取医药评测下的类型
+            async getPcTitle(){
+                try {
+                    const res = await postModelListByName('药品评测')
+                    return res
+                } catch (error) {
+                    return null
+                }
+            },
+            async getYYPCList(){
+                const res = await this.getPcTitle()
+                const param= {
+                    catalogName: res.data.data[0].catalogName
+                }
+                postTitleListByCatalogId(param).then(res=> {
+                    if(res.data.data){
+                        this.ttpcList = res.data.data
+                    }
+                })
+            }
+        },
+        mounted(){
+            this.getYYPCList()
+        }
+    })
+</script>
+</html>

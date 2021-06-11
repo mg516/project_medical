@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>企业维护中心-联系方式</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBody">
+            <div class="centerInfoBodyL">
+                <sidenav :menulist="menulist" :activeindex="activeindex"></sidenav>
+            </div>
+            <div class="centerInfoBodyR">
+                <div class="centerInfoBox">
+                    <div class="centerInfoTitle">
+                        <div class="centerInfoTitleText">{{title}}</div>
+                        <div class="centerInfoHandleBox">
+                            <div class="centerInfoHandleItem centerBar1" @click="submit">完成</div>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">联系人信息</div>
+                        <div class="formValue">
+                            <el-input v-model="form.name"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">职位</div>
+                        <div class="formValue">
+                            <el-input v-model="form.dept"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">电子邮箱</div>
+                        <div class="formValue">
+                            <el-input v-model="form.dept"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">电话</div>
+                        <div class="formValue">
+                            <el-input v-model="form.dept"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">手机</div>
+                        <div class="formValue">
+                            <el-input v-model="form.dept"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">传真</div>
+                        <div class="formValue">
+                            <el-input v-model="form.dept"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">公司所在地</div>
+                        <div class="formValue">
+                            <el-select v-model="districtLevelId1" placeholder="请选择省" @change="selectLevel1">
+                                <el-option
+                                    v-for="item in districtLevel1"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                </el-option>
+                            </el-select>
+                            <el-select v-model="districtLevelId2" placeholder="请选择市" @change="selectLevel2" v-if="districtLevel2">
+                                <el-option
+                                    v-for="item in districtLevel2"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                </el-option>
+                            </el-select>
+                            <el-select v-model="districtLevelId3" placeholder="请选择区" v-if="districtLevel3">
+                                <el-option
+                                    v-for="item in districtLevel3"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">详细地址</div>
+                        <div class="formValue">
+                            <el-input v-model="form.dept"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">公司网址</div>
+                        <div class="formValue">
+                            <el-input v-model="form.dept"></el-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>r/sidenav.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                menulist:HospitalMenu,
+                activeindex: 1,
+                title: '联系方式',
+                form:{
+                    introduce: ''
+                },
+                districts:null,
+                districtLevel1: null,
+                districtLevelId1: '',
+                districtLevel2: null,
+                districtLevelId2: '',
+                districtLevel3: null,
+                districtLevelId3: '',
+            }
+        },
+        mounted() {
+            this.getDistricts()
+        },
+        methods: {
+            getDistricts(){
+                getHttp('../json/districts.json').then(res => {
+                    this.districts = res.data
+                    const districtLevel1 = []
+                    for(let key in res.data['100000']){
+                        districtLevel1.push({
+                            value: key,
+                            label: res.data['100000'][key]
+                        })
+                    }
+                    this.districtLevel1 = districtLevel1
+                }).catch(err => {
+                    this.districts = {}
+                })
+            },
+            selectLevel1(val){
+                let districtLevel2 = []
+                for(let key in this.districts[val]){
+                    districtLevel2.push({
+                        value: key,
+                        label: this.districts[val][key]
+                    })
+                }
+                this.districtLevel2 = districtLevel2
+                this.districtLevel3 = null
+                this.districtLevelId2 = ''
+                this.districtLevelId3 = ''
+            },
+            selectLevel2(val){
+                let districtLevel3 = []
+                for(let key in this.districts[val]){
+                    districtLevel3.push({
+                        value: key,
+                        label: this.districts[val][key]
+                    })
+                }
+                this.districtLevel3 = districtLevel3
+                this.districtLevelId3 = ''
+            },
+            submit(){
+                this.$message.success('提交成功')
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.contentBody{
+    margin: 6rem auto 0;
+    width: 114rem;
+    min-height: 50rem;
+    display: flex;
+    justify-content: space-between;
+}
+.contentLeft{
+    width: 82rem;
+    flex-shrink: 0;
+}
+.contentRight{
+    width: 28rem;
+    flex-shrink: 0;
+}
+</style>

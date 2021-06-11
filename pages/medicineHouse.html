@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/assessDrugIndex.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="pageTabsBody">
+            <div class="pageTabsBox">
+                <div
+                    class="pageTabsItem"
+                    :class="{'active':activeIndex === index}"
+                    v-for="(item,index) in drugTypes"
+                    :key="index"
+                    @click="checkType(index)">
+                    {{item.name}}
+                </div>
+            </div>
+        </div>
+        <div class="contentBody">
+            <div class="drugBody">
+                <div class="drugItem" v-for="(item,index) in assessdrugList" :key="index">
+                    <drugintroduce :drugdata="item"></drugintroduce>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/drugintroduce.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'医药',link:'./medicineHouse.html'},
+                    {name:'产品库'},
+                ],
+                drugTypes: [
+                    {name:'产品库',id:'1'},
+                ],
+                activeIndex: 0,
+                assessdrugList:[
+                    {
+                        name: '化学药品',
+                        label: ['神经和肌肉、骨骼系统药','维生素、矿物质与氨基酸','调节水、电解质及酸碱平衡药','消化系统药','循环系统药','有关激素类药'],
+                        hospital: {
+                            name:'浙江中诚医药有限公司',
+                            address: '杭州市拱墅区莫干山路841弄21-2号',
+                            remark: '0571-88966011 88966009',
+                            img: '../img/index/hh1.png',
+                            drugList: [
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                            ]
+                        },
+                        addressList: ['广东','江苏','河北','吉林','河南','山东','四川','安徽','北京','浙江','上海','陕西','黑龙江'],
+                        showDrug: [
+                            {name:'复方醋酸地塞米',img:'../img/index/y1.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y2.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y3.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y4.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y5.png'},
+                        ],
+                        drugList: [
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                        ]
+                    },
+                    {
+                        name: '化学药品',
+                        label: ['神经和肌肉、骨骼系统药','维生素、矿物质与氨基酸','调节水、电解质及酸碱平衡药','消化系统药','循环系统药','有关激素类药'],
+                        hospital: {
+                            name:'浙江中诚医药有限公司',
+                            address: '杭州市拱墅区莫干山路841弄21-2号',
+                            remark: '0571-88966011 88966009',
+                            img: '../img/index/hh1.png',
+                            drugList: [
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                                {name:'·复方牛胎肝提取物片(希安维)'},
+                            ]
+                        },
+                        addressList: ['广东','江苏','河北','吉林','河南','山东','四川','安徽','北京','浙江','上海','陕西','黑龙江'],
+                        showDrug: [
+                            {name:'复方醋酸地塞米',img:'../img/index/y1.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y2.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y3.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y4.png'},
+                            {name:'复方醋酸地塞米',img:'../img/index/y5.png'},
+                        ],
+                        drugList: [
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                            {name:'复方牛胎肝',num: 123},
+                        ]
+                    }
+                ]
+            }
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            },
+            // 获取产品大类
+            getProductPcatalog(){
+                const param = {
+                    catalogName:'产品库'
+                }
+                postProductPcatalog(param).then(res => {
+                    this.assessdrugList = res.data.data.map(item => {
+                        return {
+                            name: item.catalogName
+                        }
+                    })
+                    this.assessdrugList.map((item,index) => {
+                        this.getProductPcatalog2(item.name,index)
+                        this.getEnterpriseList(item.name,index)
+                        this.getProvinceList()
+                    })
+                })
+            },
+            // 根据药品类型，获取推荐的企业
+            getEnterpriseList(name,index){
+                const param = {
+                    isLaunch: name,
+                    endNo: 1
+                }
+                postSearchListIsLaunch(param).then(res => {
+                    this.$set(this.assessdrugList[index],'company',res.data.data[0])
+                    this.getHospitalProduceList(index)
+                    this.getProductList(index)
+                })
+                // const param = {
+                //     isRecommend: '0',
+                //     provinceName: this.assessdrugList[index].activeProvince || '',
+                //     catalogName: name,
+                //     beginNo:1,
+                //     endNo: 1
+                // }
+                // postEnterpriseList(param).then(res => {
+                //     this.$set(this.assessdrugList[index],'hospital',res.data.data.success[0])
+                //     this.getHospitalProduceList(index)
+                // })
+            },
+            // 获取产品二级类型
+            getProductPcatalog2(name,index){
+                const param = {
+                    catalogName:name,
+                    beginNo:1,
+                    endNo: 5
+                }
+                postProductPcatalog(param).then(res => {
+                    this.$set(this.assessdrugList[index],'label',res.data.data.map(item => item.catalogName).slice(0,5))
+                    this.getShowProductList(index)
+                    // this.getProductList(index)
+                })
+            },
+            // 获取推荐产品列表
+            getShowProductList(index){
+                const param = {
+                    isRecommend: '0',
+                    provinceName: this.assessdrugList[index].activeProvince || '',
+                    catalogName: this.assessdrugList[index].name, // activeCatalog || '',
+                    beginNo:0,
+                    endNo: 7
+                }
+                postProductList(param).then(res => {
+                    if(res.data.data){
+                        this.$set(this.assessdrugList[index],'showDrug',res.data.data.success.slice(0,6))
+                    }
+                })
+            },
+            // 获取产品列表
+            getProductList(index){
+                const param = {
+                    enterpriseId: this.assessdrugList[index].company.enterpriseId,
+                    beginNo:1,
+                    endNo: 5
+                }
+                postEnterpriseProductList(param).then(res => {
+                    if(res.data.data){
+                        this.$set(this.assessdrugList[index].company,'drugList',res.data.data.success)
+                    }
+                })
+                // const param = {
+                //     isRecommend: '0',
+                //     provinceName: this.assessdrugList[index].activeProvince || '',
+                //     catalogName: this.assessdrugList[index].name, // .activeCatalog || '',
+                //     beginNo:1,
+                //     endNo: 10
+                // }
+                // postProductList(param).then(res => {
+                //     if(res.data.data){
+                //         this.$set(this.assessdrugList[index],'drugList',res.data.data.success)
+                //     }
+                // })
+            },
+            getHospitalProduceList(index){
+                const hospital = this.assessdrugList[index].hospital
+                if(hospital && hospital.enterpriseName){
+                    const param = {
+                        isRecommend: '0',
+                        enterpriseName: hospital.enterpriseName,
+                        beginNo:1,
+                        endNo: 5
+                    }
+                    postProductList(param).then(res => {
+                        if(res.data.data){
+                            this.$set(this.assessdrugList[index].hospital,'drugList',res.data.data.success)
+                        }
+                    })
+                }
+            },
+            getProvinceList(){
+                postProvinceList().then(res => {
+                    this.assessdrugList.map(item => {
+                        item.addressList = res.data.data.map(item => item.provinceName).slice(0,15)
+                    })
+                })
+            }
+        },
+        mounted(){
+            this.getProductPcatalog()
+        }
+    })
+</script>
+</html>

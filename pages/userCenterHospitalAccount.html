@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>企业维护中心-账号信息</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBody">
+            <div class="centerInfoBodyL">
+                <sidenav :menulist="menulist" :activeindex="activeindex"></sidenav>
+            </div>
+            <div class="centerInfoBodyR">
+                <div class="centerInfoBox">
+                    <div class="centerInfoTitle">
+                        <div class="centerInfoTitleText">{{title}}</div>
+                        <div class="centerInfoHandleBox">
+                            <div class="centerInfoHandleItem centerBar1" @click="submit">完成</div>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">医院名称</div>
+                        <div class="formValue">
+                            <el-input v-model="ruleForm.hospitalName"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">医院图片</div>
+                        <div class="formValue">
+                            <el-upload
+                                class="avatar-uploader"
+                                action="http://115.159.53.197:8080/api/upload"
+                                :show-file-list="false"
+                                :on-success="handleAvatarSuccess"
+                                :before-upload="beforeAvatarUpload">
+                                <img v-if="ruleForm.pictureStr" :src="'http://115.159.53.197:8080' + ruleForm.pictureStr" class="avatar">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            </el-upload>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">医院等级</div>
+                        <div class="formValue">
+                            <el-select v-model="ruleForm.gradeStr">
+                                <el-option v-for="item in levelOption" :key="item" :label="item" :value="item"></el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">经营方式</div>
+                        <div class="formValue">
+                            <el-select v-model="ruleForm.managementStyle">
+                                <el-option v-for="item in manageOption" :key="item" :label="item" :value="item"></el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">联系电话</div>
+                        <div class="formValue">
+                            <el-input v-model="ruleForm.telStr"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">所在地区</div>
+                        <div class="formValue">
+                            <selectaddress v-model="addressObj" :option="{level:3}"></selectaddress>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">详细地址</div>
+                        <div class="formValue">
+                            <el-input v-model="ruleForm.addressStr"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">简介</div>
+                        <div class="formValue">
+                            <div id="Edit"></div>
+                            <!-- <el-input
+                                type="textarea"
+                                :rows="20"
+                                placeholder="请输入企业介绍"
+                                v-model="ruleForm.introductionStr">
+                            </el-input> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../js/wangEditor.min.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>r/sidenav.js"></script>
+<script src="../components/selectaddress.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                userInfo: UserInfo,
+                userDetailInfo: UserDetailInfo,
+                levelOption:['一级','一级丙等','一级乙等','一级甲等','三级','三级丙等','三级甲等','二级','二级丙等','二级乙等','二级甲等','社区卫生服务中心'],
+                manageOption: ['综合医院','专科医院','中医医院','妇幼保健院、所','专科疾病防治院(所、中心)','特色医院','康复院','门诊部','中西医结合医院','民族医院','医学专科研究所','其他卫生事业机构','社区卫生服务中心'],
+                menulist:HospitalMenu,
+                activeindex: 0,
+                title: '账号信息',
+                imageUrl: '',
+                ruleForm: {
+                    addressStr: '',
+                    areaStr: '',
+                    cityStr: '',
+                    gradeStr: '',
+                    hospitalName: '',
+                    hrefStr: '',
+                    introductionStr: '',
+                    managementStyle: '',
+                    overviewStr: '',
+                    pictureStr: '',
+                    provinceStr: '',
+                    telStr: '',
+                    userId: '',
+                },
+                addressObj:{
+                    levelId1: "",
+                    levelStr1: "",
+                    levelId2: "",
+                    levelStr2: "",
+                    levelId3: "",
+                    levelStr3: ""
+                },
+                EditObj:null
+            }
+        },
+        watch:{
+            addressObj(val){
+                this.ruleForm.provinceStr = val.levelStr1
+                this.ruleForm.cityStr = val.levelStr2
+                this.ruleForm.areaStr = val.levelStr3
+            }
+        },
+        mounted() {
+            if(UserInfo.userId && UserDetailInfo.userId){
+                this.ruleForm.userId = UserDetailInfo.userId
+                this.ruleForm = UserDetailInfo
+                this.addressObj.levelStr1 = UserDetailInfo.provinceStr
+                this.addressObj.levelStr2 = UserDetailInfo.cityStr
+                this.addressObj.levelStr3 = UserDetailInfo.areaStr
+
+            }else{
+                this.$message.error('未获取的用户信息')
+            }
+            this.$nextTick(() => {
+                this.EditObj = initWangEdit('Edit')
+                this.EditObj.txt.html(this.ruleForm.introductionStr)
+            })
+        },
+        methods: {
+            handleAvatarSuccess(res, file) {
+                this.ruleForm.pictureStr = res.data
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
+            submit(){
+                this.ruleForm.introductionStr = this.EditObj.txt.html()
+                postEditHospital(this.ruleForm).then(res => {
+                    if(res.data.code === 0){
+                        this.$message.success('提交成功')
+                        postSearchHospitalInfo(UserDetailInfo.userId).then(resDetail => {
+                            if(resDetail.data.code === 0){
+                                ls_set('userDetailInfo',resDetail.data.data)
+                            }
+                        })
+                    }else{
+                        this.$message.error(res.data.msg)
+                    }
+                })
+            },
+        }
+    })
+</script>
+</html>
+<style>
+.contentBody{
+    margin: 6rem auto 0;
+    width: 114rem;
+    min-height: 50rem;
+    display: flex;
+    justify-content: space-between;
+}
+.contentLeft{
+    width: 82rem;
+    flex-shrink: 0;
+}
+.contentRight{
+    width: 28rem;
+    flex-shrink: 0;
+}
+</style>

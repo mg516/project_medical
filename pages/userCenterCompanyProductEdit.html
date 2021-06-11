@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>企业维护中心-企业信息</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBody">
+            <div class="centerInfoBody">
+                <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+                <div class="centerInfoBox">
+                    <div class="centerInfoTitle">
+                        <div class="centerInfoTitleText">{{title}}</div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">产品图片</div>
+                        <div class="formValue">
+                            <el-upload
+                                class="avatar-uploader"
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                :show-file-list="false"
+                                :on-success="handleAvatarSuccess"
+                                :before-upload="beforeAvatarUpload">
+                                <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            </el-upload>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">产品名称</div>
+                        <div class="formValue">
+                            <el-input v-model="form.name"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">产品分类</div>
+                        <div class="formValue">
+                            <el-input v-model="form.dept"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">英文名称</div>
+                        <div class="formValue">
+                            <el-input v-model="form.dept"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">用途</div>
+                        <div class="formValue">
+                            <el-input v-model="form.dept"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">批准文号</div>
+                        <div class="formValue">
+                            <el-input v-model="form.dept"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">主要规格</div>
+                        <div class="formValue">
+                            <el-input v-model="form.dept"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">包装</div>
+                        <div class="formValue">
+                            <el-input v-model="form.dept"></el-input>
+                        </div>
+                    </div>
+                    <div class="formItem">
+                        <div class="formLabel">产品说明</div>
+                        <div class="formValue">
+                            <el-input
+                                type="textarea"
+                                :rows="10"
+                                placeholder="请输入企业介绍"
+                                v-model="form.introduce">
+                            </el-input>
+                        </div>
+                    </div>
+                    <div class="centerFormHandle">
+                        <div class="centerBar2" @click="submit">提交</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>r/sidenav.js"></script>
+<script src="../components/breadcrumb.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'个人中心',link:'./userCenterCompany.html'},
+                    {name:'信息维护',link:'./userCenterCompanyProduct.html'},
+                    {name:''},
+                ],
+                activeindex: 0,
+                title: '',
+                imageUrl: '',
+                form:{
+                    imageUrl: '',
+                    introduce: ''
+                },
+            }
+        },
+        created() {
+            if(getUrlParam('id')){
+                this.title = '修改产品'
+            }else{
+                this.title = '添加产品'
+            }
+            this.breadcrumblist[2].name = this.title
+        },
+        mounted() {
+            
+        },
+        methods: {
+            handleAvatarSuccess(res, file) {
+                this.imageUrl = URL.createObjectURL(file.raw);
+            },
+            beforeAvatarUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+
+                if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                return isJPG && isLt2M;
+            },
+            submit(){
+                this.$message.success('提交成功')
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.centerInfoBody{
+    margin-top: 0!important;
+}
+</style>

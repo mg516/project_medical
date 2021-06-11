@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的关注</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/assessDrugIndex.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="contentBody">
+            <div class="focusTab">
+                <div
+                    class="focusTabItem"
+                    v-for="(item,index) in focusType"
+                    :key="index"
+                    :class="{'active':index === activeIndex}"
+                    @click="checkType(index)"
+                >{{item}}</div>
+            </div>
+            <div class="focusPersonListBox">
+                <div class="personItemBox" v-for="(item,index) in personList" :key="index">
+                    <div class="personImg">
+                        <img :src="item.img" alt="">
+                    </div>
+                    <div class="personInfo">
+                        <div class="personName">{{item.name}}</div>
+                        <div class="personMsg">
+                            <div class="focusNum">关注：{{item.focusNum}}</div>
+                            <div class="focusNum">粉丝：{{item.funsNum}}</div>
+                        </div>
+                    </div>
+                    <div class="focusType">
+                        <span v-if="item.focused">已关注</span>
+                        <div v-else class="focusBar">关注</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="//api.map.baidu.com/api?type=webgl&v=1.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/unit.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                focusType:['我的关注','我的粉丝'],
+                activeIndex:0,
+                personList:[
+                    {name:'不知黑白',focusNum:10,funsNum:20,img:'../img/index/y1.png',focused:false},
+                    {name:'不知黑白',focusNum:10,funsNum:20,img:'../img/index/y1.png',focused:true},
+                    {name:'不知黑白',focusNum:10,funsNum:20,img:'../img/index/y1.png',focused:true},
+                    {name:'不知黑白',focusNum:10,funsNum:20,img:'../img/index/y1.png',focused:true},
+                    {name:'不知黑白',focusNum:10,funsNum:20,img:'../img/index/y1.png',focused:false}
+                ]
+            }
+        },
+        methods:{
+            checkType(index){
+                this.activeIndex = index
+            }
+        }
+    })
+</script>
+</html>
+<style>
+    .main{
+        background-color: #F9F9FA;
+    }
+    .contentBody{
+        margin: 7rem auto 0;
+        width: 114rem;
+        min-height: 50rem;
+    }
+    .contentLeft{
+        width: 53rem;
+        flex-shrink: 0;
+    }
+    .contentRight{
+        width: calc(100% - 55rem - 10rem);
+        flex-shrink: 0;
+    }
+</style>

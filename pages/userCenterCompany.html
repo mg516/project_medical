@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>企业维护中心</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBody">
+            <div class="centerCompanyHeader">
+                <div class="centerCompanyHeaderBack"></div>
+                <div class="centerCompanyHeaderImg">
+                    <img width="100%" v-if="userDetailInfo.pictureStr" :src="'http://115.159.53.197:8080' + userDetailInfo.pictureStr" alt="">
+                </div>
+                <div class="centerCompanyHeaderName">{{userDetailInfo.enterpriseName}}</div>
+                <div class="centerCompanyHeaderBar" @click="toEdit('account')">资料设置</div>
+            </div>
+            <div class="centerBodyL">
+                <div class="centerItemContent">
+                    <div class="centerItemContHeader">
+                        <div class="centerItemTitle">企业介绍</div>
+                        <div class="centerItemHandel">
+                            <div class="centerItemHandelBar" @click="toEdit('info')">编辑</div>
+                        </div>
+                    </div>
+                    <div class="centerContTextarea">血清尿酸（SUA）与心血管疾病风险之间的关联已明确。但是，SUA水平对静脉血栓栓塞（VTE）复发风险的影响尚未明确。近日，血栓和凝血疾病权威杂志Journal of Thrombosis and Haemostasis上发表了一篇研究文章，该研究旨在调查SUA水平与VTE复发风险之间的关联。血清尿酸（SUA）与心血管疾病风险之间的关联已明确。但是，SUA水平对静脉血栓栓塞（VTE）复发风险的影响尚未明确。近日，血栓和凝血疾病权威杂志Journal of Thrombosis and Haemostasis上发表了一篇研究文章，该研究旨在调查SUA水平与VTE复发风险之间的关联。</div>
+                </div>
+                <div class="centerItemContent">
+                    <div class="centerItemContHeader">
+                        <div class="centerItemTitle">产品库</div>
+                        <div class="centerItemHandel">
+                            <div class="centerItemHandelBar" @click="toEdit('productEdit')">新增</div>
+                            <div class="centerItemHandelBar" @click="toEdit('product')">编辑</div>
+                        </div>
+                    </div>
+                    <div class="centerContProduct">
+                        <div class="centerContProductItem" v-for="(item,index) in productList" :key="index">
+                            <div class="ccpiImg">
+                                <img :src="item.img" alt="">
+                            </div>
+                            <div class="ccpiInfo">
+                                <div class="ccpiiName">{{item.name}}</div>
+                                <div class="ccpiiMsg">
+                                    <div class="ccpiimItem">批准文号：{{item.docNo}}</div>
+                                    <div class="ccpiimItem">主要规格：{{item.type}}</div>
+                                </div>
+                                <div class="ccpiLabels">
+                                    <div class="ccpiLabelName">产品相关：</div>
+                                    <div class="ccpiLabelItem" v-for="(labelItem,labelIndex) in item.labels" :key="labelIndex">{{labelItem}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="centerReadMore">查看更多</div>
+                    </div>
+                </div>
+                <div class="centerItemContent">
+                    <div class="centerItemContHeader">
+                        <div class="centerItemTitle">企业专利认证证书</div>
+                        <div class="centerItemHandel">
+                            <div class="centerItemHandelBar" @click="toEdit('zhuanli')">编辑</div>
+                        </div>
+                    </div>
+                    <div class="centerContImg">
+                        <img src="../img/zhuanli.png" alt="专利证书">
+                    </div>
+                </div>
+            </div>
+            <div class="centerBodyR">
+                <div class="centerItemContentR">
+                    <div class="centerItemTitle">联系方式</div>
+                    <div class="centerContact">
+                        <div class="centerContactItem">所在地区：中国/浙江</div>
+                        <div class="centerContactItem">所属行业：药品</div>
+                        <div class="centerContactItem">公司类型：生产企业</div>
+                        <div class="centerContactItem">联系地址：浙江省宁波市北仑区戚家山街道金鸡路102巷16号</div>
+                        <div class="centerContactItem">邮政编码：</div>
+                        <div class="centerContactItem">联 系 人：蒋部长</div>
+                        <div class="centerContactItem">联系电话：</div>
+                    </div>
+                    <div class="centerItemHandelBarR" @click="toEdit('contact')">编辑</div>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                userDetailInfo: UserDetailInfo,
+                productList: [
+                    {name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:['招商区域：全国']},
+                    {name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:['招商区域：全国','招商区域：全国']},
+                    {name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:[]},
+                    {name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:[]},
+                    {name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:[]},
+                ]
+            }
+        },
+        methods: {
+            toEdit(type){
+                if(type === 'info'){
+                    location.href = './userCenterCompanyInfo.html'
+                }else if(type === 'product'){
+                    location.href = './userCenterCompanyProduct.html'
+                }else if(type === 'productEdit'){
+                    location.href = './userCenterCompanyProductEdit.html'
+                }else if(type === 'contact'){
+                    location.href = './userCenterCompanyContact.html'
+                }else if(type === 'zhuanli'){
+                    location.href = './userCenterCompanyInfo.html'
+                }else if(type === 'account'){
+                    location.href = './userCenterCompanyAccount.html'
+                }
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.contentBody{
+    margin: 6rem auto 0;
+    width: 114rem;
+    min-height: 50rem;
+    display: flex;
+    justify-content: space-between;
+}
+.contentLeft{
+    width: 82rem;
+    flex-shrink: 0;
+}
+.contentRight{
+    width: 28rem;
+    flex-shrink: 0;
+}
+</style>

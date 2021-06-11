@@ -1,0 +1,104 @@
+.contentBody {
+  margin: 6rem auto 10rem;
+  width: 114rem;
+  display: flex;
+  justify-content: space-between;
+}
+.contentBody .contentLeft {
+  width: 82rem;
+  flex-shrink: 0;
+}
+.contentBody .contentRight {
+  width: 28rem;
+  flex-shrink: 0;
+}
+.pageBreadcrumbBox {
+  margin: 6rem auto 0;
+  width: 114rem;
+}
+.pageBreadcrumbBox .breadcrumbBody {
+  margin: 0;
+}
+.hospitalInfoBox .hospitalMsgBox {
+  display: flex;
+  justify-content: space-between;
+}
+.hospitalInfoBox .hospitalMsgBox .hospitalImg {
+  width: 10rem;
+  height: 8rem;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.hospitalInfoBox .hospitalMsgBox .hospitalImg img {
+  width: 100%;
+  max-height: 100%;
+}
+.hospitalInfoBox .hospitalMsgBox .hospitalMsg {
+  width: calc(100% - 8rem - 3rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hospitalInfoBox .hospitalMsgBox .hospitalMsg .hospitalName {
+  color: #198CFF;
+  font-size: 2.4rem;
+  line-height: 3.3rem;
+}
+.hospitalInfoBox .hospitalMsgBox .hospitalMsg .hospitalDept {
+  display: flex;
+  font-size: 1.3rem;
+  line-height: 1.8rem;
+  margin-top: 1rem;
+}
+.hospitalInfoBox .hospitalMsgBox .hospitalMsg .hospitalDept .hospitalDeptLabel {
+  color: #333333;
+}
+.hospitalInfoBox .hospitalMsgBox .hospitalMsg .hospitalDept .hospitalDeptItem {
+  color: #198CFF;
+}
+.hospitalInfoBox .hospitalIntroBox {
+  margin-top: 6rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.hospitalInfoBox .hospitalIntroBox .hospitalIntroLabel {
+  width: 100%;
+  font-weight: bold;
+  font-size: 1.6rem;
+  color: #000000;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #D3D3D4;
+}
+.hospitalInfoBox .hospitalIntroBox .hospitalIntroCont {
+  margin-top: 2rem;
+  line-height: 3rem;
+  font-size: 1.4rem;
+  color: #333333;
+}
+.hospitalInfoBox .hospitalIntroBox .hospitalIntroCont.wleft {
+  width: calc(100% - 13rem - 3rem);
+}
+.hospitalInfoBox .hospitalIntroBox .hospitalIntroImg {
+  width: 13rem;
+  height: 13rem;
+  flex-shrink: 0;
+  margin-left: 3rem;
+  margin-top: 2rem;
+}
+.hospitalInfoBox .hospitalIntroBox .hospitalIntroImg img {
+  width: 100%;
+  height: 100%;
+}
+.contactinfoBar {
+  background-color: #198CFF;
+  width: 21rem;
+  height: 5rem;
+  line-height: 5rem;
+  text-align: center;
+  color: #fff;
+  font-size: 1.6rem;
+  border-radius: 2.7rem;
+  margin-top: 2.5rem;
+  cursor: pointer;
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <banner></banner>
+        <tagbar></tagbar>
+        <div class="contentBody">
+            <div class="contentLeft">
+                <newessay :data="scienceList"></newessay>
+                <business :data="enterpriseList"></business>
+                <gooddoctor :data="doctorList"></gooddoctor>
+                <goodhospital :data="hospitalList"></goodhospital>
+                <newdrugs :data="indexmedicinallist"></newdrugs>
+                <newsconsulting :data="indexnewlist"></newsconsulting>
+                <forum></forum>
+            </div>
+            <div class="contentRight">
+                <hothospital></hothospital>
+                <recomdoctor></recomdoctor>
+                <recomproduct></recomproduct>
+                <disclaimers></disclaimers>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>
+<script src="../components/pagefooter.js"></script>
+<script src="../components/index/banner.js"></script>
+<script src="../components/index/tagbar.js"></script>
+<script src="../components/index/newessay.js"></script>
+<script src="../components/index/newdrugs.js"></script>
+<script src="../components/index/newsconsulting.js"></script>
+<script src="../components/index/business.js"></script>
+<script src="../components/index/gooddoctor.js"></script>
+<script src="../components/index/goodhospital.js"></script>
+<script src="../components/index/forum.js"></script>
+<script src="../components/index/hothospital.js"></script>
+<script src="../components/index/recomdoctor.js"></script>
+<script src="../components/index/recomproduct.js"></script>
+<script src="../components/index/disclaimers.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                doctorList: [],
+                enterpriseList: [],
+                hospitalList: [],
+                indexmedicinallist: [],
+                indexnewlist: [],
+                productList: [],
+                scienceList: []
+            }
+        },
+        mounted(){
+            this.getIndexData()
+        },
+        methods:{
+            getIndexData(){
+                postIndexTitleList().then(res => {
+                    if(res.data && res.data.msg === "success"){
+                        const result = res.data.data
+                        this.doctorList = result.doctorList
+                        this.enterpriseList = result.enterpriseList
+                        this.hospitalList = result.hospitalList
+                        this.indexmedicinallist = result.indexmedicinallist
+                        this.indexnewlist = result.indexnewlist
+                        this.productList = result.productList
+                        this.scienceList = result.scienceList
+                    }
+                })
+            }
+        }
+    })
+</script>
+</html>
+<style>
+.contentBody{
+    margin: 6rem auto 0;
+    width: 114rem;
+    min-height: 50rem;
+    display: flex;
+    justify-content: space-between;
+}
+.contentLeft{
+    width: 82rem;
+    flex-shrink: 0;
+}
+.contentRight{
+    width: 28rem;
+    flex-shrink: 0;
+}
+</style>

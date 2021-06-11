@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>企业维护中心</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBody">
+            <div class="centerHospitalHeader">
+                <div class="centerHospitalHeaderBack"></div>
+                <div class="centerHospitalHeaderImg">
+                    <img v-if="userDetailInfo.pictureStr" :src="'http://115.159.53.197:8080' + userDetailInfo.pictureStr" alt="">
+                </div>
+                <div class="centerHospitalHeaderName">{{userDetailInfo.hospitalName}}</div>
+                <div class="centerHospitalHeaderBar" @click="toEdit('account')">资料设置</div>
+                <div class="centerHospitalHeaderMajorDept">
+                    <span class="centerHospitalHeaderMajorDeptLabel">重点科室：</span>
+                    <span class="centerHospitalHeaderMajorDeptValue">肿瘤妇科、腹部外科、肿瘤内科、头颈外科</span>
+                </div>
+            </div>
+            <div class="centerBodyL">
+                <div class="centerItemContent">
+                    <div class="centerItemContHeader">
+                        <div class="centerItemTitle">医院概况</div>
+                        <div class="centerItemHandel">
+                            <div class="centerItemHandelBar" @click="toEdit('info')">编辑</div>
+                        </div>
+                    </div>
+                    <div class="centerContTextarea">
+                        中国医学科学院肿瘤医院肿瘤研究所，始建于1958年，原名日坛医院，1963年增设肿瘤研究所，此后又相继建立了河南林州、江苏启东等肿瘤高发防治现场。1983年迁至北京市东南龙潭湖畔。正式更名为中国医学科学院肿瘤医院肿瘤研究所。院所是建国以来第一个肿瘤专科医院，是亚洲地区最大的肿瘤防治研究中心，也是国家药品监督管理局国家药品临床研究基地。院所集肿瘤医疗、科研、教学为一体，全方面进行肿瘤的预防、诊断及治疗的研究。1996年通过三级甲等医院评审。
+                        <br>
+                        <br>
+                        院所学科设置齐全、技术力量雄厚、仪器设备先进，是国家级标志性肿瘤专科医院;具有放射治疗、外科、内科以及介入治疗、生物治疗等多种肿瘤治疗手段，在肺癌、肝癌、胰腺癌、大肠癌、乳腺癌、宫颈癌、食管癌以及头颈部肿瘤、恶性淋巴瘤等方面的诊治水平位于国内前列，在肿瘤基础研究领域已达到国际先进水平。医院设有肿瘤内科、肿瘤外科、放射治疗科等12个临床科室以及影像诊断科、检验科、核医学科等11个医技科室，拥有高能量双光子加速器、调强适形放疗、PET-CT、数字减影血管造影、全自动血液生化分析仪、核磁共振仪、肿瘤射频热疗、影像指导下的直线加速器、流式细胞仪等先进的仪器设备，万元以上设备2000余台。新病房楼的环境达到国际水平，国内一流的专家达到百人以上，特需病房充满人性化服务，优先照顾海外同胞及国际友人。全院设计床位1198张;　年门诊量50万余人次，年住院量3万9千余人次，年手术1万3千余台次。在岗职工1550余人，其中高级职称者250余人，中国科学院院士2人，中国工程院院士2人，医科院名医4名，享受政府特殊津贴73人。
+                        <br>
+                        <br>
+                        院所还是全国肿瘤专业人才的重要教育基地，承担着博士生、硕士生、本科生及国内外进修生的教学任务。现有博士后流动站1个，博士点9个，硕士点11个，博士导师67人，硕士导师159人。建院五十多年以来，共培养博士后28人、博士研究生465人、硕士研究生627人以及进修生4700余人。
+                        <br>
+                        <br>
+                        院所注重科学研究。设有分子肿瘤学国家重点实验室1个，北京市重点实验室1个，基础研究室4个，基础与临床应用研究中心2个，并设有为科研、临床服务的中心实验室。建院五十多年来，共获科研成果180余项，其中60%为部级以上成果奖，食管癌的现场防治研究被评为1995年全国十大科技成就之一。
+                        <br>
+                        <br>
+                        院所也是全国肿瘤学术交流中心，卫生部全国肿瘤防治研究办公室、卫生部全国肿瘤登记中心、卫生部肿瘤学临床医师考试中心、中国癌症基金会、中国抗癌协会临床肿瘤学协作中心、《中华肿瘤》杂志、《中华放射肿瘤学》及《抗癌之窗》杂志等均挂靠在我院。
+                        <br>
+                        <br>
+                        院所誉满海内外，国际交流广泛，已与美国、英国、日本、法国、意大利、埃及、伊朗、文莱等国家建立了良好的合作关系，并与日本、韩国、巴基斯坦、孟加拉国、蒙古、越南、泰国、新加坡等国建立了联盟关系，进行多层次、多领域的交流活动。院所全体职工时刻以“团结、奉献、敬业、创新”的院训为守则，全心全意为病人提供更加优质高效服务，为新世纪攻克癌症而努力奋斗。
+                    </div>
+                </div>
+            </div>
+            <div class="centerBodyR">
+                <div class="centerItemContentR">
+                    <div class="centerItemTitle">联系方式</div>
+                    <div class="centerContact">
+                        <div class="centerContactItem">所在地区：中国/浙江</div>
+                        <div class="centerContactItem">所属行业：药品</div>
+                        <div class="centerContactItem">公司类型：生产企业</div>
+                        <div class="centerContactItem">联系地址：浙江省宁波市北仑区戚家山街道金鸡路102巷16号</div>
+                        <div class="centerContactItem">邮政编码：</div>
+                        <div class="centerContactItem">联 系 人：蒋部长</div>
+                        <div class="centerContactItem">联系电话：</div>
+                    </div>
+                    <div class="centerItemHandelBarR" @click="toEdit('contact')">编辑</div>
+                </div>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                userDetailInfo: UserDetailInfo,
+                productList: [
+                    {name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:['招商区域：全国']},
+                    {name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:['招商区域：全国','招商区域：全国']},
+                    {name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:[]},
+                    {name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:[]},
+                    {name:'复方醋酸地塞米',img:'',docNo:'国药准字H51022634',type:'0.5g×100片/瓶×100瓶/件；0.5g×12片×2板/盒×500',labels:[]},
+                ]
+            }
+        },
+        methods: {
+            toEdit(type){
+                if(type === 'info'){
+                    location.href = './userCenterHospitalInfo.html'
+                }else if(type === 'contact'){
+                    location.href = './userCenterHospitalContact.html'
+                }else if(type === 'account'){
+                    location.href = './userCenterHospitalAccount.html'
+                }
+            }
+        }
+    })
+</script>
+</html>
+<style>
+    .centerHospitalHeader{
+        height: 30rem!important;
+    }
+    .centerHospitalHeaderMajorDept{
+        font-size: 1.3rem;
+        position: absolute;
+        top: 24rem;
+        left: 15rem;
+    }
+    .centerHospitalHeaderMajorDeptLabel{
+        color: #333333;
+    }
+    .centerHospitalHeaderMajorDeptValue{
+        color: #198CFF;
+    }
+</style>

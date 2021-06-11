@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>医疗系统</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/assessDrugIndex.css">
+</head>
+<body>
+    <div id="myApp" class="main" v-cloak>
+        <navmenu></navmenu>
+        <div class="pageBreadcrumbBox">
+            <breadcrumb :breadcrumblist="breadcrumblist"></breadcrumb>
+        </div>
+        <div class="pageTabsBody">
+            <div class="pageTabsBox">
+                <div
+                    class="pageTabsItem"
+                    :class="{'active':activeIndex == index}"
+                    v-for="(item,index) in drugTypes"
+                    :key="index"
+                    @click="checkType(index)">
+                    {{item.name}}
+                </div>
+            </div>
+        </div>
+        <div class="pageTypeGroupBody">
+            <div class="pageTypeBox">
+                <div class="pageTypeLabel">{{typeGroup[0].label}}：</div>
+                <div class="pageTypeItemBox">
+                    <div class="pageTypeItem" :class="{'active':paramArr[0]===item}" v-for="(item,index) in typeGroup[0].types" :key="index" @click="activeParam(item,1)">{{item}}</div>
+                </div>
+            </div>
+            <div class="pageTypeBox">
+                <div class="pageTypeLabel">{{typeGroup[1].label}}：</div>
+                <div class="pageTypeItemBox">
+                    <div class="pageTypeItem" :class="{'active':paramArr[1]===item}" v-for="(item,index) in typeGroup[1].types" :key="index" @click="activeParam(item,2)">{{item}}</div>
+                </div>
+            </div>
+            <div class="pageTypeBox">
+                <div class="pageTypeLabel">{{typeGroup[2].label}}：</div>
+                <div class="pageTypeItemBox">
+                    <div class="pageTypeItem" :class="{'active':paramArr[2]===item}" v-for="(item,index) in typeGroup[2].types" :key="index" @click="activeParam(item,3)">{{item}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="contentBody">
+            <div class="contentLeft">
+                <hospitallist :list="hospitallist"></hospitallist>
+            </div>
+            <div class="contentRight">
+                <recomdoctor></recomdoctor>
+            </div>
+        </div>
+        <pagefooter></pagefooter>
+    </div>
+</body>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="../js/rem.js"></script>
+<script src="../js/vue-2.6.11.js"></script>
+<script src="../element/element-ui-2.14.1.js"></script>
+<script src="../js/axios.min-0.21.0.js"></script>
+<script src="../js/request.js"></script>
+<script src="../js/unit.js"></script>
+<script src="../js/businessHandle.js"></script>
+<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/hospitallist.js"></script>
+<script src="../components/index/recomdoctor.js"></script>
+<script>
+    const myApp = new Vue({
+        el: '#myApp',
+        data() {
+            return {
+                breadcrumblist:[
+                    {name:'医院',link:'./doctorHouse.html'},
+                    {name:''},
+                ],
+                drugTypes: [
+                    {name:'全国医院',id:'1'},
+                    {name:'推荐医院',id:'2'},
+                ],
+                typeGroup: [
+                    {label:'区域',key:'cityName',types:['北京','上海','广州','深圳','杭州','南京','武汉','成都']},
+                    {label:'级别',key:'gradeStr',types:['三级','二级','一级','甲等','乙等']},
+                    {label:'类型',types:['综合医院','国营','妇幼保健院']},
+                ],
+                paramArr: ['','',''],
+                typeGroupActive: ['','',''],
+                activeIndex: 0,
+                hospitallist: []
+            }
+        },
+        methods: {
+            checkType(index) {
+                location.href = `${getUrl()}?tab=${index}`
+            },
+            activeParam(item,index){
+                if(this.paramArr[index-1] === item){
+                    this.paramArr[index-1] = ''
+                }else{
+                    this.paramArr[index-1] = item
+                }
+                this.getHospitalList()
+            },
+            getProvince(){
+                postSearchProvince().then(res => {
+                    this.typeGroup[0].types = res.data.data.map(item => {
+                        return item.provinceName
+                    })
+                })
+            },
+            getHospitalLevel(){
+                postDictByType('yiliao_grade').then(res => {
+                    this.typeGroup[1].types = res.data.data.map(item => {
+                        return item.dictLabel
+                    })
+                })
+            },
+            getManageStyle(){
+                postDictByType('yiliao_management_style').then(res => {
+                    this.typeGroup[2].types = res.data.data.map(item => {
+                        return item.dictLabel
+                    })
+                })
+            },
+            getHospitalList(){
+                const param = {
+                    beginNo:1,
+                    endNo:20
+                }
+                if(getUrlParam('tab') === '1'){
+                    param.isRecommend = 0
+                }
+                if(this.paramArr[0]){
+                    param.provinceName = this.paramArr[0]
+                }
+                if(this.paramArr[1]){
+                    param.gradeStr = this.paramArr[1]
+                }
+                if(this.paramArr[2]){
+                    param.managementStyle = this.paramArr[2]
+                }
+                Loading(this)
+                postSearchHospital(param).then(res => {
+                    LoadingClose()
+                    this.hospitallist = res.data.data || {
+                        count: 0,
+                        success: []
+                    }
+                }).catch(() => {
+                    LoadingClose()
+                })
+            }
+        },
+        mounted() {
+            this.activeIndex = getUrlParam('tab') || 0
+            this.breadcrumblist[1].name = this.drugTypes[this.activeIndex].name
+            this.getProvince()
+            this.getHospitalLevel()
+            this.getManageStyle()
+            this.getHospitalList()
+        }
+    })
+</script>
+<style>
+    .pageTypeGroupBody{
+        width: 114rem;
+    }
+    .contentBody{
+        margin: 5rem auto ;
+        width: 114rem;
+        min-height: 50rem;
+        display: flex;
+        justify-content: space-between;
+    }
+    .contentLeft{
+        width: 82rem;
+        flex-shrink: 0;
+    }
+    .contentRight{
+        width: 28rem;
+        flex-shrink: 0;
+    }
+</style>
+</html>

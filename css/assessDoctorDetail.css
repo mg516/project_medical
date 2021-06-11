@@ -1,0 +1,156 @@
+.contentBody {
+  margin: 6rem auto 10rem;
+  width: 114rem;
+  display: flex;
+  justify-content: space-between;
+}
+.contentBody .contentLeft {
+  width: 82rem;
+  flex-shrink: 0;
+}
+.contentBody .contentRight {
+  width: 28rem;
+  flex-shrink: 0;
+}
+.pageBreadcrumbBox {
+  margin: 6rem auto 0;
+  width: 114rem;
+}
+.pageBreadcrumbBox .breadcrumbBody {
+  margin: 0;
+}
+.doctorInfoBox .doctorMsgBox {
+  display: flex;
+  justify-content: space-between;
+}
+.doctorInfoBox .doctorMsgBox .doctorImg {
+  width: 15.6rem;
+  height: 15.6rem;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.doctorInfoBox .doctorMsgBox .doctorImg img {
+  width: 100%;
+  height: 100%;
+}
+.doctorInfoBox .doctorMsgBox .doctorMsg {
+  width: calc(100% - 20rem - 20rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.doctorInfoBox .doctorMsgBox .doctorMsg .doctorName {
+  display: flex;
+  align-items: center;
+  height: 3rem;
+}
+.doctorInfoBox .doctorMsgBox .doctorMsg .doctorName .doctorNameText {
+  font-size: 2.2rem;
+  color: #000000;
+}
+.doctorInfoBox .doctorMsgBox .doctorMsg .doctorName .doctorLevel {
+  font-size: 1.4rem;
+  color: #198CFF;
+  margin-left: 3rem;
+}
+.doctorInfoBox .doctorMsgBox .doctorMsg .doctorHospital {
+  margin-top: 1.2rem;
+  display: flex;
+  font-size: 1.4rem;
+  color: #747474;
+}
+.doctorInfoBox .doctorMsgBox .doctorMsg .doctorHospital .doctorDept {
+  margin-left: 2rem;
+}
+.doctorInfoBox .doctorMsgBox .doctorMsg .doctorInfo {
+  margin-top: 1rem;
+  font-size: 1.4rem;
+  color: #747474;
+  line-height: 2rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+}
+.doctorInfoBox .doctorMsgBox .doctorMarked {
+  width: 18rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+.doctorInfoBox .doctorMsgBox .doctorMarked .score {
+  font-size: 2.4rem;
+  color: #FF5533;
+  font-weight: bold;
+}
+.doctorInfoBox .doctorMsgBox .doctorMarked .score .scoreLabel {
+  font-size: 1.2rem;
+  color: #000;
+  font-weight: lighter;
+}
+.doctorInfoBox .doctorMsgBox .doctorMarked .el-rate {
+  margin: 0.5rem 0;
+}
+.doctorInfoBox .doctorMsgBox .doctorMarked .commentNum {
+  line-height: 2rem;
+  font-size: 1.2rem;
+}
+.doctorInfoBox .doctorMsgBox .doctorMarked .handleBar {
+  width: 8rem;
+  text-align: center;
+  font-size: 1.4rem;
+  background-color: #FFE14D;
+  color: #000;
+  padding: 0.6rem 0;
+  margin-top: 2rem;
+  box-sizing: border-box;
+}
+.doctorInfoBox .doctorIntroBox {
+  margin-top: 6rem;
+}
+.doctorInfoBox .doctorIntroBox .doctorIntroLabel {
+  font-weight: bold;
+  font-size: 1.6rem;
+  color: #000000;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #D3D3D4;
+}
+.doctorInfoBox .doctorIntroBox .doctorIntroCont {
+  margin-top: 2rem;
+  line-height: 3rem;
+  font-size: 1.4rem;
+  color: #333333;
+}
+.doctorInfoBox .doctorEssayBox {
+  margin-top: 6rem;
+}
+.doctorInfoBox .doctorEssayBox .doctorEssayLabel {
+  font-weight: bold;
+  font-size: 1.6rem;
+  color: #000000;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #D3D3D4;
+}
+.doctorInfoBox .doctorEssayBox .doctorEssayList {
+  margin-top: 2rem;
+  line-height: 3rem;
+  font-size: 1.4rem;
+}
+.doctorInfoBox .doctorEssayBox .doctorEssayList .doctorEssayItem {
+  display: flex;
+  cursor: pointer;
+}
+.doctorInfoBox .doctorEssayBox .doctorEssayList .doctorEssayItem .doctorEssayName {
+  color: #000000;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.doctorInfoBox .doctorEssayBox .doctorEssayList .doctorEssayItem .doctorEssayTime {
+  color: #747474;
+  width: 10rem;
+  text-align: right;
+  flex-shrink: 0;
+}
