@@ -44,6 +44,15 @@
 .main .newsBox .newsImg img {
   width: 100%;
 }
+.main .newsBox .newsvideoContent {
+  margin-top: 4rem;
+}
+.main .newsBox .newsvideoContent video {
+  width: 100%;
+  max-height: 49.5rem;
+  outline: none;
+  border: 0;
+}
 .main .newsBox .newsContent {
   margin-top: 2rem;
   line-height: 2rem;
@@ -82,11 +91,11 @@
   bottom: 0;
 }
 .navmenuBody .navLogo {
-  width: 6rem;
-  height: 6rem;
+  width: 13rem;
+  height: 5rem;
   font-size: 1rem;
   cursor: pointer;
-  background-image: url('../img/index/logo.png');
+  background-image: url('../img/index/logo_footer_bg.png');
   background-size: 100% 100%;
 }
 .navmenuBody .menuBody .el-menu.el-menu--horizontal {
@@ -191,6 +200,7 @@
   padding: 1rem 0;
 }
 .sideModelLabelBox .modelLabel {
+  line-height: 3rem;
   font-size: 1.8rem;
   font-weight: bold;
   color: #000000;
@@ -264,6 +274,7 @@
   margin-bottom: 5rem;
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
 }
 .newessayBody .essayBox .essayItem2 .essayImg {
   width: 25rem;
@@ -703,9 +714,9 @@
 .pagefooterBody .pagefooterBox .footerTop .footerTopL .footerLogo {
   width: 17.5rem;
   height: 7rem;
-  background-color: #525252;
   margin-top: 7rem;
   background-image: url('../img/index/logo_footer_bg.png');
+  background-size: 100% 100%;
 }
 .pagefooterBody .pagefooterBox .footerTop .footerTopR .footerWebMsg {
   display: flex;
@@ -853,7 +864,7 @@
 }
 .recomhothospitalBody .hospitalList .hospitalItem {
   display: flex;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   cursor: pointer;
 }
 .recomhothospitalBody .hospitalList .hospitalItem .hospitalImg {
@@ -1788,6 +1799,8 @@
   height: 8rem;
   background-color: darkgrey;
   cursor: pointer;
+  background-image: url(../img/index/logo_footer.png);
+  background-size: 100% 100%;
 }
 .registerBody .registerHeader .toLogin {
   font-size: 1.7rem;
@@ -1924,6 +1937,7 @@
 }
 .essaydetailBody {
   position: relative;
+  overflow: hidden;
 }
 .essaydetailBody .essayTitle {
   font-size: 2.4rem;
@@ -1943,6 +1957,15 @@
 }
 .essaydetailBody .essayRemark .essayAuthor {
   margin-left: 2.4rem;
+}
+.essaydetailBody .essayvideoContent {
+  margin-top: 4rem;
+}
+.essaydetailBody .essayvideoContent video {
+  width: 100%;
+  max-height: 49.5rem;
+  outline: none;
+  border: 0;
 }
 .essaydetailBody .essayContent {
   margin-top: 4rem;
@@ -2032,13 +2055,14 @@
   overflow: hidden;
 }
 .essayRelatedBody .essayRelatedBox .essayRelatedItem .essayRelatedInfo {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   width: calc(100% - 11rem);
   font-size: 1.4rem;
   line-height: 2rem;
   color: #212429;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 .essayvideodetailBody .essayvideoTitle {
   font-size: 2.4rem;
@@ -2058,6 +2082,9 @@
 }
 .essayvideodetailBody .essayvideoRemark .essayvideoAuthor {
   margin-left: 2.4rem;
+}
+.essayvideodetailBody .essayvideoImg {
+  margin-top: 10px;
 }
 .essayvideodetailBody .essayvideoContent {
   margin-top: 4rem;
@@ -3207,6 +3234,7 @@
 }
 .companylicenseBody .companylicenseExplain .companylicenseEItem .companylicenseEIImg {
   width: 76rem;
+  margin-top: 1rem;
 }
 .companylicenseBody .companylicenseExplain .companylicenseEItem .companylicenseEIImg img {
   max-width: 100%;
@@ -3991,6 +4019,13 @@
 }
 .replyBody {
   margin-top: 10rem;
+}
+.replyBody .replyHandleBtn {
+  margin-bottom: 2rem;
+  cursor: pointer;
+  color: #8C8E90;
+  font-size: 1.4rem;
+  line-height: 2rem;
 }
 .replyBody .replyInputBox {
   display: flex;

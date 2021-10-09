@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>医疗系统</title>
+    <meta name="baidu-site-verification" content="code-CVbavcK8gI" />
+    <title>前沿医学</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
     <link rel="stylesheet" href="../css/common.css">
@@ -79,13 +80,13 @@
                 postTitleListByCatalogId().then(res => {
                     if(res.data && res.data.msg === "success"){
                         res.data.data.map(item => {
-                            if(item.yiliaoModel === '学术'){
+                            if(item.yiliaoModel === '学术' && this.messageList[0].message.length<15){
                                 this.messageList[0].message.push(item)
-                            }else if(item.yiliaoModel === '会议'){
+                            }else if(item.yiliaoModel === '会议' && this.messageList[1].message.length<15){
                                 this.messageList[1].message.push(item)
-                            }else if(item.yiliaoModel === '展会'){
+                            }else if(item.yiliaoModel === '展会' && this.messageList[2].message.length<15){
                                 this.messageList[2].message.push(item)
-                            }else if(item.yiliaoModel === '健康生活'){
+                            }else if(item.yiliaoModel === '健康生活' && this.messageList[3].message.length<15){
                                 this.messageList[3].message.push(item)
                             }
                         })

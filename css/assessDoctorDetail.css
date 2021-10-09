@@ -140,6 +140,7 @@
 .doctorInfoBox .doctorEssayBox .doctorEssayList .doctorEssayItem {
   display: flex;
   cursor: pointer;
+  justify-content: space-between;
 }
 .doctorInfoBox .doctorEssayBox .doctorEssayList .doctorEssayItem .doctorEssayName {
   color: #000000;
@@ -150,7 +151,7 @@
 }
 .doctorInfoBox .doctorEssayBox .doctorEssayList .doctorEssayItem .doctorEssayTime {
   color: #747474;
-  width: 10rem;
+  width: 30rem;
   text-align: right;
   flex-shrink: 0;
 }

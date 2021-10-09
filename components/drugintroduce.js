@@ -13,7 +13,7 @@ Vue.component('drugintroduce', {
 		</div>
 		<div class="drugIntroduceContent">
 			<div class="drugICLeft">
-				<div class="drugICLHospital">
+				<div class="drugICLHospital" @click="toCompanyDetail(drugdata.company)">
 					<div class="drugICLHospitalImg">
 						<img v-if="drugdata.company" :src="drugdata.company.pictureStr|httpStr" alt="">
 					</div>
@@ -105,6 +105,9 @@ Vue.component('drugintroduce', {
 		}
 	},
 	methods: {
+		toCompanyDetail(data) {
+			location.href = `./companyDetailEasy.html?id=${data.enterpriseId}&name=${data.enterpriseName}&enter=index`
+		},
 		toDrugDetail(data){
 			location.href = `./medicineDetail.html?id=${data.productId}&name=${data.productName}&catalogName=${this.drugdata.name}`
 		},

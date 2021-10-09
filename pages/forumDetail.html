@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="baidu-site-verification" content="code-CVbavcK8gI" />
     <title>警示新闻</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
@@ -25,8 +26,13 @@
                 <div class="newsImg">
                     <img :src="newsData.pictureStr|httpStr" alt="">
                 </div>
+                <div class="newsvideoContent" v-if="newsData.contextVidio">
+                    <video :src="newsData.contextVidio|httpStr" controls="controls" :poster="newsData.contextImg | httpStr">
+                        your browser does not support the video tag
+                    </video>
+                </div>
                 <div class="newsContent" v-html="newsData.contextStr"></div>
-                <reply></reply>
+                <reply :titleId="newsData.titleId"></reply>
             </div>
             <div class="contentRight">
                 <interested></interested>
@@ -44,7 +50,8 @@
 <script src="../js/request.js"></script>
 <script src="../js/unit.js"></script>
 <script src="../js/businessHandle.js"></script>
-<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/navmenu.js"></script>
+<script src="../components/breadcrumb.js"></script>
 <script src="../components/drugintroduce.js"></script>
 <script src="../components/interested.js"></script>
 <script src="../components/reply.js"></script>

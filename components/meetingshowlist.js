@@ -25,7 +25,7 @@ Vue.component('meetingshowlist', {
 	},
 	methods: {
 		toMessageDetail(data){
-			location.href = `./newsMessageDetail?titleId=${data.titleId}`
+			location.href = `./newsMessageDetail.html?titleId=${data.titleId}`
 		},
 		toMeetingType(link){
 			location.href = link

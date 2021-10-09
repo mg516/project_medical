@@ -124,7 +124,7 @@ const postCompanyDetail = (id) => {
         null
     )
 }
-// 根据目录名称和省份取得对应的下层目录列表
+// 企业库：根据目录名称和省份取得对应的下层目录列表，最顶层名称是产品库
 const postEnterprisePcatalog = (param) => {
     return postHttp(
         `/api/listEnterprisePcatalog`,
@@ -144,14 +144,6 @@ const postEnterpriseList = (param) => {
 const postProvinceList = (param) => {
     return postHttp(
         `/api/listByYiliaoProvince`,
-        null,
-        param
-    )
-}
-// 获取企业列表
-const postCompanyList = (param) => {
-    return postHttp(
-        `/api/listSearchYiliaoEnterprise`,
         null,
         param
     )
@@ -404,3 +396,90 @@ const postSearchListIsLaunch = (param) => {
         param
     )
 }
+// 查询产品库
+const getMapLocation = () => {
+    return getHttp(
+        `http://api.map.baidu.com/highacciploc/v1?qcip=220.181.38.113&qterm=pc&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph&coord=bd09ll`,
+        null,
+        null
+    )
+}
+
+// 新增评论
+const postAddCommentsInfo = (param) => {
+    return postHttp(
+        `/api/addCommentsInfo`,
+        null,
+        param
+    )
+}
+
+// 新增评论的回复
+const postAddCommentsReply = (param) => {
+    return postHttp(
+        `/api/addCommentsReply`,
+        null,
+        param
+    )
+}
+
+// 根据评论主表ID取评论回复列表：传入评论主表的ID值，返回评论回复列表信息
+const postCommentsByCommentId = (param) => {
+    return postHttp(
+        `/api/commentsByCommentId`,
+        null,
+        param
+    )
+}
+
+// 根据被评论者ID取评论列表信息：传入被评论者的ID值，返回评论列表信息
+const postCommentsByOwnerId = (param) => {
+    return postHttp(
+        `/api/commentsByOwnerId`,
+        null,
+        param
+    )
+}
+
+// 根据资讯ID取评论列表信息：传入资讯的ID值，返回评论列表信息
+const postCommentsByTitleId = (param) => {
+    return postHttp(
+        `/api/commentsByTitleId`,
+        null,
+        param
+    )
+}
+
+// 修改评论信息（用来修改点赞数量）
+const postUpdateLikeNum = (param) => {
+    return postHttp(
+        `/api/updateLikeNum`,
+        null,
+        param
+    )
+}
+
+// 修改评论信息（用来修改点赞数量）
+const postDoctorArticle = (doctorId) => {
+    return postHttp(
+        `/api/titleByDoctorId`,
+        null,
+        {doctorId:doctorId}
+    )
+}
+
+// 广告
+const postBannerList = () => {
+    return postHttp(
+        `/api/bannerList`,
+        null,
+        null
+    )
+}
+
+// http://115.159.53.197:8080/yiliao/comments/get
+// http://115.159.53.197:8080/api/comments/get
+// http://localhost:8080/yiliao/comments/get/{ownerId}(根据 ownerId 查询评论)
+// http://localhost:8080/yiliao/comments/save(保存评论)
+// http://localhost:8080/yiliao/comments/save-reply(保存评论回复)
+// http://localhost:8080/yiliao/comments/get-reply/{commentId}(通过commentId获取评论回复)

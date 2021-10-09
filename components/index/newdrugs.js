@@ -3,10 +3,10 @@ Vue.component('newdrugs', {
 	`<div class="newessayBody">
 		<div class="modelLabelBox">
 			<div class="modelLabel">新药发布</div>
-			<div class="modelMore">查看全部</div>
+			<div class="modelMore" @click="toMore">查看全部</div>
 		</div>
 		<div class="essayBox">
-			<div class="essayItem" v-for="(item,index) in drugList" :key="index">
+			<div class="essayItem" v-for="(item,index) in drugList" :key="index" @click="toDetail(item)">
 				<div class="essayImg"><img :src="item.contextImg | imgStr" /></div>
 				<div class="essayInfo">
 					<div class="essayTitle">{{item.titileStr}}</div>
@@ -44,6 +44,12 @@ Vue.component('newdrugs', {
 		}
 	},
 	methods: {
+		toDetail(data){
+			location.href = `./newMedicineHouseDetail.html?titleId=${data.titleId}`
+		},
+		toMore(){
+			location.href = `./newMedicineHouse.html`
+		},
 		handleSelect(key, keyPath) {
 			console.log(key, keyPath);
 		}

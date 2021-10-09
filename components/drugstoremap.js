@@ -149,11 +149,13 @@ Vue.component('drugstoremap', {
 		},
 		//获取GPS坐标 
 		getPoint(){
-			if (navigator.geolocation) { 
-				navigator.geolocation.getCurrentPosition(this.showMap, this.handleError, { enableHighAccuracy: true, maximumAge: 1000 }); 
-			} else { 
-				alert("您的浏览器不支持使用HTML 5来获取地理位置服务"); 
-			}
+			const point = ls_get('pointObj')
+			this.loadMap([point.lng, point.lat])
+			// if (navigator.geolocation) {
+			// 	navigator.geolocation.getCurrentPosition(this.showMap, this.handleError, { enableHighAccuracy: true, maximumAge: 1000 }); 
+			// } else { 
+			// 	alert("您的浏览器不支持使用HTML 5来获取地理位置服务"); 
+			// }
 		},
 		showMap(value) {
 			var longitude = value.coords.longitude;
@@ -175,7 +177,8 @@ Vue.component('drugstoremap', {
 				this.$message.warning("未知错误")
 				break;
 			}
-			this.loadMap([116.404, 39.915])
+			const point = ls_get('pointObj')
+			this.loadMap([point.lng, point.lat])
 			// this.loadMap([114.2113317377854,30.513731225442783])
 		},
 		initMap(){
@@ -184,5 +187,30 @@ Vue.component('drugstoremap', {
 	},
     mounted() {
 		this.initMap()
+		// getMapLocation().then(res => {
+		// 	debugger
+		// })
+
+		// http://api.map.baidu.com/highacciploc/v1?qcip=220.181.38.113&qterm=pc&ak=请输入您的AK&coord=bd09ll
+
+		// var map = new BMap.Map("dictionaryMap");
+		// var point = new BMap.Point(116.331398,39.897445);
+		// map.centerAndZoom(point,12);
+
+		// var geolocation = new BMap.Geolocation();
+		// // 开启SDK辅助定位
+		// geolocation.enableSDKLocation();
+		// geolocation.getCurrentPosition(function(r){
+		// 	debugger
+		// 	if(this.getStatus() == BMAP_STATUS_SUCCESS){
+		// 		var mk = new BMap.Marker(r.point);
+		// 		map.addOverlay(mk);
+		// 		map.panTo(r.point);
+		// 		alert('您的位置：'+r.point.lng+','+r.point.lat);
+		// 	}
+		// 	else {
+		// 		alert('failed'+this.getStatus());
+		// 	}        
+		// });
 	}
 });

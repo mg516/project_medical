@@ -31,7 +31,7 @@ Vue.component('meetinglist', {
 			location.href = link
 		},
 		toMessageMeetingDetail(data){
-			location.href = './messageMeetingDetail.html'
+			location.href = `./messageMeetingDetail.html?titleId=${data.titleId}`
 		}
 	},
     mounted() {

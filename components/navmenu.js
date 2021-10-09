@@ -45,7 +45,8 @@ Vue.component('navmenu', {
 					<el-menu-item index="messageHealthy.html" @click="toPage('./messageHealthy.html')">健康生活</el-menu-item>
 				</el-submenu>
 				<el-menu-item index="6">
-					<a href="./forumIndex.html" target="_self">论坛</a>
+					<a href="./forumIndex.html" target="_self" v-if="false">论坛</a>
+					<a href="http://bbs.qyyoo.com/" target="_block">论坛</a>
 				</el-menu-item>
 			</el-menu>
 		</div>
@@ -131,6 +132,7 @@ Vue.component('navmenu', {
 						console.log(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);
 						that.locationName = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber
 						ls_set('locationObj',addComp)
+						ls_set('pointObj',rs.point)
 					});
 				} else {
 					//关于状态码  

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="baidu-site-verification" content="code-CVbavcK8gI" />
     <title>警示新闻</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
@@ -26,10 +27,10 @@
                 <div class="newsLabel">
                     <div class="newsLabelItem" v-for="(item,index) in newsData.label" :key="index">{{item}}</div>
                 </div>
-                <reply></reply>
+                <reply :titleId="newsData.titleId"></reply>
             </div>
             <div class="contentRight">
-                <essayrelated></essayrelated>
+                <essayrelated modelName="药品评测"></essayrelated>
             </div>
         </div>
         <pagefooter></pagefooter>
@@ -44,7 +45,8 @@
 <script src="../js/request.js"></script>
 <script src="../js/unit.js"></script>
 <script src="../js/businessHandle.js"></script>
-<script src="../components/navmenu.js"></script>b.js"></script>
+<script src="../components/navmenu.js"></script>
+<script src="../components/breadcrumb.js"></script>
 <script src="../components/drugintroduce.js"></script>
 <script src="../components/index/essayrelated.js"></script>
 <script src="../components/reply.js"></script>

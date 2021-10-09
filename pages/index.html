@@ -4,25 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>医疗系统</title>
+    <meta name="baidu-site-verification" content="code-CVbavcK8gI" />
+    <title>前沿医学</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
     <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/cd.css">
 </head>
 <body>
     <div id="myApp" class="main" v-cloak>
         <navmenu></navmenu>
         <banner></banner>
         <tagbar></tagbar>
+        <div class="cd_left_box"></div>
+        <div class="cd_right_box"></div>
         <div class="contentBody">
             <div class="contentLeft">
+                <div class="cd_content cd1"></div>
                 <newessay :data="scienceList"></newessay>
-                <business :data="enterpriseList"></business>
+                <div class="cd_content cd2"></div>
                 <gooddoctor :data="doctorList"></gooddoctor>
+                <div class="cd_content cd3"></div>
                 <goodhospital :data="hospitalList"></goodhospital>
+                <div class="cd_content cd4"></div>
                 <newdrugs :data="indexmedicinallist"></newdrugs>
+                <div class="cd_content cd5"></div>
                 <newsconsulting :data="indexnewlist"></newsconsulting>
-                <forum></forum>
+                <div class="cd_content cd6"></div>
+                <business :data="enterpriseList"></business>
+                <div class="cd_content cd7"></div>
+                <!-- <forum></forum> -->
             </div>
             <div class="contentRight">
                 <hothospital></hothospital>
@@ -42,6 +53,7 @@
 <script src="../js/axios.min-0.21.0.js"></script>
 <script src="../js/request.js"></script>
 <script src="../js/unit.js"></script>
+<script src="../js/cd.js"></script>
 <script src="../js/businessHandle.js"></script>
 <script src="../components/navmenu.js"></script>
 <script src="../components/pagefooter.js"></script>

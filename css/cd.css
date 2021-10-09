@@ -1,0 +1,46 @@
+.cd_content,
+.cd_left_box .cd_item,
+.cd_right_box .cd_item {
+  cursor: pointer;
+  position: relative;
+}
+.cd_content::before,
+.cd_left_box .cd_item::before,
+.cd_right_box .cd_item::before {
+  content: '广告';
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  padding: 0.4rem 0.6rem;
+  font-size: 1rem;
+  background-color: #999;
+  color: #fff;
+}
+.cd_content {
+  display: none;
+  width: 82rem;
+  min-height: 10rem;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+.cd_left_box {
+  position: absolute;
+  top: 8rem;
+  left: 50%;
+  transform: translateX(-75rem);
+  width: 16rem;
+}
+.cd_left_box .cd_item {
+  font-size: 2rem;
+}
+.cd_right_box {
+  position: absolute;
+  top: 8rem;
+  right: 50%;
+  transform: translateX(75rem);
+  width: 16rem;
+}
+.cd_right_box .cd_item {
+  font-size: 2rem;
+}

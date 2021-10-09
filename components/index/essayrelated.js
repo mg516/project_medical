@@ -7,34 +7,51 @@ Vue.component('essayrelated', {
 		<div class="essayRelatedBox">
 			<div class="essayRelatedItem" v-for="(item,index) in essayRelatedList" :key="index">
 				<div class="essayRelatedHead">
-					<img :src="item.img" />
+					<img :src="item.contextImg|httpStr" />
 				</div>
-				<div class="essayRelatedInfo">{{item.title}}</div>
+				<div class="essayRelatedInfo" :title="item.titileStr">{{item.titileStr}}</div>
 			</div>
 		</div>
 	</div>`,
 	props: {
-		// activeName: String,
-		// showUnit: Boolean,
-		// userStationNum: String
+		modelName: {
+			type: String,
+			default: ''
+		}
+	},
+	filters: {
+		httpStr(link) {
+			return baseUrl + link;
+		}
 	},
 	data() {
 		return {
-			essayRelatedList:[
-				{title:'JAHA：周围动脉疾病患者急性失代偿性心衰再入院分析',img:'../img/index/h1.png'},
-				{title:'JAHA：周围动脉疾病患者急性失代偿性心衰再入院分析',img:'../img/index/h2.png'},
-				{title:'JAHA：周围动脉疾病患者急性失代偿性心衰再入院分析',img:'../img/index/h3.png'},
-				{title:'JAHA：周围动脉疾病患者急性失代偿性心衰再入院分析',img:'../img/index/h4.png'},
-				{title:'JAHA：周围动脉疾病患者急性失代偿性心衰再入院分析',img:'../img/index/h1.png'},
-			]
+			essayRelatedList:[]
 		};
 	},
+	watch:{
+		// modelName(val){
+		// 	if(val){
+		// 		this.getList()
+		// 	}
+		// }
+	},
 	methods: {
-		handleSelect(key, keyPath) {
-			console.log(key, keyPath);
+		getList(key, keyPath) {
+			postTitleListByCatalogId().then(res => {
+				if(res.data && res.data.msg === "success"){
+					const essayRelatedList = []
+					res.data.data.map(item => {
+						if(item.yiliaoModel === '新闻'){
+							if(essayRelatedList.length<10) essayRelatedList.push(item)
+						}
+					})
+					this.essayRelatedList = essayRelatedList
+				}
+			})
 		}
 	},
     mounted() {
-
+		this.getList()
 	}
 });

@@ -2,42 +2,63 @@ Vue.component('coursevideorelated', {
 	template:
 	`<div class="essayvideoBody">
 		<div class="sideModelLabelBox">
-			<div class="modelLabel">课程列表</div>
+			<div class="modelLabel">{{title}}</div>
 		</div>
 		<div class="essayvideoBox">
-			<div class="essayvideoItem" v-for="(item,index) in essayvideoList" :key="index" @click="toEssayDetailVideo">
+			<div class="essayvideoItem" v-for="(item,index) in courseList" :key="index" @click="toEssayDetailVideo(item)">
 				<div class="essayvideoCover">
-					<img :src="item.img" />
+					<img :src="item.contextImg | httpStr" />
 					<div class="essayvideoPlay">
 						<img src="../img/index/playicon.png" />
 					</div>
 				</div>
-				<div class="essayvideoInfo">{{item.title}}</div>
+				<div class="essayvideoInfo">{{item.titileStr}}</div>
 			</div>
 		</div>
 	</div>`,
 	props: {
-		// activeName: String,
-		// showUnit: Boolean,
-		// userStationNum: String
+		title: {
+			type: String,
+			default: '课程列表'
+		}
 	},
 	data() {
 		return {
-			essayvideoList:[
-				{title:'JAHA：周围动脉疾病患者急性失代偿性心衰再入院分析',img:'../img/index/h1.png',video:'../video/movie.ogv'},
-				{title:'JAHA：周围动脉疾病患者急性失代偿性心衰再入院分析',img:'../img/index/h2.png',video:'../video/movie.ogv'},
-				{title:'JAHA：周围动脉疾病患者急性失代偿性心衰再入院分析',img:'../img/index/h3.png',video:'../video/movie.ogv'},
-				{title:'JAHA：周围动脉疾病患者急性失代偿性心衰再入院分析',img:'../img/index/h4.png',video:'../video/movie.ogv'},
-				{title:'JAHA：周围动脉疾病患者急性失代偿性心衰再入院分析',img:'../img/index/h1.png',video:'../video/movie.ogv'},
-			]
+			courseList:[]
 		};
 	},
+	filters: {
+		httpStr(link) {
+			return baseUrl + link;
+		}
+	},
 	methods: {
-		toEssayDetailVideo() {
-			location.href = './essayDetailVideo.html'
+		toEssayDetailVideo(data) {
+			location.href = `./messageCourseDetail.html?titleId=${data.titleId}`
+		},
+		getCourseType(){
+			postModelListByName('课程').then(res => {
+				if(res.data && res.data.msg === "success"){
+					let courseList = []
+					res.data.data.forEach(async item => {
+						const param = {
+							catalogName:item.catalogName,
+							catalogId: item.catalogId
+						}
+						const res = await this.getCourseList(param)
+						if(res.data.data){
+							courseList = courseList.concat(res.data.data.slice(1,10-courseList.length))
+						}
+						this.courseList = courseList
+					})
+				}
+			})
+		},
+		getCourseList(param){
+			return postTitleListByCatalogId(param)
 		}
 	},
     mounted() {
-
+		this.getCourseType()
 	}
 });

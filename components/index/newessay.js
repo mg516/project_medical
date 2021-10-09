@@ -63,12 +63,8 @@ Vue.component('newessay', {
 			console.log(key, keyPath);
 		},
 		toEssayDetail(data){
-			if(data.type === 'video'){
-				location.href = './essayDetailVideo.html'
-			}else{
-				const titleId = data.titleId
-				location.href =  `./essayDetail.html?titleId=${titleId}`
-			}
+			const titleId = data.titleId
+			location.href =  `./essayDetail.html?titleId=${titleId}`
 		}
 	},
     mounted() {

@@ -5,17 +5,17 @@ Vue.component('newdrugside', {
 			<div class="modelLabel">{{title}}</div>
 		</div>
 		<div class="recomProductBox">
-			<div class="recomProductItem" v-for="(item,index) in recomProductList" :key="index">
+			<div class="recomProductItem" v-for="(item,index) in drugList" :key="index" @click="toDrugDetail(item)">
 				<div class="recomProductHead">
-					<img :src="item.img" />
+					<img :src="item.contextImg | imgStr" />
 				</div>
 				<div class="recomProductInfo">
-					<div class="recomProductName" :title="item.name">{{item.name}}</div>
+					<div class="recomProductName" :title="item.titileStr">{{item.titileStr}}</div>
 					<div class="recomProductRemark" :title="item.remark">{{item.remark}}</div>
 				</div>
 			</div>
 		</div>
-		<div class="readMore">查看更多</div>
+		<div class="readMore" @click="toMore">查看更多</div>
 	</div>`,
 	props: {
 		title: {
@@ -23,23 +23,45 @@ Vue.component('newdrugside', {
 			default: '新药发布'
 		}
 	},
+	filters: {
+		imgStr(link) {
+			return baseUrl + link;
+		}
+	},
 	data() {
 		return {
-			recomProductList:[
-				{name:'999感冒灵999感冒灵999感冒灵',remark:'这里是药品介绍',img:'../img/index/y1.png'},
-				{name:'999感冒灵',remark:'这里是药品介绍这里是药品介绍这里是药品介绍',img:'../img/index/y2.png'},
-				{name:'999感冒灵',remark:'这里是药品介绍',img:'../img/index/y3.png'},
-				{name:'999感冒灵',remark:'这里是药品介绍',img:'../img/index/y4.png'},
-				{name:'999感冒灵',remark:'这里是药品介绍',img:'../img/index/y5.png'},
-			]
+			drugType: [],
+			drugList: []
 		};
 	},
 	methods: {
-		handleSelect(key, keyPath) {
-			console.log(key, keyPath);
+		toMore(){
+			location.href = `./newMedicineHouse.html`
+		},
+		toDrugDetail(data) {
+			location.href = `./newMedicineHouseDetail.html?titleId=${data.titleId}`
+		},
+		getDrugDetail(){
+			let drugList = []
+			this.drugType.forEach(async item => {
+				const param= {
+					catalogName: item.catalogName
+				}
+				const res = await postTitleListByCatalogId(param)
+				if(res.data.data){
+					drugList = drugList.concat(res.data.data.slice(0,10-drugList.length))
+				}
+				this.drugList = drugList
+			});
+		},
+		getDrugType(){
+			postModelListByName('新药发布').then(res => {
+				this.drugType = res.data.data
+				this.getDrugDetail()
+			})
 		}
 	},
 	mounted() {
-
+		this.getDrugType()
 	}
 });

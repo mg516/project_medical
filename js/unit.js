@@ -157,3 +157,6 @@ const initWangEdit = (domId) => {
         alert('请引入wangEdit插件')
     }
 }
+const formatDate = (dateObj) => {
+    return `${dateObj.getFullYear()}-${dateObj.getMonth()+1}-${dateObj.getDate()} ${dateObj.getHours()}:${dateObj.getMinutes()}:${dateObj.getSeconds()}`
+}

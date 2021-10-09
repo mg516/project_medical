@@ -1,20 +1,26 @@
 Vue.component('essayvideodetail', {
 	template:
 	`<div class="essayvideodetailBody">
-		<div class="essayvideoTitle">{{title}}</div>
+		<div class="essayvideoTitle">{{data.titileStr}}</div>
 		<div class="essayvideoRemark">
-			<div class="essayvideoTime">{{time}}</div>
+			<div class="essayvideoTime">{{data.createTime}}</div>
 		</div>
-		<div class="essayvideoContent">
-			<video :src="video" controls="controls">
+		<div class="essayvideoContent" v-if="data.contextVidio">
+			<video :src="data.contextVidio|httpStr" controls="controls" :poster="data.contextImg | httpStr">
 				your browser does not support the video tag
 			</video>
 		</div>
+		<div class="essayvideoContent" v-html="data.contextStr"></div>
 	</div>`,
 	props: {
-		// activeName: String,
-		// showUnit: Boolean,
-		// userStationNum: String
+		data: {
+			type: Object
+		}
+	},
+	filters: {
+		httpStr(link) {
+			return baseUrl + link;
+		}
 	},
 	data() {
 		return {

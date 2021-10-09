@@ -32,7 +32,7 @@ Vue.component('messagelist', {
 	},
 	methods: {
 		toMessageDetail(data){
-			location.href = `./newsMessageDetail?titleId=${data.titleId}`
+			location.href = `./newsMessageDetail.html?titleId=${data.titleId}`
 		},
 		toMessageType(data){
 			location.href = `${data.link}?label=${data.label}&id=${data.id}`

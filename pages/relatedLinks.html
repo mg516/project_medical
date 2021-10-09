@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="baidu-site-verification" content="code-CVbavcK8gI" />
     <title>企业维护中心-企业信息</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
@@ -17,7 +18,8 @@
                 <sidenav :menulist="menulist" :activeindex="activeindex" @checktab="checkTab"></sidenav>
             </div>
             <div class="centerInfoBodyR">
-                <div class="menuLabel">{{menulist[activeindex].name}}</div>
+                <!-- <div class="menuLabel">{{menulist[activeindex].name}}</div> -->
+                <div class="menuContent" v-html="htmlStr"></div>
             </div>
         </div>
         <pagefooter></pagefooter>
@@ -33,10 +35,10 @@
 <script src="../js/businessHandle.js"></script>
 <script src="../element/element-ui-2.14.1.js"></script>
 <script src="../js/axios.min-0.21.0.js"></script>
-<script src="../js/request.js"></script>
 <script src="../js/unit.js"></script>
 <script src="../js/businessHandle.js"></script>
-<script src="../components/navmenu.js"></script>r/sidenav.js"></script>
+<script src="../components/navmenu.js"></script>
+<script src="../components/userCenter/sidenav.js"></script>
 <script>
     const myApp = new Vue({
         el: '#myApp',
@@ -45,83 +47,38 @@
                 menulist:WebLinkMenu,
                 activeindex: 0,
                 title: '企业介绍',
-                imageUrl: '',
-                form:{
-                    imageUrl: '',
-                    introduce: ''
-                },
-                districts:null,
-                districtLevel1: null,
-                districtLevelId1: '',
-                districtLevel2: null,
-                districtLevelId2: '',
-                districtLevel3: null,
-                districtLevelId3: '',
+                htmlStr: ''
             }
         },
         mounted() {
-            this.getDistricts()
+            this.checkTab(this.activeindex)
         },
         methods: {
             checkTab(index){
                 this.activeindex = index
+                this.getData(this.menulist[this.activeindex].name)
             },
-            handleAvatarSuccess(res, file) {
-                this.imageUrl = URL.createObjectURL(file.raw);
-            },
-            beforeAvatarUpload(file) {
-                const isJPG = file.type === 'image/jpeg';
-                const isLt2M = file.size / 1024 / 1024 < 2;
-
-                if (!isJPG) {
-                this.$message.error('上传头像图片只能是 JPG 格式!');
-                }
-                if (!isLt2M) {
-                this.$message.error('上传头像图片大小不能超过 2MB!');
-                }
-                return isJPG && isLt2M;
-            },
-            getDistricts(){
-                getHttp('../json/districts.json').then(res => {
-                    this.districts = res.data
-                    const districtLevel1 = []
-                    for(let key in res.data['100000']){
-                        districtLevel1.push({
-                            value: key,
-                            label: res.data['100000'][key]
-                        })
+            getData(yiliaoModel){
+                postModelListByName(yiliaoModel).then(res => {
+                    if(res.data && res.data.msg === "success"){
+                        const catalogArr = res.data.data
+                        try {
+                            item = catalogArr[0]
+                            const param= {
+                                catalogId: item.catalogId
+                            }
+                            postTitleListByCatalogId(param).then(res=> {
+                                if(res.data.data && res.data.data[0].titleId){
+                                    postTitleById(res.data.data[0].titleId).then(res => {
+                                        this.htmlStr = res.data.data.contextStr
+                                    })
+                                }
+                            })
+                        } catch (error) {
+                            this.htmlStr = '暂无数据'
+                        }
                     }
-                    this.districtLevel1 = districtLevel1
-                }).catch(err => {
-                    this.districts = {}
                 })
-            },
-            selectLevel1(val){
-                let districtLevel2 = []
-                for(let key in this.districts[val]){
-                    districtLevel2.push({
-                        value: key,
-                        label: this.districts[val][key]
-                    })
-                }
-                this.districtLevel2 = districtLevel2
-                this.districtLevel3 = null
-                this.districtLevelId2 = ''
-                this.districtLevelId3 = ''
-            },
-            selectLevel2(val){
-                let districtLevel3 = []
-                for(let key in this.districts[val]){
-                    districtLevel3.push({
-                        value: key,
-                        label: this.districts[val][key]
-                    })
-                }
-                this.districtLevel3 = districtLevel3
-                this.districtLevelId3 = ''
-            },
-            submit(){
-                this.$message.success('提交成功')
             }
         }
     })
@@ -146,6 +103,11 @@
 .menuLabel{
     font-size: 2.6rem;
     line-height: 3.7rem;
+    color: #212429;
+}
+.menuContent{
+    font-size: 1.4rem;
+    line-height: 2.4rem;
     color: #212429;
 }
 </style>

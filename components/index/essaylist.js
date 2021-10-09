@@ -60,14 +60,10 @@ Vue.component('essaylist', {
 			console.log(key, keyPath);
 		},
 		toEssayDetail(data){
-			if(data.type === 'video'){
-				location.href = './essayDetailVideo.html'
-			}else{
-				const catalogName = data.catalogName
-				const catalogId = data.catalogId
-				const titleId = data.titleId
-				location.href =  `./essayDetail.html?catalogId=${catalogId}&catalogName=${catalogName}&titleId=${titleId}`
-			}
+			const catalogName = data.catalogName
+			const catalogId = data.catalogId
+			const titleId = data.titleId
+			location.href =  `./essayDetail.html?catalogId=${catalogId}&catalogName=${catalogName}&titleId=${titleId}`
 		},
 		getEssayList(){
 			let param = {

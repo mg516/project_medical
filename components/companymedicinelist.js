@@ -4,11 +4,11 @@ Vue.component('companymedicinelist', {
 		<div class="companymedicinelistBox">
 			<div class="companymeItem" v-for="(item,index) in medicinelist" :key="index">
 				<div class="companymeImg">
-					<img :src="item.img" />
+					<img :src="item.pictureStr|httpStr" />
 				</div>
 				<div class="companymeInfo">
 					<div class="companymeName" :title="item.name">
-						<div class="companymeNameText" :title="item.name" @click="toMedicineDetail(item)">{{item.name}}</div>
+						<div class="companymeNameText" :title="item.productName" @click="toMedicineDetail(item)">{{item.productName}}</div>
 						<div class="companymeAskBar">询问</div>
 					</div>
 					<div class="companymeMsg">
@@ -24,9 +24,10 @@ Vue.component('companymedicinelist', {
 		</div>
 	</div>`,
 	props: {
-		// activeName: String,
-		// showUnit: Boolean,
-		// userStationNum: String
+		data :{
+			type:Object,
+			default:()=>{}
+		}
 	},
 	data() {
 		return {
@@ -40,15 +41,32 @@ Vue.component('companymedicinelist', {
 			activeIndex: 0,
 		};
 	},
+	filters: {
+		httpStr(link) {
+			return baseUrl + link;
+		}
+	},
 	methods: {
 		checkAddress(index) {
 			this.activeIndex = index
 		},
 		toMedicineDetail(data){
 			location.href = './medicineDetail.html'
+		},
+		getList(){
+			const param = {
+				enterpriseId: getUrlParam('id'),
+				beginNo:1,
+				endNo: 10
+			}
+			postEnterpriseProductList(param).then(res => {
+				if(res.data.data){
+					this.medicinelist = res.data.data.success
+				}
+			})
 		}
 	},
     mounted() {
-
+		this.getList()
 	}
 });

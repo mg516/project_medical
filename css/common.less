@@ -46,6 +46,16 @@
                 width: 100%;
             }
         }
+        .newsvideoContent{
+            margin-top: 4rem;
+            video{
+                width: 100%;
+                max-height: 49.5rem;
+
+                outline:none;
+                border:0;
+            }
+        }
         .newsContent{
             margin-top: 2rem;
             line-height: 2rem;
@@ -85,11 +95,14 @@
         bottom: 0;
     }
     .navLogo{
-        width: 6rem;
-        height: 6rem;
+        // width: 6rem;
+        // height: 6rem;
+        width: 13rem;
+        height: 5rem;
         font-size: 1rem;
         cursor: pointer;
-        background-image: url('../img/index/logo.png');
+        // background-image: url('../img/index/logo.png');
+        background-image: url('../img/index/logo_footer_bg.png');
         background-size: 100% 100%;
     }
     .menuBody{
@@ -200,6 +213,7 @@
 .sideModelLabelBox{
     padding: 1rem 0;
     .modelLabel{
+        line-height: 3rem;
         font-size: 1.8rem;
         font-weight: bold;
         color: #000000;
@@ -274,6 +288,7 @@
             margin-bottom: 5rem;
             display: flex;
             justify-content: space-between;
+            cursor: pointer;
             .essayImg{
                 width: 25rem;
                 height: 16rem;
@@ -722,9 +737,10 @@
                 .footerLogo{
                     width: 17.5rem;
                     height: 7rem;
-                    background-color: #525252;
+                    // background-color: #525252;
                     margin-top: 7rem;
                     background-image: url('../img/index/logo_footer_bg.png');
+                    background-size: 100% 100%;
                 }
             }
             .footerTopR{
@@ -878,7 +894,7 @@
         margin-bottom: 2rem;
         .hospitalItem{
             display: flex;
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
             cursor: pointer;
             .hospitalImg{
                 width: 6.8rem;
@@ -1827,6 +1843,8 @@
             height: 8rem;
             background-color: darkgrey;
             cursor: pointer;
+            background-image: url(../img/index/logo_footer.png);
+            background-size: 100% 100%;
         }
         .toLogin{
             font-size: 1.7rem;
@@ -1978,6 +1996,7 @@
 }
 .essaydetailBody{
     position: relative;
+    overflow: hidden;
     .essayTitle{
         font-size: 2.4rem;
         line-height: 3.2rem;
@@ -1996,6 +2015,16 @@
         margin-top: 2rem;
         .essayAuthor{
             margin-left: 2.4rem;
+        }
+    }
+    .essayvideoContent{
+        margin-top: 4rem;
+        video{
+            width: 100%;
+            max-height: 49.5rem;
+
+            outline:none;
+            border:0;
         }
     }
     .essayContent{
@@ -2086,13 +2115,15 @@
                 }
             }
             .essayRelatedInfo{
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
                 width: calc(100% - 11rem);
                 font-size: 1.4rem;
                 line-height: 2rem;
                 color: #212429;
+
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 3;
+                overflow: hidden;
             }
         }
     }
@@ -2117,6 +2148,9 @@
         .essayvideoAuthor{
             margin-left: 2.4rem;
         }
+    }
+    .essayvideoImg{
+        margin-top: 10px;
     }
     .essayvideoContent{
         margin-top: 4rem;
@@ -3301,6 +3335,7 @@
             }
             .companylicenseEIImg{
                 width: 76rem;
+                margin-top: 1rem;
                 img{
                     max-width: 100%;
                 }
@@ -4111,6 +4146,13 @@
 }
 .replyBody{
     margin-top: 10rem;
+    .replyHandleBtn{
+        margin-bottom: 2rem;
+        cursor: pointer;
+        color: #8C8E90;
+        font-size: 1.4rem;
+        line-height: 2rem;
+    }
     .replyInputBox{
         display: flex;
         align-items: center;

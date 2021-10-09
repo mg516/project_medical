@@ -43,7 +43,7 @@ Vue.component('healthylist', {
 	},
 	methods: {
 		toMessageDetail(data){
-			location.href = `./newsMessageDetail?titleId=${data.titleId}`
+			location.href = `./newsMessageDetail.html?titleId=${data.titleId}`
 		},
 		handleSelect(key, keyPath) {
 			console.log(key, keyPath);

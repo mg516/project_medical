@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="baidu-site-verification" content="code-CVbavcK8gI" />
     <title>企业维护中心</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../element/element-ui-2.14.1.css">
@@ -64,6 +65,7 @@
 <script src="../js/unit.js"></script>
 <script src="../js/businessHandle.js"></script>
 <script src="../components/navmenu.js"></script>
+<script>
     const myApp = new Vue({
         el: '#myApp',
         data() {
@@ -79,9 +81,15 @@
             }
         },
         mounted(){
-            
+            // this.getUserInfo()
         },
         methods: {
+            getUserInfo(){
+                const userId = ''
+                postSearchUserInfo(userId).then(res => {
+                    this.UserDetailInfo = res.data.data
+                })
+            },
             toMyFocus(){
                 location.href = './myFocus.html'
             },

@@ -42,7 +42,7 @@ Vue.component('courselist', {
 			console.log(key, keyPath);
 		},
 		toMessageCourseDetail(data){
-			location.href = './messageCourseDetail.html'
+			location.href = `./messageCourseDetail.html?titleId=${data.titleId}`
 		}
 	},
     mounted() {

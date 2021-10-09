@@ -3,7 +3,7 @@ Vue.component('newdrugs2', {
 	`<div class="newessayBody">
 		<div class="essayBox">
 			<template v-if="list.length>0">
-				<div class="essayItem2" v-for="(item,index) in list" :key="index">
+				<div class="essayItem2" v-for="(item,index) in list" :key="index" @click="toDetail(item)">
 					<div class="essayImg"><img :src="item.contextImg|httpStr" /></div>
 					<div class="essayInfo">
 						<div class="essayTitle">{{item.titileStr}}</div>
@@ -46,6 +46,9 @@ Vue.component('newdrugs2', {
 	methods: {
 		handleSelect(key, keyPath) {
 			console.log(key, keyPath);
+		},
+		toDetail(data){
+			location.href = `./newMedicineHouseDetail.html?titleId=${data.titleId}`
 		}
 	},
     mounted() {

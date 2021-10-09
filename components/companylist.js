@@ -13,7 +13,7 @@ Vue.component('companylist', {
 						<div class="companyAskBar">询问</div>
 					</div>
 					<div class="companyMsg">{{item.addressStr}}</div>
-					<div class="companyProduct">查看该公司的产品列表</div>
+					<div class="companyProduct" @click="tocompanyDetail(item)">查看该公司的产品列表</div>
 				</div>
 			</div>
 		</div>
