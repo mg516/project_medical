@@ -17,7 +17,7 @@ Vue.component('navmenu', {
 					<template slot="title">测评</template>
 					<el-menu-item index="assessIndex.html" @click="toPage('./assessIndex.html')">评测主页</el-menu-item>
 					<el-menu-item index="assessHospitalIndex.html" @click="toPage('./assessHospitalIndex.html')">推荐的医院</el-menu-item>
-					<el-menu-item index="assessDoctorIndex.html" @click="toPage('./assessDoctorIndex.html')">好医生</el-menu-item>
+					<el-menu-item index="assessDoctorIndex.html" @click="toPage('./assessDoctorIndex.html')">专家课堂</el-menu-item>
 					<el-menu-item index="assessDrugIndex.html" @click="toPage('./assessDrugIndex.html')">医药评测</el-menu-item>
 					<el-menu-item index="assessMedicineTool.html" @click="toPage('./assessMedicineTool.html')">医学工具</el-menu-item>
 				</el-submenu>

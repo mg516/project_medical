@@ -2,7 +2,7 @@ Vue.component('gooddoctor', {
 	template:
 	`<div class="doctorBody">
 		<div class="modelLabelBox">
-			<div class="modelLabel">好医生</div>
+			<div class="modelLabel">专家课堂</div>
 			<div class="modelMore" @click="readAll">查看全部</div>
 		</div>
 		<div class="doctorBox">
