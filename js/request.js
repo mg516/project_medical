@@ -404,6 +404,14 @@ const getMapLocation = () => {
         null
     )
 }
+// 坐标转换
+const getNewPoint = (lon,lat) => {
+    return getHttp(
+        `https://api.map.baidu.com/geoconv/v1/?coords=${lon},${lat}&from=1&to=5&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph&callback=showLocation`,
+        null,
+        null
+    )
+}
 
 // 新增评论
 const postAddCommentsInfo = (param) => {

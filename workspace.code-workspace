@@ -1,0 +1,37 @@
+{
+	"folders": [
+		{
+			"path": "components"
+		},
+		{
+			"path": "css"
+		},
+		{
+			"path": "element"
+		},
+		{
+			"path": "fonts"
+		},
+		{
+			"path": "img"
+		},
+		{
+			"path": "img-"
+		},
+		{
+			"path": "js"
+		},
+		{
+			"path": "json"
+		},
+		{
+			"path": "pages"
+		},
+		{
+			"path": "tagsinputRevisited"
+		},
+		{
+			"path": "video"
+		}
+	]
+}
