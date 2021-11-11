@@ -19,7 +19,7 @@ Vue.component('pagefooter', {
 			<div class="line"></div>
 			<div class="footerBottom">
 				<div class="footerBottomL">
-					<div class="webRecord">ICP 备 16013334 号 -1</div>
+					<div class="webRecord">粤ICP备2021032659</div>
 					<div class="webRecordNo">粤公网安备 44030502004134号</div>
 				</div>
 				<div class="footerBottomR">
