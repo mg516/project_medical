@@ -14,6 +14,20 @@
     <div id="myApp" class="main" v-cloak>
         <navmenu></navmenu>
         <tagbar></tagbar>
+        <div class="pageTypeGroupBody">
+            <div class="pageTypeBox">
+                <div class="pageTypeLabel">{{typeGroup[0].label}}：</div>
+                <div class="pageTypeItemBox">
+                    <div
+                        :class="{'active':item.catalogId == catalogId}"
+                        class="pageTypeItem"
+                        @click="toPage('./essayList.html?catalogId='+item.catalogId+'&catalogName='+item.catalogName)"
+                        v-for="(item,index) in typeGroup[0].types"
+                        :key="index"
+                    >{{item.catalogName}}</div>
+                </div>
+            </div>
+        </div>
         <div class="contentBody">
             <div class="contentLeft">
                 <essaylist :name="catalogName" :id="catalogId"></essaylist>
@@ -55,17 +69,40 @@
         data() {
             return {
                 catalogName: '',
-                catalogId: ''
+                catalogId: '',
+                typeGroup: [
+                    {label:'学术分类',types:[]}
+                ],
             }
         },
         mounted(){
             this.catalogName = decodeURI(getUrlParam('catalogName'))
             this.catalogId = getUrlParam('catalogId')
+            this.getessayList()
+        },
+        methods:{
+            toPage(path){
+                location.href = path
+            },
+            getessayList(){
+                postModelListByName('学术').then(res => {
+                    if(res.data && res.data.msg === "success"){
+                        let list = res.data.data
+                        this.$set(this.typeGroup,0,{
+                            label: '学术分类',
+                            types: list
+                        })
+                    }
+                })
+            },
         }
     })
 </script>
 </html>
 <style>
+.pageTypeGroupBody{
+    width: 114rem;
+}
 .contentBody{
     margin: 6rem auto 0;
     width: 114rem;

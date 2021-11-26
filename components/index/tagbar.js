@@ -1,7 +1,21 @@
 Vue.component('tagbar', {
 	template:
 	`<div class="tagbarBody">
-		<div class="readAll" @click="readAllEssay" v-if="list.length>12">查看全部</div>
+		<el-popover
+			v-if="list.length>12"
+			class="readAll"
+			placement="bottom"
+			width="200"
+			trigger="click">
+			<div class="menuNavBox">
+				<div class="menuNavItem" @click="toPage('./essayList.html?catalogId='+item.catalogId+'&catalogName='+item.catalogName)"
+					:index="'1-'+item.catalogId"
+					v-for="(item,index) in list"
+					:key="index"
+				>{{item.catalogName}}</div>
+			</div>
+			<div slot="reference">查看全部</div>
+		</el-popover>
 		<div class="tagbarItem" v-for="(item,index) in tagbarList" :key="'level1-'+index">
 			<span @click="toEssayList(iitem)" :title="item.link" v-for="(iitem,iindex) in item" :key="'level2-'+iindex">{{iitem.catalogName}}</span>
 		</div>
@@ -23,8 +37,11 @@ Vue.component('tagbar', {
 		};
 	},
 	methods: {
-		readAllEssay(){
-			location.href = './essayList.html?catalogId=all&catalogName=全部'
+		// readAllEssay(){
+		// 	location.href = './essayList.html?catalogId=all&catalogName=全部'
+		// },
+		toPage(path){
+			location.href = path
 		},
 		handleSelect(key, keyPath) {
 			console.log(key, keyPath);

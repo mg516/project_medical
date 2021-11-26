@@ -47,7 +47,7 @@ Vue.component('recomproduct', {
 				endNo: 10
 			}
 			postProductList(param).then(res => {
-				this.recomProductList = res.data.data.success
+				this.recomProductList = res.data.data && res.data.data.success
 			})
 		},
 		toMore(){

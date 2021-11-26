@@ -190,6 +190,17 @@
 .tagbarBody .tagbarItem:nth-last-child(1) {
   border-right: 0;
 }
+.menuNavBox {
+  font-size: 1.4rem;
+}
+.menuNavBox .menuNavItem {
+  line-height: 3rem;
+  color: #909399;
+  cursor: pointer;
+}
+.menuNavBox .menuNavItem:hover {
+  color: #303133;
+}
 .modelLabelBox {
   width: 100%;
   min-height: 3rem;

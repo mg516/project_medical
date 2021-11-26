@@ -4,6 +4,9 @@ Vue.component('navmenu', {
 		<div class="navLogo" @click="toPage('./index.html')"></div>
 		<div class="menuBody">
 			<el-menu :default-active="activeLink" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+				<el-menu-item index="0">
+					<a style="position: relative;top: -2px;text-decoration: none;" href="./index.html" target="_self">首页</a>
+				</el-menu-item>
 				<el-submenu index="1">
 					<template slot="title">学术</template>
 					<el-menu-item
@@ -22,14 +25,14 @@ Vue.component('navmenu', {
 					<el-menu-item index="assessMedicineTool.html" @click="toPage('./assessMedicineTool.html')">医学工具</el-menu-item>
 				</el-submenu>
 				<el-submenu index="3">
-					<template slot="title">医药</template>
+					<template slot="title">前沿通</template>
 					<el-menu-item index="medicineHouse.html" @click="toPage('./medicineHouse.html')">产品库</el-menu-item>
 					<el-menu-item index="companyHouse.html" @click="toPage('./companyHouse.html')">企业库</el-menu-item>
 					<el-menu-item index="newMedicineHouse.html" @click="toPage('./newMedicineHouse.html')">新药发布</el-menu-item>
 					<el-menu-item index="nearbyDrugstore.html" @click="toPage('./nearbyDrugstore.html')">附近药店</el-menu-item>
 				</el-submenu>
 				<el-submenu index="4">
-					<template slot="title">医院</template>
+					<template slot="title">医家号</template>
 					<el-menu-item index="doctorHouse.html" @click="toPage('./doctorHouse.html')">医生库</el-menu-item>
 					<el-menu-item index="hospitalHouse.html0" @click="toPage('./hospitalHouse.html?tab=0')">推荐医院</el-menu-item>
 					<el-menu-item index="hospitalHouse.html1" @click="toPage('./hospitalHouse.html?tab=1')">全国医院</el-menu-item>
@@ -46,7 +49,7 @@ Vue.component('navmenu', {
 				</el-submenu>
 				<el-menu-item index="6">
 					<a href="./forumIndex.html" target="_self" v-if="false">论坛</a>
-					<a href="http://bbs.qyyoo.com/" target="_block">论坛</a>
+					<a style="position: relative;top: -2px;text-decoration: none;" href="http://bbs.qyyoo.com/" target="_block">论坛</a>
 				</el-menu-item>
 			</el-menu>
 		</div>
