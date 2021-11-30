@@ -126,7 +126,7 @@ const initWangEdit = (domId) => {
             'redo',
         ]
         editor.config.showLinkImg = false  //关闭网络路径图片方式
-        // editor.config.uploadImgServer = 'http://115.159.53.197:8080/api/upload' // 上传图片的接口地址
+        // editor.config.uploadImgServer = `${window.baseUrl}/api/upload` // 上传图片的接口地址
         // editor.config.uploadImgShowBase64 = true
         editor.config.uploadFileName = 'file' // formdata中的name属性
         editor.config.uploadVideoName = 'file' // formdata中的name属性
@@ -134,7 +134,7 @@ const initWangEdit = (domId) => {
             const formData = new FormData();
             formData.append('file', resultFiles[0]);
             postUploadFile(formData).then(res => {
-                insertImgFn(`http://115.159.53.197:8080${res.data.data}`)
+                insertImgFn(`${window.baseUrl}${res.data.data}`)
             })
         }
         // editor.config.uploadImgHooks = {

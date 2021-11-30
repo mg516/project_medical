@@ -1,4 +1,6 @@
-const baseUrl = 'http://115.159.53.197:8080'
+// const baseUrl = 'http://115.159.53.197:8080'
+const baseUrl = 'https://www.qyyoo.com'
+window.baseUrl = baseUrl
 
 const getHttp = (url,param) => {
     let reUrl = url
@@ -400,14 +402,6 @@ const postSearchListIsLaunch = (param) => {
 const getMapLocation = () => {
     return getHttp(
         `http://api.map.baidu.com/highacciploc/v1?qcip=220.181.38.113&qterm=pc&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph&coord=bd09ll`,
-        null,
-        null
-    )
-}
-// 坐标转换
-const getNewPoint = (lon,lat) => {
-    return getHttp(
-        `https://api.map.baidu.com/geoconv/v1/?coords=${lon},${lat}&from=1&to=5&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph&callback=showLocation`,
         null,
         null
     )

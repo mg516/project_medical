@@ -39,11 +39,11 @@
                     <el-form-item label="医院图片" prop="mobileStr">
                         <el-upload
                                 class="avatar-uploader"
-                                action="http://115.159.53.197:8080/api/upload"
+                                :action="`${window.baseUrl}/api/upload`"
                                 :show-file-list="false"
                                 :on-success="handleAvatarSuccess"
                                 :before-upload="beforeAvatarUpload">
-                                <img v-if="ruleForm.pictureStr" :src="'http://115.159.53.197:8080' + ruleForm.pictureStr" class="avatar">
+                                <img v-if="ruleForm.pictureStr" :src="window.baseUrl + ruleForm.pictureStr" class="avatar">
                                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                             </el-upload>
                     </el-form-item>
@@ -96,8 +96,8 @@
         <pagefooter></pagefooter>
     </div>
 </body>
-<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
-<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="https://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
 <script src="../js/rem.js"></script>
 <script src="../js/vue-2.6.11.js"></script>
 <script src="../js/axios.min-0.21.0.js"></script>

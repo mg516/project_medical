@@ -17,7 +17,7 @@
             <div class="centerPersonHeader">
                 <div class="centerPersonHeaderBack"></div>
                 <div class="centerPersonHeaderImg">
-                    <img v-if="userDetailInfo.pictureStr" :src="'http://115.159.53.197:8080' + userDetailInfo.pictureStr" alt="">
+                    <img v-if="userDetailInfo.pictureStr" :src="window.baseUrl + userDetailInfo.pictureStr" alt="">
                 </div>
                 <div class="centerPersonHeaderName">{{userDetailInfo.nickStr}}</div>
                 <div class="centerPersonHeaderBar" @click="toEdit('account')">资料设置</div>
@@ -55,8 +55,8 @@
         <pagefooter></pagefooter>
     </div>
 </body>
-<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
-<script src="http://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
+<script src="https://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
 <script src="../js/rem.js"></script>
 <script src="../js/vue-2.6.11.js"></script>
 <script src="../element/element-ui-2.14.1.js"></script>

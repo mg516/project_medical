@@ -75,7 +75,7 @@ Vue.component('navmenu', {
 		</div>
 		<div class="loginBody">
 			<el-dropdown trigger="click" class="loginBox" v-if="userInfo.userId">
-				<img v-if="userDetailInfo && userDetailInfo.pictureStr" :src="'http://115.159.53.197:8080' + userDetailInfo.pictureStr" class="el-dropdown-link" />
+				<img v-if="userDetailInfo && userDetailInfo.pictureStr" :src="window.baseUrl + userDetailInfo.pictureStr" class="el-dropdown-link" />
 				<img v-else src="../img/index/y1.png" class="el-dropdown-link" />
 				<el-dropdown-menu slot="dropdown">
 					<el-dropdown-item @click.native="toUserCenter('company')" v-if="false && userInfo.userType === '企业'">企业-个人中心</el-dropdown-item>
@@ -127,16 +127,51 @@ Vue.component('navmenu', {
 			geolocation.getCurrentPosition( function(r) {   //定位结果对象会传递给r变量
 				that.mapLoading = false
 				if(this.getStatus() == BMAP_STATUS_SUCCESS) {  //通过Geolocation类的getStatus()可以判断是否成功定位。
-					var pt = r.point;  
-					gc.getLocation(pt, function(rs){  
-						var addComp = rs.addressComponents;  
-						$('.location').html(JSON.stringify(addComp) + '<br>' + addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber)
-						console.log(addComp);
-						console.log(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);
-						that.locationName = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber
-						ls_set('locationObj',addComp)
-						ls_set('pointObj',rs.point)
-					});
+					//GPS经纬度
+					let x = r.point.lat;
+					let y = r.point.lng;
+					var gpsPoint = new BMap.Point(y, x);
+					
+					var convertor = new BMap.Convertor();
+					var pointArr = [gpsPoint];
+					
+					// 源坐标类型：
+					// 1：GPS标准坐标（wgs84）；
+					// 2：搜狗地图坐标；
+					// 3：火星坐标（gcj02），即高德地图、腾讯地图和MapABC等地图使用的坐标；
+					// 4：3中列举的地图坐标对应的墨卡托平面坐标;
+					// 5：百度地图采用的经纬度坐标（bd09ll）；
+					// 6：百度地图采用的墨卡托平面坐标（bd09mc）;
+					// 7：图吧地图坐标；
+					// 8：51地图坐标；
+					// 目标坐标类型：
+					// 3：火星坐标（gcj02），即高德地图、腾讯地图及MapABC等地图使用的坐标；
+					// 5：百度地图采用的经纬度坐标（bd09ll）；
+					// 6：百度地图采用的墨卡托平面坐标（bd09mc）；
+
+					// 将GPS经纬度转为百度地图bd09ll经纬度
+					convertor.translate(pointArr, 1, 5, (data)=>{
+						gc.getLocation(data.points[0], function(rs){
+							var addComp = rs.addressComponents;  
+							$('.location').html(JSON.stringify(addComp) + '<br>' + addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber)
+							console.log(addComp);
+							console.log(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);
+							that.locationName = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber
+							ls_set('locationObj',addComp)
+							ls_set('pointObj',rs.point)
+						});
+					})
+						
+					// var pt = r.point;  
+					// gc.getLocation(pt, function(rs){  
+					// 	var addComp = rs.addressComponents;  
+					// 	$('.location').html(JSON.stringify(addComp) + '<br>' + addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber)
+					// 	console.log(addComp);
+					// 	console.log(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);
+					// 	that.locationName = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber
+					// 	ls_set('locationObj',addComp)
+					// 	ls_set('pointObj',rs.point)
+					// });
 				} else {
 					//关于状态码  
 					//BMAP_STATUS_SUCCESS   检索成功。对应数值“0”。  
