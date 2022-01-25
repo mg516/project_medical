@@ -16,7 +16,7 @@ Vue.component('companyside', {
 			<div class="companysideItem">手　　机：{{data.mobileStr}}</div>
 			<div class="companysideItem">电子邮件：{{data.emailStr}}</div>
 		</div>
-		<div class="companysideZXBar">咨询</div>
+		<div class="companysideZXBar" v-if="false">咨询</div>
 	</div>`,
 	props: {
 		title: {

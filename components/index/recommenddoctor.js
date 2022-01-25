@@ -14,7 +14,7 @@ Vue.component('recommenddoctor', {
 				<div class="recommendDoctorInfo">{{item.goodStr}}</div>
 				<div class="recommendDoctorContact">
 					<div class="recommendDoctorScore">推荐度：{{item.gradeNumber || 0}}</div>
-					<div class="recommendDoctorContactBar">咨询</div>
+					<div class="recommendDoctorContactBar" v-if="false">咨询</div>
 				</div>
 			</div>
 		</div>

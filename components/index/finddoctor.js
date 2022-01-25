@@ -23,7 +23,7 @@ Vue.component('finddoctor', {
 				<div class="findDoctorInfo">{{item.goodStr}}</div>
 				<div class="findDoctorContact">
 					<div class="findDoctorScore">推荐度：{{item.searchValue}}</div>
-					<div class="findDoctorContactBar">咨询</div>
+					<div class="findDoctorContactBar" v-if="false">咨询</div>
 				</div>
 			</div>
 		</div>

@@ -13,7 +13,7 @@ Vue.component('gooddoctor', {
 				<div class="doctorDept">{{item.sexStr}} {{item.department}}</div>
 				<div class="doctorContact">
 					<div class="doctorScore">推荐度：{{item.gradeNumber || 0}}</div>
-					<div class="doctorContactBar">咨询</div>
+					<div class="doctorContactBar" v-if="false">咨询</div>
 				</div>
 			</div>
 		</div>

@@ -12,7 +12,7 @@ Vue.component('goodhospital', {
 				<div class="hospitalAddress" :title="item.addressStr">地址：{{item.addressStr}}</div>
 				<div class="hospitalContact">
 					<div class="hospitalScore">推荐度：{{item.gradeNumber || 0}}</div>
-					<div class="hospitalContactBar">咨询</div>
+					<div class="hospitalContactBar" v-if="false">咨询</div>
 				</div>
 			</div>
 		</div>
