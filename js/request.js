@@ -1,4 +1,4 @@
-// const baseUrl = 'http://115.159.53.197:8080'
+﻿// const baseUrl = 'http://115.159.53.197:8080'
 const baseUrl = 'https://www.qyyoo.com'
 window.baseUrl = baseUrl
 
@@ -476,6 +476,39 @@ const postBannerList = () => {
         `/api/bannerList`,
         null,
         null
+    )
+}
+
+// 搜索医生
+const postSearchRDoctor = (doctorName) => {
+    return postHttp(
+        `/api/EsSearchDoctor`,
+        null,
+        {doctorName}
+    )
+}
+// 搜索医院
+const postSearchRHospital = (hospitalName) => {
+    return postHttp(
+        `/api/EsSearchHospital`,
+        null,
+        {hospitalName}
+    )
+}
+// 搜索产品
+const postSearchRProduct = (productName) => {
+    return postHttp(
+        `/api/EsSearchProduct`,
+        null,
+        {productName}
+    )
+}
+// 搜索文章
+const postSearchRTitle = (titleStr) => {
+    return postHttp(
+        `/api/EsSearchTitle`,
+        null,
+        {titleStr}
     )
 }
 

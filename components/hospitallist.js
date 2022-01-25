@@ -1,17 +1,17 @@
 Vue.component('hospitallist', {
 	template:
 	`<div class="hospitallistBody">
-		<div class="hospitallistLabel">共 <span class="doctorNum">{{list.count}}</span> 个医院</div>
+		<div class="hospitallistLabel">共 <span class="hospitalNum">{{list.count}}</span> 个医院</div>
 		<div class="hospitallistBox">
-			<div class="doctorItem" @click="toHospitalHouseDetail(item)" v-for="(item,index) in hospitallist" :key="index">
-				<div class="doctorImg"><img :src="item.pictureStr|httpStr" /></div>
-				<div class="doctorInfo">
-					<div class="doctorName">
-						<div class="doctorNameText">{{item.hospitalName}}</div>
-						<div class="doctorType">{{item.gradeStr}}</div>
+			<div class="hospitalItem" @click="toHospitalHouseDetail(item)" v-for="(item,index) in hospitallist" :key="index">
+				<div class="hospitalImg"><img :src="item.pictureStr|httpStr" /></div>
+				<div class="hospitalInfo">
+					<div class="hospitalName">
+						<div class="hospitalNameText">{{item.hospitalName}}</div>
+						<div class="hospitalType">{{item.gradeStr}}</div>
 					</div>
-					<div class="doctorTel">电话：{{item.telStr}}</div>
-					<div class="doctorAddress">地址：{{item.addressStr}}</div>
+					<div class="hospitalTel">电话：{{item.telStr}}</div>
+					<div class="hospitalAddress">地址：{{item.addressStr}}</div>
 				</div>
 			</div>
 		</div>

@@ -150,6 +150,7 @@ Vue.component('drugstoremap', {
 		//获取GPS坐标 
 		getPoint(){
 			const point = ls_get('pointObj')
+			// const point = ls_get('locationObj').position
 			this.loadMap([point.lng, point.lat])
 			// if (navigator.geolocation) {
 			// 	navigator.geolocation.getCurrentPosition(this.showMap, this.handleError, { enableHighAccuracy: true, maximumAge: 1000 }); 
@@ -178,6 +179,7 @@ Vue.component('drugstoremap', {
 				break;
 			}
 			const point = ls_get('pointObj')
+			// const point = ls_get('locationObj').position
 			this.loadMap([point.lng, point.lat])
 			// this.loadMap([114.2113317377854,30.513731225442783])
 		},

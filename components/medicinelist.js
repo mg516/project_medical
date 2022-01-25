@@ -10,7 +10,7 @@ Vue.component('medicinelist', {
 				<div class="medicineInfo">
 					<div class="medicineName" :title="item.productName">
 						<div class="medicineNameText" :title="item.productName" @click="toMedicineDetail(item)">{{item.productName}}</div>
-						<div class="medicineAskBar">询问</div>
+						<div class="medicineAskBar" v-show="false">询问</div>
 					</div>
 					<div class="medicineMsg">
 						<div class="medicinemItem">批准文号：{{item.approvalNumber}}</div>

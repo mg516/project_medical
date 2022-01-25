@@ -784,6 +784,10 @@
   width: 100%;
   padding-bottom: 5rem;
 }
+.bottom-line-item{
+	text-decoration: none;
+	color:#FFFFFF;
+}
 .hothospitalBody .chooseAddress {
   font-weight: 500;
   color: #FF5533;
@@ -1619,6 +1623,7 @@
 }
 .searchPageBody .searchInputBox {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
   margin-bottom: 6rem;
@@ -1639,6 +1644,10 @@
   line-height: 5rem;
   font-size: 1.6rem;
   border-radius: 2.5rem;
+}
+.searchPageBody .searchInputBox .searchType {
+  margin-top: 2rem;
+  width: 100%;
 }
 .searchPageBody .searchResultBox {
   width: 82rem;
@@ -1667,8 +1676,6 @@
   cursor: pointer;
   display: flex;
   justify-content: space-between;
-  height: 7.5rem;
-  padding-bottom: 2.5rem;
   margin-bottom: 2.5rem;
   border-bottom: 1px solid #F6F6F7;
 }
@@ -1702,6 +1709,190 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .doctorItem {
+  margin-bottom: 3.5rem;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  width: 100%;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .doctorItem .doctorImg {
+  width: 12rem;
+  height: 12rem;
+  overflow: hidden;
+  border-radius: 50%;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .doctorItem .doctorImg img {
+  width: 100%;
+  height: 100%;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .doctorItem .doctorInfo {
+  width: calc(100% - 12rem - 3rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .doctorItem .doctorInfo .doctorName {
+  display: flex;
+  align-items: center;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .doctorItem .doctorInfo .doctorName .doctorNameText {
+  font-size: 2.2rem;
+  line-height: 3rem;
+  color: #000000;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .doctorItem .doctorInfo .doctorName .doctorType {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: #198CFF;
+  margin-left: 1rem;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .doctorItem .doctorInfo .doctorHospital {
+  font-size: 1.4rem;
+  color: #747474;
+  line-height: 2rem;
+  display: flex;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .doctorItem .doctorInfo .doctorHospital .doctorDept {
+  margin-left: 2rem;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .doctorItem .doctorInfo .doctorRemark {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: #747474;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .hospitalItem {
+  margin-bottom: 3.5rem;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .hospitalItem .hospitalImg {
+  width: 22.6rem;
+  height: 15.6rem;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .hospitalItem .hospitalImg img {
+  width: 100%;
+  height: 100%;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .hospitalItem .hospitalInfo {
+  width: calc(100% - 22.6rem - 3rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .hospitalItem .hospitalInfo .hospitalName {
+  display: flex;
+  align-items: center;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .hospitalItem .hospitalInfo .hospitalName .hospitalNameText {
+  font-size: 2.2rem;
+  line-height: 3rem;
+  color: #198CFF;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .hospitalItem .hospitalInfo .hospitalName .hospitalType {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: #FF5533;
+  margin-left: 2rem;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .hospitalItem .hospitalInfo .hospitalTel {
+  font-size: 1.4rem;
+  color: #747474;
+  line-height: 2rem;
+  display: flex;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .hospitalItem .hospitalInfo .hospitalAddress {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: #747474;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .medicineItem {
+  padding-bottom: 3rem;
+  border-bottom: 1px solid #F6F6F7;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .medicineItem .medicineImg {
+  width: 11rem;
+  height: 11rem;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .medicineItem .medicineImg img {
+  width: 100%;
+  height: 100%;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .medicineItem .medicineInfo {
+  width: calc(100% - 11rem - 3rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .medicineItem .medicineInfo .medicineName {
+  display: flex;
+  justify-content: space-between;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .medicineItem .medicineInfo .medicineName .medicineNameText {
+  font-size: 1.8rem;
+  line-height: 2.5rem;
+  color: #198CFF;
+  cursor: pointer;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .medicineItem .medicineInfo .medicineName .medicineAskBar {
+  padding: 0.6rem 1.8rem;
+  color: #212429;
+  font-size: 1.4rem;
+  background-color: #FFE14D;
+  border-radius: 1.6rem;
+  line-height: 2rem;
+  font-weight: bold;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .medicineItem .medicineInfo .medicineMsg {
+  color: #747474;
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .medicineItem .medicineInfo .medicineMsg .medicinemItem {
+  margin-right: 2rem;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .medicineItem .medicineInfo .medicineCompany {
+  display: flex;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .medicineItem .medicineInfo .medicineCompany .medicineCompanyName {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: #212429;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .medicineItem .medicineInfo .medicineCompany .companyList {
+  margin-left: 2rem;
+  color: #FF5533;
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .messageItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  margin-bottom: 1.6rem;
+  cursor: pointer;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .messageItem .messageTitle {
+  color: #333333;
+}
+.searchPageBody .searchResultBox .searchResultCont .searchResultItem .messageItem .messageTime {
+  color: #747474;
 }
 .searchPageBody .searchHotWordBox {
   width: 26rem;
@@ -2423,7 +2614,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  padding: 4rem;
   box-sizing: border-box;
 }
 .modalBody .modalBox .modalClose {
@@ -2438,9 +2628,42 @@
   font-size: 2.4rem;
   color: #212429;
 }
+.modalBody .modalBox .formBody {
+  padding: 4rem 4rem 2rem;
+}
+.modalBody .modalBox .formBody .formItem {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.modalBody .modalBox .formBody .formItem .formLabel {
+  font-size: 18px;
+  line-height: 40px;
+}
+.modalBody .modalBox .formBody .formItem .formValue {
+  width: calc(100% - 100px);
+}
+.modalBody .modalBox .formHandle {
+  height: 50px;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.modalBody .modalBox .formHandle .formSubmit {
+  height: 32px;
+  color: #fff;
+  background-color: #198CFF;
+  border-radius: 16px;
+  width: 64px;
+  text-align: center;
+  line-height: 32px;
+  font-size: 14px;
+  cursor: pointer;
+  margin: 10px auto;
+}
 .doctoraskBody .doctoraskBox {
-  width: 36rem;
-  height: 50rem;
+  width: 500px;
 }
 .doctoraskBody .doctoraskBox .doctoraskCont {
   margin-top: 3.5rem;
@@ -3452,54 +3675,54 @@
   padding-bottom: 1.8rem;
   border-bottom: 1px solid #D3D3D4;
 }
-.hospitallistBody .hospitallistLabel .doctorNum {
+.hospitallistBody .hospitallistLabel .hospitalNum {
   color: #FF5533;
 }
 .hospitallistBody .hospitallistBox {
   margin-top: 3rem;
 }
-.hospitallistBody .hospitallistBox .doctorItem {
+.hospitallistBody .hospitallistBox .hospitalItem {
   margin-bottom: 5.5rem;
   display: flex;
   justify-content: space-between;
 }
-.hospitallistBody .hospitallistBox .doctorItem .doctorImg {
+.hospitallistBody .hospitallistBox .hospitalItem .hospitalImg {
   width: 22.6rem;
   height: 15.6rem;
 }
-.hospitallistBody .hospitallistBox .doctorItem .doctorImg img {
+.hospitallistBody .hospitallistBox .hospitalItem .hospitalImg img {
   width: 100%;
   height: 100%;
 }
-.hospitallistBody .hospitallistBox .doctorItem .doctorInfo {
+.hospitallistBody .hospitallistBox .hospitalItem .hospitalInfo {
   width: calc(100% - 22.6rem - 3rem);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 1rem 0;
 }
-.hospitallistBody .hospitallistBox .doctorItem .doctorInfo .doctorName {
+.hospitallistBody .hospitallistBox .hospitalItem .hospitalInfo .hospitalName {
   display: flex;
   align-items: center;
 }
-.hospitallistBody .hospitallistBox .doctorItem .doctorInfo .doctorName .doctorNameText {
+.hospitallistBody .hospitallistBox .hospitalItem .hospitalInfo .hospitalName .hospitalNameText {
   font-size: 2.2rem;
   line-height: 3rem;
   color: #198CFF;
 }
-.hospitallistBody .hospitallistBox .doctorItem .doctorInfo .doctorName .doctorType {
+.hospitallistBody .hospitallistBox .hospitalItem .hospitalInfo .hospitalName .hospitalType {
   font-size: 1.4rem;
   line-height: 2rem;
   color: #FF5533;
   margin-left: 2rem;
 }
-.hospitallistBody .hospitallistBox .doctorItem .doctorInfo .doctorTel {
+.hospitallistBody .hospitallistBox .hospitalItem .hospitalInfo .hospitalTel {
   font-size: 1.4rem;
   color: #747474;
   line-height: 2rem;
   display: flex;
 }
-.hospitallistBody .hospitallistBox .doctorItem .doctorInfo .doctorAddress {
+.hospitallistBody .hospitallistBox .hospitalItem .hospitalInfo .hospitalAddress {
   font-size: 1.4rem;
   line-height: 2rem;
   color: #747474;

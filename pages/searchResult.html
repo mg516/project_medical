@@ -21,23 +21,81 @@
                     prefix-icon="el-icon-search"
                     v-model="keyword">
                 </el-input>
-                <div class="searchBar">搜索</div>
+                <div class="searchBar" @click="searchFunc">搜索</div>
+                <el-checkbox-group
+                    class="searchType"
+                    v-model="checkedType"
+                    :min="0"
+                    :max="4">
+                    <el-checkbox v-for="item in types" :label="item" :key="item">{{item}}</el-checkbox>
+                </el-checkbox-group>
             </div>
-            <div class="searchResultBox">
+            <div class="searchResultBox" v-if="!loading">
                 <div class="searchResultTop">
                     <div class="searchResultLabel">搜索结果：</div>
-                    <div class="searchResultNumBox">为了搜到<span class="searchResultNum">2923</span> 条结果</div>
+                    <div class="searchResultNumBox">为了搜到 <span class="searchResultNum">{{resultList.length}}</span> 条结果</div>
                 </div>
                 <div class="searchResultCont">
                     <div class="searchResultItem" v-for="(item,index) in resultList" :key="index">
-                        <div class="sriImg" v-if="item.img"><img src="../img/zhuanli.png" alt=""></div>
-                        <div class="sriCont">
-                            <div class="sricTitle">{{item.title}}</div>
-                            <div class="sricRemark">{{item.remark}}</div>
-                        </div>
+                        <template v-if="item._type==='医生'">
+                            <div class="doctorItem" @click="toDoctorHouseDetail(item)">
+                                <div class="doctorImg"><img :src="item.pictureStr|imgStr" /></div>
+                                <div class="doctorInfo">
+                                    <div class="doctorName">
+                                        <div class="doctorNameText">{{item.doctorName}}</div>
+                                        <div class="doctorType">{{item.positionStr}}</div>
+                                    </div>
+                                    <div class="doctorHospital">
+                                        <div class="doctorhospitalText">{{item.hospitalName}}</div>
+                                        <div class="doctorDept">{{item.officeStr}}</div>
+                                    </div>
+                                    <div class="doctorRemark" :title="item.goodStr">{{item.goodStr}}</div>
+                                </div>
+                            </div>
+                        </template>
+                        <template v-else-if="item._type==='医院'">
+                            <div class="hospitalItem" @click="toHospitalHouseDetail(item)">
+                                <div class="hospitalImg"><img :src="item.pictureStr|imgStr" /></div>
+                                <div class="hospitalInfo">
+                                    <div class="hospitalName">
+                                        <div class="hospitalNameText">{{item.hospitalName}}</div>
+                                        <div class="hospitalType">{{item.gradeStr}}</div>
+                                    </div>
+                                    <div class="hospitalTel">电话：{{item.telStr}}</div>
+                                    <div class="hospitalAddress">地址：{{item.addressStr}}</div>
+                                </div>
+                            </div>
+                        </template>
+                        <template v-else-if="item._type==='产品'">
+                            <div class="medicineItem" @click="toMedicineDetail(item)">
+                                <div class="medicineImg">
+                                    <img :src="item.pictureStr|httpStr" />
+                                </div>
+                                <div class="medicineInfo">
+                                    <div class="medicineName" :title="item.productName">
+                                        <div class="medicineNameText" :title="item.productName">{{item.productName}}</div>
+                                        <!-- <div class="medicineAskBar">询问</div> -->
+                                    </div>
+                                    <div class="medicineMsg">
+                                        <div class="medicinemItem">批准文号：{{item.approvalNumber}}</div>
+                                        <div class="medicinemItem">主要规格：{{item.packStr}}{{item.spectStr}}</div>
+                                    </div>
+                                    <div class="medicineCompany">
+                                        <div class="medicineCompanyName">公司名称：{{item.enterpriseName}}</div>
+                                        <div class="companyList">查看产品列表</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <template v-else-if="item._type==='资讯'">
+                            <div class="messageItem" @click="toMessageDetail(item)">
+                                <div class="messageTitle">{{item.titileStr}}</div>
+                                <div class="messageTime">{{item.updateTime}}</div>
+                            </div>
+                        </template>
                     </div>
                 </div>
-                <div class="paginationBox">
+                <!-- <div class="paginationBox">
                     <el-pagination
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
@@ -47,22 +105,17 @@
                         layout="total, sizes, prev, pager, next"
                         :total="total">
                     </el-pagination>
-                </div>
+                </div> -->
             </div>
-            <div class="searchHotWordBox">
-                <div class="searchHotWordTop">
-                    <div class="searchHotWordLabel">热门关键词</div>
-                </div>
-                <div class="hotwordBox">
-                    <div class="hotwordItem" v-for="(item,index) in hotword" :key="index">{{item}}</div>
-                </div>
-            </div>
+            <div v-else v-loading="loading" class="searchResultBox"></div>
         </div>
         <pagefooter></pagefooter>
     </div>
 </body>
 <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
 <script src="https://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script type="text/javascript">window._AMapSecurityConfig = {securityJsCode:'3853bfea587b3d443e7702ca814629b2'}</script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=294066af9c9fd556780e95b485cf9e5f"></script>
 <script src="../js/rem.js"></script>
 <script src="../js/vue-2.6.11.js"></script>
 <script src="../js/axios.min-0.21.0.js"></script>
@@ -81,7 +134,10 @@
         el: '#myApp',
         data() {
             return {
+                loading: false,
                 keyword:'',
+                checkedType: ['医生','医院','产品','资讯'],
+                types: ['医生','医院','产品','资讯'],
                 resultList: [
                     {img:'、、、',title:'Cell Metabolism：线粒体中AKG可逆转衰',remark:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。'},
                     {img:'',title:'Cell Metabolism：线粒体中AKG可逆转衰',remark:'阿司匹林对于伴有小UIA和ICD的患者是一种安全的治疗方法。高危组中未服用阿司匹林的患者应进行加强监护。'},
@@ -96,10 +152,146 @@
                 total: 0
             }
         },
+        filters: {
+            imgStr(link) {
+                return baseUrl + link;
+            }
+        },
         mounted() {
-            
+            this.keyword = decodeURI(getUrlParam('keyword'))
+            this.searchFunc()
         },
         methods: {
+            toDoctorHouseDetail(data){
+                window.open(`./doctorHouseDetail.html?id=${data.doctorId}`)
+            },
+            toHospitalHouseDetail(data){
+                window.open(`./hospitalHouseDetail.html?hospitalId=${data.hospitalId}`)
+            },
+            toMedicineDetail(data){
+                window.open(`./medicineDetail.html?id=${data.productId}&name=${data.productName}&catalogName=${data.catalogName}`)
+            },
+            toMessageDetail(data){
+                window.open(`./newsMessageDetail.html?titleId=${data.titleId}`)
+            },
+            searchFunc(){
+                if(!this.keyword) return
+                if(this.checkedType.length === 0){
+                    this.$message.warning('请选择搜索类型')
+                    return
+                }
+                this.loading = true
+                const keyword = this.keyword
+                const promiseArr = []
+                if(this.checkedType.indexOf('医生')>-1){
+                    let p1 = new Promise((resolve, reject) => {
+                        postSearchRDoctor(keyword).then(res => {
+                            resolve(res)
+                        })
+                    })
+                    promiseArr.push(p1)
+                }
+                if(this.checkedType.indexOf('医院')>-1){
+                    let p2 = new Promise((resolve, reject) => {
+                        postSearchRHospital(keyword).then(res => {
+                            resolve(res)
+                        })
+                    })
+                    promiseArr.push(p2)
+                }
+                if(this.checkedType.indexOf('产品')>-1){
+                    let p3 = new Promise((resolve, reject) => {
+                        postSearchRProduct(keyword).then(res => {
+                            resolve(res)
+                        })
+                    })
+                    promiseArr.push(p3)
+                }
+                if(this.checkedType.indexOf('资讯')>-1){
+                    let p4 = new Promise((resolve, reject) => {
+                        postSearchRTitle(keyword).then(res => {
+                            resolve(res)
+                        })
+                    })
+                    promiseArr.push(p4)
+                }
+                Promise.allSettled(promiseArr).then((result) => {
+                    let list = []
+                    this.checkedType.forEach((item,index) => {
+                        result[index].value.data.data.forEach(rItem=>{
+                            let tableItem = rItem
+                            if(item === '医生'){
+                                // 医生
+                                tableItem._name = rItem.doctorName
+                                tableItem._id = rItem.doctorId
+                                tableItem._type = '医生'
+                                tableItem._img = rItem.pictureStr
+                                tableItem._remark = rItem.pictureStr
+                            }else if(item === '医院'){
+                                // 医院
+                                tableItem._name = item.hospitalName
+                                tableItem._id = item.hospitalId
+                                tableItem._type = '医院'
+                                tableItem._img = item.pictureStr
+                            }else if(item === '产品'){
+                                // 产品
+                                tableItem._name = item.productName
+                                tableItem._id = item.productId
+                                tableItem._type = '产品'
+                                tableItem._img = item.pictureStr
+                            }else if(item === '资讯'){
+                                // 资讯
+                                tableItem._name = item.titileStr
+                                tableItem._id = item.titleId
+                                tableItem._type = '资讯'
+                                tableItem._img = item.contextImg
+                            }
+                            list.push(tableItem)
+                        })
+                    })
+                    this.resultList = list
+                    this.loading = false
+                    return
+                    result.forEach((res,index) => {
+                        if(res.value.data.data){
+                            res.value.data.data.forEach(item => {
+                                let tableItem = item
+                                if(index === 0){
+                                    // 医生
+                                    tableItem._name = item.doctorName
+                                    tableItem._id = item.doctorId
+                                    tableItem._type = '医生'
+                                    tableItem._img = item.pictureStr
+                                    tableItem._remark = item.pictureStr
+                                }else if(index === 1){
+                                    // 医院
+                                    tableItem._name = item.hospitalName
+                                    tableItem._id = item.hospitalId
+                                    tableItem._type = '医院'
+                                    tableItem._img = item.pictureStr
+                                }else if(index === 2){
+                                    // 产品
+                                    tableItem._name = item.productName
+                                    tableItem._id = item.productId
+                                    tableItem._type = '产品'
+                                    tableItem._img = item.pictureStr
+                                }else if(index === 3){
+                                    // 资讯
+                                    tableItem._name = item.titileStr
+                                    tableItem._id = item.titleId
+                                    tableItem._type = '资讯'
+                                    tableItem._img = item.contextImg
+                                }
+                                list.push(tableItem)
+                            })
+                        }
+                    })
+                    this.resultList = list
+                    this.loading = false
+                }).catch((error) => {
+                    console.log(error)
+                })
+            },
             handleSizeChange(val){
                 this.pageSize = val;
             },

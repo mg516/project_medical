@@ -1662,6 +1662,7 @@
     justify-content: space-between;
     .searchInputBox{
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         width: 100%;
         margin-bottom: 6rem;
@@ -1681,6 +1682,10 @@
             line-height: 5rem;
             font-size: 1.6rem;
             border-radius: 2.5rem;
+        }
+        .searchType{
+            margin-top: 2rem;
+            width: 100%;
         }
     }
     .searchResultBox{
@@ -1708,8 +1713,6 @@
                 cursor: pointer;
                 display: flex;
                 justify-content: space-between;
-                height: 7.5rem;
-                padding-bottom: 2.5rem;
                 margin-bottom: 2.5rem;
                 border-bottom: 1px solid #F6F6F7;
                 .sriImg{
@@ -1743,6 +1746,193 @@
                         -webkit-box-orient: vertical;
                         -webkit-line-clamp: 2;
                         overflow: hidden;
+                    }
+                }
+                .doctorItem{
+                    margin-bottom: 3.5rem;
+                    display: flex;
+                    justify-content: space-between;
+                    cursor: pointer;
+                    width: 100%;
+                    .doctorImg{
+                        width: 12rem;
+                        height: 12rem;
+                        overflow: hidden;
+                        border-radius: 50%;
+                        img{
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                    .doctorInfo{
+                        width: calc(100% - 12rem - 3rem);
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        padding: 1rem 0;
+                        .doctorName{
+                            display: flex;
+                            align-items: center;
+                            .doctorNameText{
+                                font-size: 2.2rem;
+                                line-height: 3rem;
+                                color: #000000;
+                            }
+                            .doctorType{
+                                font-size: 1.4rem;
+                                line-height: 2rem;
+                                color: #198CFF;
+                                margin-left: 1rem;
+                            }
+                        }
+                        .doctorHospital{
+                            font-size: 1.4rem;
+                            color: #747474;
+                            line-height: 2rem;
+                            display: flex;
+                            .doctorDept{
+                                margin-left: 2rem;
+                            }
+                        }
+                        .doctorRemark{
+                            font-size: 1.4rem;
+                            line-height: 2rem;
+                            color: #747474;
+        
+                            overflow: hidden;
+                            text-overflow:ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+                .hospitalItem{
+                    margin-bottom: 3.5rem;
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                    .hospitalImg{
+                        width: 22.6rem;
+                        height: 15.6rem;
+                        img{
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                    .hospitalInfo{
+                        width: calc(100% - 22.6rem - 3rem);
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        padding: 1rem 0;
+                        .hospitalName{
+                            display: flex;
+                            align-items: center;
+                            .hospitalNameText{
+                                font-size: 2.2rem;
+                                line-height: 3rem;
+                                color: #198CFF;
+                            }
+                            .hospitalType{
+                                font-size: 1.4rem;
+                                line-height: 2rem;
+                                color: #FF5533;
+                                margin-left: 2rem;
+                            }
+                        }
+                        .hospitalTel{
+                            font-size: 1.4rem;
+                            color: #747474;
+                            line-height: 2rem;
+                            display: flex;
+                        }
+                        .hospitalAddress{
+                            font-size: 1.4rem;
+                            line-height: 2rem;
+                            color: #747474;
+        
+                            overflow: hidden;
+                            text-overflow:ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                }
+                .medicineItem{
+                    padding-bottom: 3rem;
+                    border-bottom: 1px solid #F6F6F7;
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                    .medicineImg{
+                        width: 11rem;
+                        height: 11rem;
+                        img{
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                    .medicineInfo{
+                        width: calc(100% - 11rem - 3rem);
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        .medicineName{
+                            display: flex;
+                            justify-content: space-between;
+                            .medicineNameText{
+                                font-size: 1.8rem;
+                                line-height: 2.5rem;
+                                color: #198CFF;
+                                cursor: pointer;
+                            }
+                            .medicineAskBar{
+                                padding: .6rem 1.8rem;
+                                color: #212429;
+                                font-size: 1.4rem;
+                                background-color: #FFE14D;
+                                border-radius: 1.6rem;
+                                line-height: 2rem;
+                                font-weight: bold;
+                            }
+                        }
+                        .medicineMsg{
+                            color: #747474;
+                            font-size: 1.4rem;
+                            line-height: 2rem;
+                            .medicinemItem{
+                                margin-right: 2rem;
+                            }
+                        }
+                        .medicineCompany{
+                            display: flex;
+                            .medicineCompanyName{
+                                font-size: 1.4rem;
+                                line-height: 2rem;
+                                color: #212429;
+                            }
+                            .companyList{
+                                margin-left: 2rem;
+                                color: #FF5533;
+                                font-size: 1.4rem;
+                                line-height: 2rem;
+                            }
+                        }
+                    }
+                }
+                .messageItem{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+        
+                    font-size: 1.4rem;
+                    line-height: 2rem;
+                    margin-bottom: 1.6rem;
+                    cursor: pointer;
+                    .messageTitle{
+                        color: #333333;
+                    }
+                    .messageTime{
+                        color: #747474;
                     }
                 }
             }
@@ -2504,7 +2694,6 @@
         left: 50%;
         transform: translate(-50%,-50%);
         background-color: #fff;
-        padding: 4rem;
         box-sizing: border-box;
         .modalClose{
             position: absolute;
@@ -2518,12 +2707,46 @@
             font-size: 2.4rem;
             color: #212429;
         }
+        .formBody{
+            padding: 4rem 4rem 2rem;
+            .formItem{
+                display: flex;
+                justify-content: space-between;
+                // align-items: center;
+                margin-top: 10px;
+                .formLabel{
+                    font-size: 18px;
+                    line-height: 40px;
+                }
+                .formValue{
+                    width: calc(100% - 100px);
+                }
+            }
+        }
+        .formHandle{
+            height: 50px;
+            border-top: 1px solid #ccc;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            .formSubmit{
+                height: 32px;
+                color: #fff;
+                background-color: #198CFF;
+                border-radius: 16px;
+                width: 64px;
+                text-align: center;
+                line-height: 32px;
+                font-size: 14px;
+                cursor: pointer;
+                margin: 10px auto;
+            }
+        }
     }
 }
 .doctoraskBody{
     .doctoraskBox{
-        width: 36rem;
-        height: 50rem;
+        width: 500px;
         .doctoraskCont{
             margin-top: 3.5rem;
             height: 28rem;
@@ -3563,17 +3786,17 @@
         color: #747474;
         padding-bottom: 1.8rem;
         border-bottom: 1px solid #D3D3D4;
-        .doctorNum{
+        .hospitalNum{
             color: #FF5533;
         }
     }
     .hospitallistBox{
         margin-top: 3rem;
-        .doctorItem{
+        .hospitalItem{
             margin-bottom: 5.5rem;
             display: flex;
             justify-content: space-between;
-            .doctorImg{
+            .hospitalImg{
                 width: 22.6rem;
                 height: 15.6rem;
                 img{
@@ -3581,34 +3804,34 @@
                     height: 100%;
                 }
             }
-            .doctorInfo{
+            .hospitalInfo{
                 width: calc(100% - 22.6rem - 3rem);
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
                 padding: 1rem 0;
-                .doctorName{
+                .hospitalName{
                     display: flex;
                     align-items: center;
-                    .doctorNameText{
+                    .hospitalNameText{
                         font-size: 2.2rem;
                         line-height: 3rem;
                         color: #198CFF;
                     }
-                    .doctorType{
+                    .hospitalType{
                         font-size: 1.4rem;
                         line-height: 2rem;
                         color: #FF5533;
                         margin-left: 2rem;
                     }
                 }
-                .doctorTel{
+                .hospitalTel{
                     font-size: 1.4rem;
                     color: #747474;
                     line-height: 2rem;
                     display: flex;
                 }
-                .doctorAddress{
+                .hospitalAddress{
                     font-size: 1.4rem;
                     line-height: 2rem;
                     color: #747474;

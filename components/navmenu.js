@@ -110,6 +110,12 @@ Vue.component('navmenu', {
 		};
 	},
 	created(){
+		// if(ls_get('locationObj')){
+		// 	const addComp = ls_get('locationObj')
+		// 	this.locationName = addComp.formattedAddress
+		// }else{
+		// 	this.getLocation()
+		// }
 		if(ls_get('locationObj')){
 			const addComp = ls_get('locationObj')
 			this.locationName = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber
@@ -121,6 +127,98 @@ Vue.component('navmenu', {
 		// 获取定位
 		getLocation(){
 			const that = this;
+			this.mapLoading = true
+			AMap.plugin('AMap.Geolocation', function() {
+				var geolocation = new AMap.Geolocation({
+				  // 是否使用高精度定位，默认：true
+				  enableHighAccuracy: true,
+				  // 设置定位超时时间，默认：无穷大
+				  timeout: 10000,
+				  // 定位按钮的停靠位置的偏移量，默认：Pixel(10, 20)
+				  buttonOffset: new AMap.Pixel(10, 20),
+				  //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+				  zoomToAccuracy: true,     
+				  //  定位按钮的排放位置,  RB表示右下
+				  buttonPosition: 'RB'
+				})
+			  
+				geolocation.getCurrentPosition(function(status,result){
+					if(status=='complete'){
+						  onComplete(result)
+					}else{
+						  onError(result)
+					}
+				});
+			  
+				function onComplete (data) {
+					that.mapLoading = false
+					var gc = new BMap.Geocoder();
+					//GPS经纬度
+					let x = data.position.lat;
+					let y = data.position.lng;
+					var gpsPoint = new BMap.Point(y, x);
+					
+					var convertor = new BMap.Convertor();
+					var pointArr = [gpsPoint];
+					
+					// 源坐标类型：
+					// 1：GPS标准坐标（wgs84）；
+					// 2：搜狗地图坐标；
+					// 3：火星坐标（gcj02），即高德地图、腾讯地图和MapABC等地图使用的坐标；
+					// 4：3中列举的地图坐标对应的墨卡托平面坐标;
+					// 5：百度地图采用的经纬度坐标（bd09ll）；
+					// 6：百度地图采用的墨卡托平面坐标（bd09mc）;
+					// 7：图吧地图坐标；
+					// 8：51地图坐标；
+					// 目标坐标类型：
+					// 3：火星坐标（gcj02），即高德地图、腾讯地图及MapABC等地图使用的坐标；
+					// 5：百度地图采用的经纬度坐标（bd09ll）；
+					// 6：百度地图采用的墨卡托平面坐标（bd09mc）；
+
+					// 将GPS经纬度转为百度地图bd09ll经纬度
+					convertor.translate(pointArr, 1, 5, (data)=>{
+						gc.getLocation(data.points[0], function(rs){
+							var addComp = rs.addressComponents;  
+							$('.location').html(JSON.stringify(addComp) + '<br>' + addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber)
+							console.log(addComp);
+							console.log(addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber);
+							that.locationName = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber
+							ls_set('locationObj',addComp)
+							ls_set('pointObj',rs.point)
+						});
+					})
+					// data是具体的定位信息
+					// that.locationName = data.formattedAddress
+					// ls_set('locationObj',data)
+					//   ls_set('locationName',data.formattedAddress)
+
+					//访问网络开始
+					// fetch('http://restapi.amap.com/v3/geocode/regeo?key=294066af9c9fd556780e95b485cf9e5f&location='+data.position.lng+','+data.position.lat+'&radius=1000&extensions=all&batch=false&roadlevel=0', {
+					// 	method: "POST",
+					// 	headers: {
+					// 		"Content-Type": "application/x-www-form-urlencoded"
+					// 	},
+					// 	body: ``
+					// }).then((response) => response.json())
+					// .then((jsonData) => {
+					// 	try {
+					// 		debugger
+					// 	}catch (e) {
+
+					// 	}
+					// })
+					// .catch((error) => {
+					// 	console.error(error);
+					// });
+				}
+			  
+				function onError (data) {
+					that.mapLoading = false
+					debugger
+				  // 定位出错
+				}
+			})
+			return
 			var geolocation = new BMap.Geolocation();
 			var gc = new BMap.Geocoder();   
 			this.mapLoading = true

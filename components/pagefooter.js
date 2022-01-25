@@ -19,7 +19,7 @@
 			<div class="line"></div>
 			<div class="footerBottom">
 				<div class="footerBottomL">
-					<div class="webRecord"><a target="_blank" class="bottom-line-item" href="https://beian.miit.gov.cn">粤ICP备2021032659号-1</a></div>
+					<div class="webRecord"><a  class="bottom-line-item" target="_blank" class="bottom-line-item" href="https://beian.miit.gov.cn">粤ICP备2021032659号-1</a></div>
 					<div class="webRecordNo">粤公网安备 44030502004134号</div>
 				</div>
 				<div class="footerBottomR">

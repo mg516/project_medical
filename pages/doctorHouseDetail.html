@@ -47,12 +47,14 @@
             </div>
         </div>
         <pagefooter></pagefooter>
-        <doctorask ref="doctorask"></doctorask>
+        <consultation ref="consultation"></consultation>
         <doctormark ref="doctormark"></doctormark>
     </div>
 </body>
 <script src="https://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script> 
 <script src="https://api.map.baidu.com/api?v=2.0&ak=exKldCvfrnSWrSFw8l6GheAyPlkRwVph"></script>
+<script type="text/javascript">window._AMapSecurityConfig = {securityJsCode:'3853bfea587b3d443e7702ca814629b2'}</script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=294066af9c9fd556780e95b485cf9e5f"></script>
 <script src="../js/rem.js"></script>
 <script src="../js/vue-2.6.11.js"></script>
 <script src="../element/element-ui-2.14.1.js"></script>
@@ -63,7 +65,7 @@
 <script src="../components/navmenu.js"></script>
 <script src="../components/breadcrumb.js"></script>
 <script src="../components/index/recomdoctor.js"></script>
-<script src="../components/doctorask.js"></script>
+<script src="../components/consultation.js"></script>
 <script src="../components/doctormark.js"></script>
 <script src="../components/index/doctorarticle.js"></script>
 <script>
@@ -103,7 +105,9 @@
                 this.activeIndex = index
             },
             showAsk(){
-                this.$refs.doctorask.show = true
+                this.$refs.consultation.show = true
+                this.$refs.consultation.type = '医生'
+                this.$refs.consultation.id = this.doctorMsg.doctorId
                 // postAddConsult
             },
             showMark(){
